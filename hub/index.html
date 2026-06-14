@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Merkaba ToolsHub</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F7FB;
+    --surface:#FFFFFF;
+    --surface-2:#EEF1F6;
+    --border:#E1E5EC;
+    --navy:#1B335E;
+    --navy-soft:rgba(27,51,94,0.07);
+    --navy-strong:#142546;
+    --gold:#EFAE3C;
+    --gold-soft:rgba(239,174,60,0.16);
+    --text:#1B2333;
+    --text-muted:#6B7280;
+    --success:#2F9E6E;
+    --success-soft:rgba(47,158,110,0.12);
+    --danger:#D9534F;
+    --danger-soft:rgba(217,83,79,0.10);
+    --radius:16px;
+    --radius-sm:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  [hidden]{display:none !important;}
+  html,body{min-height:100%;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    line-height:1.5;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    padding:16px clamp(20px,5vw,64px);
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand img{height:42px; width:auto; display:block;}
+  .wordmark{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.15rem; color:var(--navy); letter-spacing:0.01em;}
+  .wordmark span{color:var(--text-muted); font-weight:500;}
+
+  .nav{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .greeting{color:var(--text-muted); font-size:0.9rem; margin-right:4px;}
+  .btn-ghost{
+    background:none; border:1px solid var(--border); color:var(--text-muted);
+    padding:8px 16px; border-radius:999px; font-size:0.85rem; cursor:pointer;
+    font-family:'Inter',sans-serif; font-weight:600; transition:all .15s ease;
+  }
+  .btn-ghost:hover{color:var(--navy); border-color:var(--navy);}
+  .btn-primary{
+    background:var(--navy); color:#fff; border:none;
+    padding:9px 20px; border-radius:999px; font-weight:700; font-size:0.85rem;
+    cursor:pointer; font-family:'Inter',sans-serif; transition:filter .15s ease;
+  }
+  .btn-primary:hover{filter:brightness(1.15);}
+
+  /* ---------- Main / catálogo ---------- */
+  main{
+    flex:1;
+    width:100%;
+    max-width:1040px;
+    margin:0 auto;
+    padding:clamp(24px,6vw,64px) clamp(20px,5vw,64px);
+  }
+  .hero{padding-bottom:36px;}
+  .hero h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(1.7rem,4vw,2.5rem);
+    line-height:1.18;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:12px;
+  }
+  .hero p{color:var(--text-muted); font-size:1.05rem; max-width:520px;}
+
+  .catalog{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:18px;
+  }
+  .kit-card{
+    --card-accent: var(--gold);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-top:3px solid var(--card-accent);
+    border-radius:var(--radius);
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+    text-align:left;
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    box-shadow:0 1px 3px rgba(27,51,94,0.05);
+  }
+  .kit-card:hover{border-color:var(--card-accent); transform:translateY(-2px); box-shadow:0 6px 16px rgba(27,51,94,0.08);}
+  .kit-card.disabled{cursor:default; opacity:0.55; border-style:dashed; box-shadow:none;}
+  .kit-card.disabled:hover{transform:none; border-color:var(--border); box-shadow:none;}
+  .kit-icon{width:34px; height:34px; color:var(--card-accent);}
+  .kit-card h3{font-family:'Space Grotesk',sans-serif; font-size:1.05rem; font-weight:700; color:var(--navy);}
+  .kit-card p.desc{color:var(--text-muted); font-size:0.88rem; flex:1;}
+  .kit-footer{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+
+  .badge{
+    display:inline-block; padding:4px 10px; border-radius:999px;
+    font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .badge.activo{background:var(--success-soft); color:var(--success);}
+  .badge.pendiente{background:var(--gold-soft); color:#B5791C;}
+  .badge.proximamente{background:var(--surface-2); color:var(--text-muted);}
+  .badge.disponible{background:var(--navy-soft); color:var(--navy);}
+
+  /* ---------- Modales ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(20,28,46,0.45);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px; z-index:50;
+  }
+  .modal{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:28px; max-width:400px; width:100%; position:relative;
+    box-shadow:0 12px 40px rgba(20,28,46,0.18);
+  }
+  .modal-close{
+    position:absolute; top:14px; right:16px; background:none; border:none;
+    color:var(--text-muted); font-size:1.6rem; cursor:pointer; line-height:1;
+    width:32px; height:32px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .15s ease;
+  }
+  .modal-close:hover{color:var(--navy); background:var(--surface-2);}
+  .modal h2{font-family:'Space Grotesk',sans-serif; font-size:1.15rem; margin-bottom:6px; color:var(--navy);}
+  .modal-context{color:var(--text-muted); font-size:0.85rem; margin-bottom:18px;}
+
+  .tabs{display:flex; gap:8px; margin-bottom:18px;}
+  .tab{
+    flex:1; background:none; border:1px solid var(--border); color:var(--text-muted);
+    padding:10px; border-radius:var(--radius-sm); cursor:pointer;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:0.9rem; transition:all .15s ease;
+  }
+  .tab.active{background:var(--navy-soft); border-color:var(--navy); color:var(--navy);}
+
+  .auth-form, #profile-form{display:flex; flex-direction:column; gap:14px;}
+  label{display:flex; flex-direction:column; gap:6px; font-size:0.85rem; color:var(--text-muted); font-weight:500;}
+  input{
+    background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:10px 12px; color:var(--text); font-size:0.95rem; font-family:'Inter',sans-serif;
+  }
+  input:focus{outline:2px solid var(--navy); outline-offset:1px;}
+  button[type="submit"]{
+    background:var(--navy); color:#fff; border:none; border-radius:var(--radius-sm);
+    padding:12px; font-weight:700; font-size:0.95rem; cursor:pointer;
+    font-family:'Inter',sans-serif; transition:filter .15s ease;
+  }
+  button[type="submit"]:hover{filter:brightness(1.15);}
+  .message{font-size:0.85rem; color:var(--text-muted); margin-top:10px; min-height:1.2em;}
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+    background:var(--navy-strong); border:1px solid var(--navy); color:#fff;
+    padding:12px 22px; border-radius:999px; font-size:0.88rem; z-index:60;
+    max-width:90%; text-align:center; box-shadow:0 8px 24px rgba(20,28,46,0.2);
+  }
+
+  footer{
+    text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;
+    border-top:1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="logo.png" alt="Merkaba Consulting Group" />
+    <div class="wordmark">Merkaba <span>ToolsHub</span></div>
+  </div>
+
+  <nav class="nav" id="nav-guest">
+    <button class="btn-ghost" data-open-auth="login">Iniciar sesión</button>
+    <button class="btn-primary" data-open-auth="register">Crear cuenta</button>
+  </nav>
+
+  <nav class="nav" id="nav-user" hidden>
+    <span class="greeting" id="user-greeting"></span>
+    <button class="btn-ghost" id="account-btn">Mi cuenta</button>
+    <button class="btn-ghost" id="logout-btn">Cerrar sesión</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Cada oficio tiene su caja de herramientas.<br>Esta es la tuya.</h1>
+    <p>Elige tu kit. Una sola cuenta para acceder a las herramientas hechas para tu trabajo.</p>
+  </section>
+
+  <section class="catalog" id="catalog">
+    <!-- Las tarjetas se generan con JavaScript -->
+  </section>
+</main>
+
+<footer>Merkaba Consulting Group</footer>
+
+<!-- Modal de autenticación -->
+<div class="modal-overlay" id="auth-modal" hidden>
+  <div class="modal">
+    <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
+    <h2>Accede a tu cuenta</h2>
+    <p class="modal-context" id="auth-context">Inicia sesión o crea una cuenta para continuar.</p>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="login" type="button">Iniciar sesión</button>
+      <button class="tab" data-tab="register" type="button">Crear cuenta</button>
+    </div>
+
+    <form id="login-form" class="auth-form">
+      <label>Correo<input type="email" name="email" required /></label>
+      <label>Contraseña<input type="password" name="password" required /></label>
+      <button type="submit">Entrar</button>
+    </form>
+
+    <form id="register-form" class="auth-form" hidden>
+      <label>Nombre completo<input type="text" name="nombre" required /></label>
+      <label>Correo<input type="email" name="email" required /></label>
+      <label>Contraseña<input type="password" name="password" required minlength="6" /></label>
+      <button type="submit">Crear cuenta</button>
+    </form>
+
+    <p id="auth-message" class="message"></p>
+  </div>
+</div>
+
+<!-- Modal de perfil -->
+<div class="modal-overlay" id="profile-modal" hidden>
+  <div class="modal">
+    <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
+    <h2>Mi cuenta</h2>
+    <p class="modal-context">Estos datos se usan en todos tus kits.</p>
+    <form id="profile-form">
+      <label>Nombre completo<input id="profile-nombre" type="text" /></label>
+      <label>WhatsApp<input id="profile-whatsapp" type="text" placeholder="+591 7xxxxxxx" /></label>
+      <label>Ciudad<input id="profile-ciudad" type="text" placeholder="La Paz, Santa Cruz, Cochabamba..." /></label>
+      <button type="submit">Guardar</button>
+    </form>
+    <p id="profile-message" class="message"></p>
+  </div>
+</div>
+
+<!-- Aviso flotante -->
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // ================= Catálogo de kits =================
+  // "disponible: false" = todavía no se construyó, se muestra como "Próximamente"
+  const ICON_CASA = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-9"/></svg>`;
+  const ICON_PROXIMO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`;
+
+  const KITS = [
+    { slug:'inmobiliario', nombre:'Kit Inmobiliario', descripcion:'Seguimiento, comisiones, fichas y captación para agentes.', color:'#EFAE3C', icon:ICON_CASA, url:null, disponible:true },
+    { slug:'proximo-1', nombre:'Próximo kit', descripcion:'En construcción.', color:'#1B335E', icon:ICON_PROXIMO, url:null, disponible:false },
+    { slug:'proximo-2', nombre:'Próximo kit', descripcion:'En construcción.', color:'#3D8B93', icon:ICON_PROXIMO, url:null, disponible:false },
+  ];
+
+  // ================= Elementos =================
+  const els = {
+    navGuest: document.getElementById('nav-guest'),
+    navUser: document.getElementById('nav-user'),
+    greeting: document.getElementById('user-greeting'),
+    accountBtn: document.getElementById('account-btn'),
+    logoutBtn: document.getElementById('logout-btn'),
+    catalog: document.getElementById('catalog'),
+
+    authModal: document.getElementById('auth-modal'),
+    authContext: document.getElementById('auth-context'),
+    authMessage: document.getElementById('auth-message'),
+    loginForm: document.getElementById('login-form'),
+    registerForm: document.getElementById('register-form'),
+    tabs: document.querySelectorAll('.tab'),
+
+    profileModal: document.getElementById('profile-modal'),
+    profileForm: document.getElementById('profile-form'),
+    profileMessage: document.getElementById('profile-message'),
+
+    toast: document.getElementById('toast'),
+  };
+
+  let sesionActual = null;   // null o el objeto "user" de Supabase
+  let comprasActuales = [];  // lista de kits comprados por el usuario actual
+
+  // ================= Catálogo: se dibuja SIEMPRE, antes de tocar Supabase =================
+  function renderCatalogo(){
+    els.catalog.innerHTML = '';
+    KITS.forEach(kit => {
+      const compra = comprasActuales.find(c => c.kit === kit.slug);
+      const card = document.createElement('div');
+      card.className = 'kit-card' + (!kit.disponible ? ' disabled' : '');
+      card.style.setProperty('--card-accent', kit.color);
+
+      let badgeHtml = '';
+      if(!kit.disponible){
+        badgeHtml = `<span class="badge proximamente">Próximamente</span>`;
+      } else if(sesionActual && compra){
+        badgeHtml = `<span class="badge ${compra.estado}">${compra.estado}</span>`;
+      } else if(sesionActual && !compra){
+        badgeHtml = `<span class="badge disponible">Disponible</span>`;
+      }
+
+      card.innerHTML = `
+        <div class="kit-icon">${kit.icon}</div>
+        <h3>${kit.nombre}</h3>
+        <p class="desc">${kit.descripcion}</p>
+        <div class="kit-footer">${badgeHtml}</div>
+      `;
+
+      if(kit.disponible){
+        card.addEventListener('click', () => manejarClicKit(kit, compra));
+      }
+      els.catalog.appendChild(card);
+    });
+  }
+  renderCatalogo(); // <- primer dibujo, no depende de nada más
+
+  // ================= Aviso flotante (toast) =================
+  function avisar(msg){
+    els.toast.textContent = msg;
+    els.toast.hidden = false;
+    clearTimeout(els.toast._t);
+    els.toast._t = setTimeout(() => { els.toast.hidden = true; }, 3200);
+  }
+
+  // ================= Abrir / cerrar modales =================
+  function abrirAuth(tab, contexto){
+    els.authModal.hidden = false;
+    els.authContext.textContent = contexto || 'Inicia sesión o crea una cuenta para continuar.';
+    activarTab(tab || 'login');
+    els.authMessage.textContent = '';
+  }
+  function cerrarModales(){
+    els.authModal.hidden = true;
+    els.profileModal.hidden = true;
+  }
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', cerrarModales));
+  [els.authModal, els.profileModal].forEach(overlay => {
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) cerrarModales(); });
+  });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') cerrarModales(); });
+
+  document.querySelectorAll('[data-open-auth]').forEach(btn => {
+    btn.addEventListener('click', () => abrirAuth(btn.dataset.openAuth));
+  });
+
+  function activarTab(tab){
+    els.tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    els.loginForm.hidden = tab !== 'login';
+    els.registerForm.hidden = tab !== 'register';
+  }
+  els.tabs.forEach(t => t.addEventListener('click', () => { activarTab(t.dataset.tab); els.authMessage.textContent = ''; }));
+
+  function manejarClicKit(kit, compra){
+    if(!sesionActual){
+      abrirAuth('login', `Inicia sesión o crea tu cuenta para acceder a "${kit.nombre}".`);
+      return;
+    }
+    if(compra && compra.estado === 'activo'){
+      if(kit.url){ window.location.href = kit.url; }
+      else { avisar(`"${kit.nombre}" todavía no está publicado. Vuelve pronto.`); }
+      return;
+    }
+    if(compra && compra.estado === 'pendiente'){
+      avisar(`Tu acceso a "${kit.nombre}" está pendiente de confirmación.`);
+      return;
+    }
+    avisar(`Todavía no tienes "${kit.nombre}" activado.`);
+  }
+
+  function actualizarSaludo(nombre){
+    els.greeting.textContent = nombre ? `Hola, ${nombre}` : '';
+  }
+
+  // ================= Conexión con Supabase (no debe romper lo de arriba si falla) =================
+  const SUPABASE_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
+
+  let sb = null;
+  try {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } catch(err) {
+    console.error('No se pudo iniciar la conexión con Supabase:', err);
+  }
+
+  function traducirError(msg){
+    if(msg.includes('Invalid login credentials')) return 'Correo o contraseña incorrectos.';
+    if(msg.includes('already registered') || msg.includes('already exists')) return 'Ese correo ya tiene una cuenta. Intenta iniciar sesión.';
+    if(msg.includes('Password should be')) return 'La contraseña debe tener al menos 6 caracteres.';
+    if(msg.includes('Email not confirmed')) return 'Confirma tu correo antes de iniciar sesión (revisa tu bandeja de entrada).';
+    return msg;
+  }
+
+  if(sb){
+    // ---- Iniciar sesión ----
+    els.loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      els.authMessage.textContent = 'Entrando...';
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if(error){ els.authMessage.textContent = traducirError(error.message); return; }
+      cerrarModales();
+    });
+
+    // ---- Crear cuenta ----
+    els.registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = e.target.nombre.value;
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      els.authMessage.textContent = 'Creando cuenta...';
+      const { error } = await sb.auth.signUp({
+        email, password,
+        options: { data: { nombre_completo: nombre } }
+      });
+      if(error){ els.authMessage.textContent = traducirError(error.message); return; }
+      els.authMessage.textContent = 'Cuenta creada. Si pide confirmación, revisa tu correo y luego inicia sesión.';
+    });
+
+    // ---- Cerrar sesión ----
+    els.logoutBtn.addEventListener('click', () => sb.auth.signOut());
+
+    // ---- Mi cuenta (perfil) ----
+    els.accountBtn.addEventListener('click', async () => {
+      if(!sesionActual) return;
+      const { data: perfil } = await sb.from('profiles').select('*').eq('id', sesionActual.id).single();
+      document.getElementById('profile-nombre').value = (perfil && perfil.nombre_completo) || '';
+      document.getElementById('profile-whatsapp').value = (perfil && perfil.whatsapp) || '';
+      document.getElementById('profile-ciudad').value = (perfil && perfil.ciudad) || '';
+      els.profileMessage.textContent = '';
+      els.profileModal.hidden = false;
+    });
+
+    els.profileForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if(!sesionActual) return;
+      const updates = {
+        nombre_completo: document.getElementById('profile-nombre').value,
+        whatsapp: document.getElementById('profile-whatsapp').value,
+        ciudad: document.getElementById('profile-ciudad').value,
+      };
+      els.profileMessage.textContent = 'Guardando...';
+      const { error } = await sb.from('profiles').update(updates).eq('id', sesionActual.id);
+      els.profileMessage.textContent = error ? 'No se pudo guardar.' : 'Guardado ✓';
+      if(!error) actualizarSaludo(updates.nombre_completo);
+      setTimeout(() => { els.profileMessage.textContent = ''; }, 2000);
+    });
+
+    // ---- Cambios de sesión ----
+    sb.auth.onAuthStateChange(async (_event, session) => {
+      if(session){
+        sesionActual = session.user;
+        els.navGuest.hidden = true;
+        els.navUser.hidden = false;
+
+        const { data: perfil } = await sb.from('profiles').select('*').eq('id', sesionActual.id).single();
+        actualizarSaludo(perfil && perfil.nombre_completo);
+
+        const { data: compras } = await sb.from('compras').select('*').eq('profile_id', sesionActual.id);
+        comprasActuales = compras || [];
+      } else {
+        sesionActual = null;
+        comprasActuales = [];
+        els.navGuest.hidden = false;
+        els.navUser.hidden = true;
+        els.greeting.textContent = '';
+        cerrarModales();
+      }
+      renderCatalogo();
+    });
+  } else {
+    // Si Supabase no cargó, al menos que los botones de cuenta no rompan nada
+    els.accountBtn.addEventListener('click', () => avisar('No se pudo conectar con el sistema de cuentas.'));
+    els.logoutBtn.addEventListener('click', () => {});
+    [els.loginForm, els.registerForm].forEach(f => f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      els.authMessage.textContent = 'No se pudo conectar con el sistema de cuentas. Revisa tu conexión a internet.';
+    }));
+  }
+</script>
+</body>
+</html>
