@@ -461,7 +461,7 @@
 
     // ---- Cerrar sesión ----
     els.logoutBtn.addEventListener('click', async () => {
-      await sb.auth.signOut();
+      try { await sb.auth.signOut(); } catch(e) {}
       window.location.reload();
     });
 
@@ -495,8 +495,10 @@
 
     // ---- Mi cuenta (perfil) ----
     els.accountBtn.addEventListener('click', async () => {
-      if(!sesionActual) return;
-      const { data: p } = await sb.from('profiles').select('*').eq('id', sesionActual.id).single();
+      const { data: { user } } = await sb.auth.getUser();
+      if(!user) return;
+      sesionActual = user;
+      const { data: p } = await sb.from('profiles').select('*').eq('id', user.id).single();
       document.getElementById('profile-nombre').value = (p && p.nombre_completo) || '';
       document.getElementById('profile-whatsapp').value = (p && p.whatsapp) || '';
       document.getElementById('profile-ciudad').value = (p && p.ciudad) || '';
@@ -506,14 +508,16 @@
 
     els.profileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if(!sesionActual) return;
+      const { data: { user } } = await sb.auth.getUser();
+      if(!user) return;
+      sesionActual = user;
       const updates = {
         nombre_completo: document.getElementById('profile-nombre').value,
         whatsapp: document.getElementById('profile-whatsapp').value,
         ciudad: document.getElementById('profile-ciudad').value,
       };
       els.profileMessage.textContent = 'Guardando...';
-      const { error } = await sb.from('profiles').update(updates).eq('id', sesionActual.id);
+      const { error } = await sb.from('profiles').update(updates).eq('id', user.id);
       els.profileMessage.textContent = error ? 'No se pudo guardar.' : 'Guardado ✓';
       if(!error) actualizarSaludo(updates.nombre_completo);
       setTimeout(() => { els.profileMessage.textContent = ''; }, 2000);
