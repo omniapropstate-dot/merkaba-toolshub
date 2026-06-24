@@ -460,7 +460,16 @@
     });
 
     // ---- Cerrar sesión ----
-    els.logoutBtn.addEventListener('click', () => sb.auth.signOut());
+    els.logoutBtn.addEventListener('click', async () => {
+      await sb.auth.signOut();
+      sesionActual = null;
+      comprasActuales = [];
+      els.navGuest.hidden = false;
+      els.navUser.hidden = true;
+      els.greeting.textContent = '';
+      cerrarModales();
+      renderCatalogo();
+    });
 
     // ---- Olvidé mi contraseña ----
     document.getElementById('forgot-link').addEventListener('click', () => {
