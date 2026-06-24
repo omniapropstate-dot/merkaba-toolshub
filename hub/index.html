@@ -462,13 +462,7 @@
     // ---- Cerrar sesión ----
     els.logoutBtn.addEventListener('click', async () => {
       await sb.auth.signOut();
-      sesionActual = null;
-      comprasActuales = [];
-      els.navGuest.hidden = false;
-      els.navUser.hidden = true;
-      els.greeting.textContent = '';
-      cerrarModales();
-      renderCatalogo();
+      window.location.reload();
     });
 
     // ---- Olvidé mi contraseña ----
