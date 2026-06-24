@@ -160,7 +160,7 @@
   }
   .tab.active{background:var(--navy-soft); border-color:var(--navy); color:var(--navy);}
 
-  .auth-form, #profile-form{display:flex; flex-direction:column; gap:14px;}
+  .auth-form, #profile-form, #forgot-form, #reset-form{display:flex; flex-direction:column; gap:14px;}
   label{display:flex; flex-direction:column; gap:6px; font-size:0.85rem; color:var(--text-muted); font-weight:500;}
   input{
     background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm);
@@ -174,6 +174,12 @@
   }
   button[type="submit"]:hover{filter:brightness(1.15);}
   .message{font-size:0.85rem; color:var(--text-muted); margin-top:10px; min-height:1.2em;}
+  .link-btn{
+    background:none; border:none; color:var(--text-muted); font-size:0.82rem;
+    cursor:pointer; text-decoration:underline; font-family:'Inter',sans-serif;
+    text-align:center; padding:0;
+  }
+  .link-btn:hover{color:var(--navy);}
 
   /* ---------- Toast ---------- */
   .toast{
@@ -215,14 +221,12 @@
     <p>Elige tu kit. Una sola cuenta para acceder a las herramientas hechas para tu trabajo.</p>
   </section>
 
-  <section class="catalog" id="catalog">
-    <!-- Las tarjetas se generan con JavaScript -->
-  </section>
+  <section class="catalog" id="catalog"></section>
 </main>
 
 <footer>Merkaba Consulting Group</footer>
 
-<!-- Modal de autenticación -->
+<!-- Modal: login / registro -->
 <div class="modal-overlay" id="auth-modal" hidden>
   <div class="modal">
     <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
@@ -238,6 +242,7 @@
       <label>Correo<input type="email" name="email" required /></label>
       <label>Contraseña<input type="password" name="password" required /></label>
       <button type="submit">Entrar</button>
+      <button type="button" class="link-btn" id="forgot-link">¿Olvidaste tu contraseña?</button>
     </form>
 
     <form id="register-form" class="auth-form" hidden>
@@ -251,7 +256,34 @@
   </div>
 </div>
 
-<!-- Modal de perfil -->
+<!-- Modal: recuperar contraseña -->
+<div class="modal-overlay" id="forgot-modal" hidden>
+  <div class="modal">
+    <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
+    <h2>Recuperar contraseña</h2>
+    <p class="modal-context">Te enviaremos un correo con instrucciones para crear una nueva contraseña.</p>
+    <form id="forgot-form">
+      <label>Correo<input type="email" name="email" required /></label>
+      <button type="submit">Enviar correo</button>
+    </form>
+    <p id="forgot-message" class="message"></p>
+  </div>
+</div>
+
+<!-- Modal: nueva contraseña (se activa al volver desde el correo de recuperación) -->
+<div class="modal-overlay" id="reset-modal" hidden>
+  <div class="modal">
+    <h2>Crear nueva contraseña</h2>
+    <p class="modal-context">Elige una contraseña nueva para tu cuenta.</p>
+    <form id="reset-form">
+      <label>Nueva contraseña<input type="password" name="password" required minlength="6" /></label>
+      <button type="submit">Guardar contraseña</button>
+    </form>
+    <p id="reset-message" class="message"></p>
+  </div>
+</div>
+
+<!-- Modal: mi cuenta / perfil -->
 <div class="modal-overlay" id="profile-modal" hidden>
   <div class="modal">
     <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
@@ -273,7 +305,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   // ================= Catálogo de kits =================
-  // "disponible: false" = todavía no se construyó, se muestra como "Próximamente"
   const ICON_CASA = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-9"/></svg>`;
   const ICON_PROXIMO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`;
 
@@ -291,25 +322,28 @@
     accountBtn: document.getElementById('account-btn'),
     logoutBtn: document.getElementById('logout-btn'),
     catalog: document.getElementById('catalog'),
-
     authModal: document.getElementById('auth-modal'),
     authContext: document.getElementById('auth-context'),
     authMessage: document.getElementById('auth-message'),
     loginForm: document.getElementById('login-form'),
     registerForm: document.getElementById('register-form'),
     tabs: document.querySelectorAll('.tab'),
-
+    forgotModal: document.getElementById('forgot-modal'),
+    forgotForm: document.getElementById('forgot-form'),
+    forgotMessage: document.getElementById('forgot-message'),
+    resetModal: document.getElementById('reset-modal'),
+    resetForm: document.getElementById('reset-form'),
+    resetMessage: document.getElementById('reset-message'),
     profileModal: document.getElementById('profile-modal'),
     profileForm: document.getElementById('profile-form'),
     profileMessage: document.getElementById('profile-message'),
-
     toast: document.getElementById('toast'),
   };
 
-  let sesionActual = null;   // null o el objeto "user" de Supabase
-  let comprasActuales = [];  // lista de kits comprados por el usuario actual
+  let sesionActual = null;
+  let comprasActuales = [];
 
-  // ================= Catálogo: se dibuja SIEMPRE, antes de tocar Supabase =================
+  // ================= Catálogo (se dibuja siempre, antes de Supabase) =================
   function renderCatalogo(){
     els.catalog.innerHTML = '';
     KITS.forEach(kit => {
@@ -317,7 +351,6 @@
       const card = document.createElement('div');
       card.className = 'kit-card' + (!kit.disponible ? ' disabled' : '');
       card.style.setProperty('--card-accent', kit.color);
-
       let badgeHtml = '';
       if(!kit.disponible){
         badgeHtml = `<span class="badge proximamente">Próximamente</span>`;
@@ -326,23 +359,19 @@
       } else if(sesionActual && !compra){
         badgeHtml = `<span class="badge disponible">Disponible</span>`;
       }
-
       card.innerHTML = `
         <div class="kit-icon">${kit.icon}</div>
         <h3>${kit.nombre}</h3>
         <p class="desc">${kit.descripcion}</p>
         <div class="kit-footer">${badgeHtml}</div>
       `;
-
-      if(kit.disponible){
-        card.addEventListener('click', () => manejarClicKit(kit, compra));
-      }
+      if(kit.disponible) card.addEventListener('click', () => manejarClicKit(kit, compra));
       els.catalog.appendChild(card);
     });
   }
-  renderCatalogo(); // <- primer dibujo, no depende de nada más
+  renderCatalogo();
 
-  // ================= Aviso flotante (toast) =================
+  // ================= Toast =================
   function avisar(msg){
     els.toast.textContent = msg;
     els.toast.hidden = false;
@@ -350,23 +379,22 @@
     els.toast._t = setTimeout(() => { els.toast.hidden = true; }, 3200);
   }
 
-  // ================= Abrir / cerrar modales =================
+  // ================= Modales =================
+  function cerrarModales(){
+    [els.authModal, els.forgotModal, els.resetModal, els.profileModal].forEach(m => m.hidden = true);
+  }
   function abrirAuth(tab, contexto){
+    cerrarModales();
     els.authModal.hidden = false;
     els.authContext.textContent = contexto || 'Inicia sesión o crea una cuenta para continuar.';
     activarTab(tab || 'login');
     els.authMessage.textContent = '';
   }
-  function cerrarModales(){
-    els.authModal.hidden = true;
-    els.profileModal.hidden = true;
-  }
   document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', cerrarModales));
-  [els.authModal, els.profileModal].forEach(overlay => {
+  [els.authModal, els.forgotModal, els.resetModal, els.profileModal].forEach(overlay => {
     overlay.addEventListener('click', (e) => { if(e.target === overlay) cerrarModales(); });
   });
   document.addEventListener('keydown', (e) => { if(e.key === 'Escape') cerrarModales(); });
-
   document.querySelectorAll('[data-open-auth]').forEach(btn => {
     btn.addEventListener('click', () => abrirAuth(btn.dataset.openAuth));
   });
@@ -379,35 +407,18 @@
   els.tabs.forEach(t => t.addEventListener('click', () => { activarTab(t.dataset.tab); els.authMessage.textContent = ''; }));
 
   function manejarClicKit(kit, compra){
-    if(!sesionActual){
-      abrirAuth('login', `Inicia sesión o crea tu cuenta para acceder a "${kit.nombre}".`);
-      return;
-    }
+    if(!sesionActual){ abrirAuth('login', `Inicia sesión o crea tu cuenta para acceder a "${kit.nombre}".`); return; }
     if(compra && compra.estado === 'activo'){
       if(kit.url){ window.location.href = kit.url; }
       else { avisar(`"${kit.nombre}" todavía no está publicado. Vuelve pronto.`); }
       return;
     }
-    if(compra && compra.estado === 'pendiente'){
-      avisar(`Tu acceso a "${kit.nombre}" está pendiente de confirmación.`);
-      return;
-    }
+    if(compra && compra.estado === 'pendiente'){ avisar(`Tu acceso a "${kit.nombre}" está pendiente de confirmación.`); return; }
     avisar(`Todavía no tienes "${kit.nombre}" activado.`);
   }
 
   function actualizarSaludo(nombre){
     els.greeting.textContent = nombre ? `Hola, ${nombre}` : '';
-  }
-
-  // ================= Conexión con Supabase (no debe romper lo de arriba si falla) =================
-  const SUPABASE_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
-
-  let sb = null;
-  try {
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  } catch(err) {
-    console.error('No se pudo iniciar la conexión con Supabase:', err);
   }
 
   function traducirError(msg){
@@ -418,28 +429,31 @@
     return msg;
   }
 
+  // ================= Supabase =================
+  const SUPABASE_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
+  let sb = null;
+  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e){ console.error(e); }
+
   if(sb){
-    // ---- Iniciar sesión ----
+
+    // ---- Login ----
     els.loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = e.target.email.value;
-      const password = e.target.password.value;
       els.authMessage.textContent = 'Entrando...';
-      const { error } = await sb.auth.signInWithPassword({ email, password });
+      const { error } = await sb.auth.signInWithPassword({ email: e.target.email.value, password: e.target.password.value });
       if(error){ els.authMessage.textContent = traducirError(error.message); return; }
       cerrarModales();
     });
 
-    // ---- Crear cuenta ----
+    // ---- Registro ----
     els.registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const nombre = e.target.nombre.value;
-      const email = e.target.email.value;
-      const password = e.target.password.value;
       els.authMessage.textContent = 'Creando cuenta...';
       const { error } = await sb.auth.signUp({
-        email, password,
-        options: { data: { nombre_completo: nombre } }
+        email: e.target.email.value,
+        password: e.target.password.value,
+        options: { data: { nombre_completo: e.target.nombre.value } }
       });
       if(error){ els.authMessage.textContent = traducirError(error.message); return; }
       els.authMessage.textContent = 'Cuenta creada. Si pide confirmación, revisa tu correo y luego inicia sesión.';
@@ -448,13 +462,41 @@
     // ---- Cerrar sesión ----
     els.logoutBtn.addEventListener('click', () => sb.auth.signOut());
 
+    // ---- Olvidé mi contraseña ----
+    document.getElementById('forgot-link').addEventListener('click', () => {
+      cerrarModales();
+      els.forgotModal.hidden = false;
+      els.forgotMessage.textContent = '';
+    });
+
+    els.forgotForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      els.forgotMessage.textContent = 'Enviando...';
+      const { error } = await sb.auth.resetPasswordForEmail(e.target.email.value, {
+        redirectTo: 'https://merkaba-toolshub.omniaproprealestate.workers.dev'
+      });
+      els.forgotMessage.textContent = error
+        ? 'No se pudo enviar. Verifica el correo.'
+        : 'Correo enviado. Revisa tu bandeja de entrada.';
+    });
+
+    // ---- Nueva contraseña (al volver desde el correo) ----
+    els.resetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      els.resetMessage.textContent = 'Guardando...';
+      const { error } = await sb.auth.updateUser({ password: e.target.password.value });
+      if(error){ els.resetMessage.textContent = 'No se pudo guardar. Intenta de nuevo.'; return; }
+      els.resetMessage.textContent = 'Contraseña actualizada. Ya puedes iniciar sesión.';
+      setTimeout(() => cerrarModales(), 2500);
+    });
+
     // ---- Mi cuenta (perfil) ----
     els.accountBtn.addEventListener('click', async () => {
       if(!sesionActual) return;
-      const { data: perfil } = await sb.from('profiles').select('*').eq('id', sesionActual.id).single();
-      document.getElementById('profile-nombre').value = (perfil && perfil.nombre_completo) || '';
-      document.getElementById('profile-whatsapp').value = (perfil && perfil.whatsapp) || '';
-      document.getElementById('profile-ciudad').value = (perfil && perfil.ciudad) || '';
+      const { data: p } = await sb.from('profiles').select('*').eq('id', sesionActual.id).single();
+      document.getElementById('profile-nombre').value = (p && p.nombre_completo) || '';
+      document.getElementById('profile-whatsapp').value = (p && p.whatsapp) || '';
+      document.getElementById('profile-ciudad').value = (p && p.ciudad) || '';
       els.profileMessage.textContent = '';
       els.profileModal.hidden = false;
     });
@@ -474,16 +516,19 @@
       setTimeout(() => { els.profileMessage.textContent = ''; }, 2000);
     });
 
-    // ---- Cambios de sesión ----
-    sb.auth.onAuthStateChange(async (_event, session) => {
+    // ---- Cambios de sesión (login, logout, recuperación de contraseña) ----
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if(event === 'PASSWORD_RECOVERY'){
+        cerrarModales();
+        els.resetModal.hidden = false;
+        return;
+      }
       if(session){
         sesionActual = session.user;
         els.navGuest.hidden = true;
         els.navUser.hidden = false;
-
-        const { data: perfil } = await sb.from('profiles').select('*').eq('id', sesionActual.id).single();
-        actualizarSaludo(perfil && perfil.nombre_completo);
-
+        const { data: p } = await sb.from('profiles').select('*').eq('id', sesionActual.id).single();
+        actualizarSaludo(p && p.nombre_completo);
         const { data: compras } = await sb.from('compras').select('*').eq('profile_id', sesionActual.id);
         comprasActuales = compras || [];
       } else {
@@ -496,13 +541,13 @@
       }
       renderCatalogo();
     });
+
   } else {
-    // Si Supabase no cargó, al menos que los botones de cuenta no rompan nada
     els.accountBtn.addEventListener('click', () => avisar('No se pudo conectar con el sistema de cuentas.'));
     els.logoutBtn.addEventListener('click', () => {});
     [els.loginForm, els.registerForm].forEach(f => f.addEventListener('submit', (e) => {
       e.preventDefault();
-      els.authMessage.textContent = 'No se pudo conectar con el sistema de cuentas. Revisa tu conexión a internet.';
+      els.authMessage.textContent = 'No se pudo conectar. Revisa tu conexión a internet.';
     }));
   }
 </script>
