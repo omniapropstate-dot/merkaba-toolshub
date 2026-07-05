@@ -1456,135 +1456,173 @@ function cargarFotosPropiedad(input){
 // ══════════════════════════════════════════════
 function loadJsPDF(){
   return new Promise(function(resolve, reject){
-    if(window.jspdf){ resolve(true); return; }
+    if(window.jspdf && window.jspdf.jsPDF){ resolve(true); return; }
     var s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    s.onload = function(){ resolve(true); };
-    s.onerror = function(){ reject(false); };
+    s.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+    s.onload = function(){ setTimeout(function(){ resolve(true); }, 100); };
+    s.onerror = function(){ reject(new Error('No se pudo cargar jsPDF')); };
     document.head.appendChild(s);
   });
 }
 
+function detectImgFormat(dataUrl){
+  if(!dataUrl) return 'JPEG';
+  if(dataUrl.indexOf('image/png') > -1) return 'PNG';
+  if(dataUrl.indexOf('image/gif') > -1) return 'GIF';
+  return 'JPEG';
+}
+
+function descargarBlob(blob, filename){
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
+}
+
 async function generarPDFDoc(titulo, texto, fotos){
   toast('Preparando PDF...');
-  try{ await loadJsPDF(); } catch(e){ toast('Error: verifica tu conexion a internet.'); return; }
-  var jsPDF = window.jspdf.jsPDF;
-  var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-  var pageW = 210, pageH = 297, margin = 18, contentW = pageW - margin * 2;
-
-  // ---- HEADER ----
-  doc.setFillColor(27, 51, 94);
-  doc.rect(0, 0, pageW, 44, 'F');
-  doc.setFillColor(239, 174, 60);
-  doc.rect(0, 44, pageW, 2, 'F');
-
-  var textX = margin;
-  var foto = localStorage.getItem('mk_foto');
-  if(foto){
-    try{ doc.addImage(foto, 'JPEG', margin, 7, 28, 28); textX = margin + 34; } catch(e){}
+  try{
+    await loadJsPDF();
+  } catch(e){
+    toast('Error al cargar el generador de PDF. Verifica tu conexion.');
+    return;
   }
 
-  doc.setTextColor(255, 255, 255);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(13);
-  doc.text(AGENTE.nombre, textX, 17);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(190, 205, 230);
-  var infoY = 25;
-  if(AGENTE.ciudad){ doc.text(AGENTE.ciudad, textX, infoY); infoY += 6; }
-  if(AGENTE.whatsapp){ doc.text('WhatsApp: ' + AGENTE.whatsapp, textX, infoY); infoY += 6; }
-  if(AGENTE.email){ doc.text('Email: ' + AGENTE.email, textX, infoY); }
+  try{
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    var pageW = 210, pageH = 297, margin = 18, contentW = pageW - margin * 2;
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.setTextColor(239, 174, 60);
-  doc.text('MERKABA', pageW - margin, 12, { align:'right' });
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7);
-  doc.setTextColor(160, 180, 210);
-  doc.text('Kit del Agente Inmobiliario Boliviano', pageW - margin, 18, { align:'right' });
-  var fecha = new Date().toLocaleDateString('es-BO', { day:'2-digit', month:'long', year:'numeric' });
-  doc.text(fecha, pageW - margin, 36, { align:'right' });
-
-  // ---- TITLE ----
-  var y = 56;
-  doc.setTextColor(27, 51, 94);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(15);
-  doc.text(titulo, pageW / 2, y, { align:'center' });
-  y += 6;
-  doc.setFillColor(239, 174, 60);
-  doc.rect(pageW/2 - 20, y, 40, 0.8, 'F');
-  y += 8;
-
-  // ---- CONTENT ----
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10.5);
-  doc.setTextColor(27, 35, 51);
-  var lineas = doc.splitTextToSize(texto, contentW);
-  lineas.forEach(function(linea){
-    if(y > pageH - 28){ doc.addPage(); y = 22; }
-    doc.text(linea, margin, y);
-    y += 5.8;
-  });
-  y += 6;
-
-  // ---- PROPERTY PHOTOS ----
-  var fotosFiltradas = (fotos || []).filter(function(f){ return !!f; }).slice(0, 5);
-  if(fotosFiltradas.length > 0){
-    if(y > pageH - 90){ doc.addPage(); y = 22; }
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(27, 51, 94);
-    doc.text('Fotografias de la propiedad', margin, y);
-    y += 5;
-    doc.setFillColor(239, 174, 60);
-    doc.rect(margin, y, 50, 0.7, 'F');
-    y += 8;
-    var photoW = (contentW - 6) / 2;
-    var photoH = photoW * 0.62;
-    var col = 0;
-    fotosFiltradas.forEach(function(src){
-      if(col === 0 && y + photoH > pageH - 28){ doc.addPage(); y = 22; }
-      var x = margin + col * (photoW + 6);
-      try{ doc.addImage(src, 'JPEG', x, y, photoW, photoH); }
-      catch(e){ try{ doc.addImage(src, 'PNG', x, y, photoW, photoH); } catch(e2){} }
-      col++;
-      if(col >= 2){ col = 0; y += photoH + 6; }
-    });
-    if(col > 0) y += photoH + 6;
-  }
-
-  // ---- FOOTER (all pages) ----
-  var total = doc.internal.getNumberOfPages();
-  for(var p = 1; p <= total; p++){
-    doc.setPage(p);
+    // HEADER
     doc.setFillColor(27, 51, 94);
-    doc.rect(0, pageH - 11, pageW, 11, 'F');
-    doc.setTextColor(180, 200, 230);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.5);
-    doc.text('Merkaba Consulting Group · Kit del Agente Inmobiliario Boliviano', pageW / 2, pageH - 4, { align:'center' });
-    doc.setTextColor(239, 174, 60);
-    doc.text('Pag. ' + p + ' / ' + total, pageW - margin, pageH - 4, { align:'right' });
-  }
+    doc.rect(0, 0, pageW, 44, 'F');
+    doc.setFillColor(239, 174, 60);
+    doc.rect(0, 44, pageW, 2, 'F');
 
-  var filename = titulo.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '_') + '.pdf';
-  doc.save(filename);
-  toast('PDF descargado.');
+    var textX = margin;
+    var fotoAgente = localStorage.getItem('mk_foto');
+    if(fotoAgente){
+      try{
+        var fmt = detectImgFormat(fotoAgente);
+        doc.addImage(fotoAgente, fmt, margin, 7, 28, 28);
+        textX = margin + 34;
+      } catch(e){ textX = margin; }
+    }
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.text(AGENTE.nombre || 'Agente', textX, 17);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(190, 205, 230);
+    var infoY = 25;
+    if(AGENTE.ciudad){ doc.text(AGENTE.ciudad, textX, infoY); infoY += 6; }
+    if(AGENTE.whatsapp){ doc.text('WhatsApp: ' + AGENTE.whatsapp, textX, infoY); infoY += 6; }
+    if(AGENTE.email){ doc.text('Email: ' + AGENTE.email, textX, infoY); }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(239, 174, 60);
+    doc.text('MERKABA', pageW - margin, 12, { align:'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(160, 180, 210);
+    doc.text('Kit del Agente Inmobiliario Boliviano', pageW - margin, 18, { align:'right' });
+    var fecha = new Date().toLocaleDateString('es-BO', { day:'2-digit', month:'long', year:'numeric' });
+    doc.text(fecha, pageW - margin, 36, { align:'right' });
+
+    // TITULO
+    var y = 56;
+    doc.setTextColor(27, 51, 94);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(15);
+    doc.text(titulo.replace(/_/g, ' '), pageW / 2, y, { align:'center' });
+    y += 6;
+    doc.setFillColor(239, 174, 60);
+    doc.rect(pageW/2 - 20, y, 40, 0.8, 'F');
+    y += 10;
+
+    // CONTENIDO
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10.5);
+    doc.setTextColor(27, 35, 51);
+    var lineas = doc.splitTextToSize(texto || '', contentW);
+    for(var li = 0; li < lineas.length; li++){
+      if(y > pageH - 28){ doc.addPage(); y = 22; }
+      doc.text(lineas[li], margin, y);
+      y += 5.8;
+    }
+    y += 8;
+
+    // FOTOS DE PROPIEDAD
+    var fotosFiltradas = (fotos || []).filter(function(f){ return !!f; }).slice(0, 5);
+    if(fotosFiltradas.length > 0){
+      if(y > pageH - 90){ doc.addPage(); y = 22; }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(27, 51, 94);
+      doc.text('Fotografias de la propiedad', margin, y);
+      y += 5;
+      doc.setFillColor(239, 174, 60);
+      doc.rect(margin, y, 50, 0.7, 'F');
+      y += 10;
+      var photoW = (contentW - 6) / 2;
+      var photoH = photoW * 0.62;
+      var col = 0;
+      for(var fi = 0; fi < fotosFiltradas.length; fi++){
+        if(col === 0 && y + photoH > pageH - 28){ doc.addPage(); y = 22; }
+        var x = margin + col * (photoW + 6);
+        try{
+          var fmtP = detectImgFormat(fotosFiltradas[fi]);
+          doc.addImage(fotosFiltradas[fi], fmtP, x, y, photoW, photoH);
+        } catch(e2){}
+        col++;
+        if(col >= 2){ col = 0; y += photoH + 6; }
+      }
+      if(col > 0) y += photoH + 6;
+    }
+
+    // FOOTER
+    var total = doc.internal.getNumberOfPages();
+    for(var p = 1; p <= total; p++){
+      doc.setPage(p);
+      doc.setFillColor(27, 51, 94);
+      doc.rect(0, pageH - 11, pageW, 11, 'F');
+      doc.setTextColor(180, 200, 230);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.text('Merkaba Consulting Group · Kit del Agente Inmobiliario Boliviano', pageW / 2, pageH - 4, { align:'center' });
+      doc.setTextColor(239, 174, 60);
+      doc.text('Pag. ' + p + ' / ' + total, pageW - margin, pageH - 4, { align:'right' });
+    }
+
+    // DESCARGA sin doc.save() para evitar conflicto con Cloudflare
+    var pdfBlob = doc.output('blob');
+    var filename = titulo.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '_') + '.pdf';
+    descargarBlob(pdfBlob, filename);
+    toast('PDF descargado correctamente.');
+
+  } catch(err){
+    toast('Error al generar el PDF: ' + (err.message || 'error desconocido'));
+    console.error('PDF error:', err);
+  }
 }
 
 async function generarPDFPropuesta(){
-  var texto = $('prop-texto') ? $('prop-texto').textContent : '';
+  var texto = $('prop-texto') ? $('prop-texto').textContent.trim() : '';
   if(!texto){ toast('Genera la propuesta primero.'); return; }
-  await generarPDFDoc('Propuesta_de_Captacion', texto, []);
+  await generarPDFDoc('Propuesta de Captacion', texto, []);
 }
 
 async function generarPDFFicha(){
-  var texto = $('ficha-texto') ? $('ficha-texto').textContent : '';
+  var texto = $('ficha-texto') ? $('ficha-texto').textContent.trim() : '';
   if(!texto){ toast('Genera la ficha primero.'); return; }
-  await generarPDFDoc('Ficha_de_Propiedad', texto, _fotosPropiedad);
+  await generarPDFDoc('Ficha de Propiedad', texto, _fotosPropiedad);
 }
 
 
