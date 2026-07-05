@@ -206,7 +206,7 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 // DATOS DEL AGENTE (viene del perfil en Supabase)
 // ══════════════════════════════════════════════
 const AGENTE = {
-  nombre: 'Franco Guerra',
+  nombre: sessionStorage.getItem('mk_nombre') || 'Agente',
   ciudad: 'La Paz',
   whatsapp: '+591 71234567'
 };
