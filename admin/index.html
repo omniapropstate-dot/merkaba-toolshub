@@ -1,26 +1,203 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Merkaba - Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#1B335E;--gold:#EFAE3C;--bg:#F6F7FB;--surface:#fff;--border:#E1E5EC;--text:#1B2333;--text-muted:#6B7280;--radius:14px;}
+:root{--navy:#1B335E;--navy-soft:rgba(27,51,94,0.08);--gold:#EFAE3C;--bg:#F6F7FB;--surface:#fff;--surface-2:#EEF1F6;--border:#E1E5EC;--text:#1B2333;--text-muted:#6B7280;--success:#2F9E6E;--danger:#D9534F;--radius:14px;--radius-sm:9px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
-.card{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:var(--radius);padding:36px;max-width:400px;width:100%;text-align:center;box-shadow:0 4px 24px rgba(27,51,94,0.07);}
-.icon{font-size:2.4rem;margin-bottom:16px;}
-h1{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:8px;}
-p{color:var(--text-muted);font-size:0.9rem;line-height:1.6;}
-.badge{display:inline-block;margin-top:20px;background:rgba(239,174,60,0.15);color:#7A5200;font-size:0.75rem;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;letter-spacing:0.05em;}
+html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.login-card{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:var(--radius);padding:32px;max-width:360px;width:100%;box-shadow:0 4px 24px rgba(27,51,94,0.07);}
+.login-card h1{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.login-card p{font-size:0.85rem;color:var(--text-muted);margin-bottom:20px;}
+.panel{display:none;}
+.panel.visible{display:block;}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-icon{width:32px;height:32px;background:var(--navy);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+.wordmark{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;color:var(--navy);}
+.wordmark span{color:var(--text-muted);font-weight:500;font-size:0.85rem;}
+.main{max-width:860px;margin:0 auto;padding:clamp(24px,4vw,40px) clamp(20px,4vw,40px);}
+.add-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:28px;}
+.add-card h2{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:0.8rem;font-weight:600;color:var(--text-muted);}
+.form-group input{padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface-2);}
+.form-group input:focus{outline:2px solid var(--navy);outline-offset:1px;}
+.btn{padding:9px 18px;border-radius:var(--radius-sm);font-weight:700;font-size:0.85rem;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:filter .15s;}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy:hover{filter:brightness(1.15);}
+.btn-navy:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-toggle{font-size:0.78rem;padding:5px 12px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;}
+.btn-toggle.activo{background:rgba(47,158,110,0.12);color:var(--success);}
+.btn-toggle.inactivo{background:rgba(217,83,79,0.10);color:var(--danger);}
+.btn-danger{background:none;border:1px solid var(--border);color:var(--danger);font-size:0.78rem;padding:5px 10px;border-radius:var(--radius-sm);cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-danger:hover{background:rgba(217,83,79,0.08);border-color:var(--danger);}
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.table-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.table-header h2{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);}
+.count-badge{background:var(--navy-soft);color:var(--navy);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:999px;}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 16px;text-align:left;font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);background:var(--surface-2);}
+td{padding:12px 16px;font-size:0.88rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--surface-2);}
+.nombre-cell{font-weight:600;color:var(--navy);}
+.pwd-cell{font-family:monospace;font-size:0.85rem;color:var(--text-muted);}
+.form-msg{font-size:0.82rem;margin-top:8px;min-height:1em;}
+.form-msg.ok{color:var(--success);}
+.form-msg.err{color:var(--danger);}
+.empty-state{padding:40px;text-align:center;color:var(--text-muted);font-size:0.9rem;}
+.logout-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-size:0.8rem;padding:6px 14px;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;}
+.logout-btn:hover{color:var(--navy);border-color:var(--navy);}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="icon">&#128295;</div>
-  <h1>Panel de Administrador</h1>
-  <p>Aqui podras gestionar los clientes con acceso al kit: agregar nuevos, asignar contrasenas y ver el estado de cada cuenta.</p>
-  <div class="badge">En construccion</div>
+
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div style="font-size:1.8rem;margin-bottom:12px;">&#128295;</div>
+    <h1>Panel de administrador</h1>
+    <p>Ingresa tu contrasena de administrador.</p>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>Contrasena</label>
+      <input type="password" id="admin-pwd-input" placeholder="..."/>
+    </div>
+    <button class="btn btn-navy" style="width:100%" id="btn-login" onclick="adminLogin()">Entrar</button>
+    <div class="form-msg err" id="login-error"></div>
+  </div>
 </div>
+
+<div class="panel" id="panel">
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="16" height="16" viewBox="0 0 100 100" fill="none">
+          <polygon points="50,6 91,76 9,76" stroke="#EFAE3C" stroke-width="6" stroke-linejoin="round"/>
+          <polygon points="50,94 9,24 91,24" stroke="#EFAE3C" stroke-width="6" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="wordmark">Merkaba <span>&#183; Admin</span></div>
+    </div>
+    <button class="logout-btn" onclick="adminLogout()">Cerrar sesion</button>
+  </header>
+  <div class="main">
+    <div class="add-card">
+      <h2>Agregar nuevo cliente</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="nuevo-nombre" placeholder="Ej: Maria Quispe"/>
+        </div>
+        <div class="form-group">
+          <label>Contrasena de acceso</label>
+          <input type="text" id="nuevo-pwd" placeholder="Ej: agente2025"/>
+        </div>
+        <button class="btn btn-navy" id="btn-agregar" onclick="agregarCliente()">Agregar</button>
+      </div>
+      <div class="form-msg" id="add-msg"></div>
+    </div>
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Clientes</h2>
+        <span class="count-badge" id="count-badge">0</span>
+      </div>
+      <div id="tabla-wrap"><div class="empty-state">Cargando...</div></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
+const sb = window.supabase.createClient(SB_URL, SB_KEY);
+let APWD = '';
+
+async function adminLogin(){
+  const pwd = document.getElementById('admin-pwd-input').value.trim();
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('btn-login');
+  if(!pwd){ errEl.textContent='Ingresa la contrasena.'; return; }
+  btn.disabled=true; btn.textContent='Verificando...';
+  APWD=pwd;
+  const ok=await cargarClientes();
+  btn.disabled=false; btn.textContent='Entrar';
+  if(ok){ sessionStorage.setItem('mk_admin',pwd); document.getElementById('login-wrap').style.display='none'; document.getElementById('panel').classList.add('visible'); }
+  else{ APWD=''; errEl.textContent='Contrasena incorrecta.'; document.getElementById('admin-pwd-input').value=''; }
+}
+
+function adminLogout(){
+  sessionStorage.removeItem('mk_admin'); APWD='';
+  document.getElementById('login-wrap').style.display='flex';
+  document.getElementById('panel').classList.remove('visible');
+  document.getElementById('admin-pwd-input').value='';
+}
+
+async function cargarClientes(){
+  const {data,error}=await sb.rpc('admin_list_clientes',{admin_pwd:APWD});
+  if(error) return false;
+  renderTabla(data||[]); return true;
+}
+
+function renderTabla(list){
+  document.getElementById('count-badge').textContent=list.length;
+  if(!list.length){ document.getElementById('tabla-wrap').innerHTML='<div class="empty-state">No hay clientes todavia.</div>'; return; }
+  let h='<table><thead><tr><th>Nombre</th><th>Contrasena</th><th>Estado</th><th>Desde</th><th></th></tr></thead><tbody>';
+  list.forEach(function(c){
+    const f=new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
+    h+='<tr><td class="nombre-cell">'+esc(c.nombre)+'</td><td class="pwd-cell">'+esc(c.password)+'</td>'+
+       '<td><button class="btn-toggle '+(c.activo?'activo':'inactivo')+'" data-id="'+c.id+'" onclick="toggleActivo(this)">'+(c.activo?'Activo':'Inactivo')+'</button></td>'+
+       '<td style="color:var(--text-muted);font-size:0.82rem;">'+f+'</td>'+
+       '<td><button class="btn-danger" data-id="'+c.id+'" data-nombre="'+esc(c.nombre)+'" onclick="eliminarCliente(this)">Eliminar</button></td></tr>';
+  });
+  h+='</tbody></table>';
+  document.getElementById('tabla-wrap').innerHTML=h;
+}
+
+async function agregarCliente(){
+  const nombre=document.getElementById('nuevo-nombre').value.trim();
+  const pwd=document.getElementById('nuevo-pwd').value.trim();
+  const msg=document.getElementById('add-msg');
+  const btn=document.getElementById('btn-agregar');
+  if(!nombre||!pwd){ msg.className='form-msg err'; msg.textContent='Completa nombre y contrasena.'; return; }
+  btn.disabled=true; btn.textContent='Agregando...';
+  const {data,error}=await sb.rpc('admin_add_cliente',{admin_pwd:APWD,p_nombre:nombre,p_password:pwd});
+  btn.disabled=false; btn.textContent='Agregar';
+  if(error||!data||!data.ok){ msg.className='form-msg err'; msg.textContent='Error al agregar.'; return; }
+  msg.className='form-msg ok'; msg.textContent='Cliente agregado.';
+  document.getElementById('nuevo-nombre').value='';
+  document.getElementById('nuevo-pwd').value='';
+  setTimeout(function(){ msg.textContent=''; },3000);
+  cargarClientes();
+}
+
+async function toggleActivo(btn){
+  const {data,error}=await sb.rpc('admin_toggle_activo',{admin_pwd:APWD,p_id:btn.dataset.id});
+  if(error||!data) return;
+  btn.className='btn-toggle '+(data.activo?'activo':'inactivo');
+  btn.textContent=data.activo?'Activo':'Inactivo';
+}
+
+async function eliminarCliente(btn){
+  if(!confirm('Eliminar a '+btn.dataset.nombre+'?\nEsta accion no se puede deshacer.')) return;
+  const {data,error}=await sb.rpc('admin_delete_cliente',{admin_pwd:APWD,p_id:btn.dataset.id});
+  if(!error&&data&&data.ok) cargarClientes();
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+window.addEventListener('load',function(){
+  document.getElementById('admin-pwd-input').addEventListener('keydown',function(e){ if(e.key==='Enter') adminLogin(); });
+  const saved=sessionStorage.getItem('mk_admin');
+  if(saved){ APWD=saved; cargarClientes().then(function(ok){ if(ok){ document.getElementById('login-wrap').style.display='none'; document.getElementById('panel').classList.add('visible'); } else { sessionStorage.removeItem('mk_admin'); } }); }
+});
+</script>
 </body>
 </html>
