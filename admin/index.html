@@ -90,7 +90,7 @@ tr:hover td{background:var(--surface-2);}
   <div class="main">
     <div class="add-card">
       <h2>Agregar nuevo cliente</h2>
-      <div class="form-row">
+      <div class="form-row" style="grid-template-columns:1fr 1fr 1fr 1fr auto;">
         <div class="form-group">
           <label>Nombre completo</label>
           <input type="text" id="nuevo-nombre" placeholder="Ej: Maria Quispe"/>
@@ -98,6 +98,14 @@ tr:hover td{background:var(--surface-2);}
         <div class="form-group">
           <label>Contrasena de acceso</label>
           <input type="text" id="nuevo-pwd" placeholder="Ej: agente2025"/>
+        </div>
+        <div class="form-group">
+          <label>Ciudad</label>
+          <input type="text" id="nuevo-ciudad" placeholder="Ej: La Paz"/>
+        </div>
+        <div class="form-group">
+          <label>WhatsApp</label>
+          <input type="text" id="nuevo-whatsapp" placeholder="+591 7..."/>
         </div>
         <button class="btn btn-navy" id="btn-agregar" onclick="agregarCliente()">Agregar</button>
       </div>
@@ -149,10 +157,10 @@ async function cargarClientes(){
 function renderTabla(list){
   document.getElementById('count-badge').textContent=list.length;
   if(!list.length){ document.getElementById('tabla-wrap').innerHTML='<div class="empty-state">No hay clientes todavia.</div>'; return; }
-  let h='<table><thead><tr><th>Nombre</th><th>Contrasena</th><th>Estado</th><th>Desde</th><th></th></tr></thead><tbody>';
+  let h='<table><thead><tr><th>Nombre</th><th>Contrasena</th><th>Ciudad</th><th>WhatsApp</th><th>Estado</th><th>Desde</th><th></th></tr></thead><tbody>';
   list.forEach(function(c){
     const f=new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
-    h+='<tr><td class="nombre-cell">'+esc(c.nombre)+'</td><td class="pwd-cell">'+esc(c.password)+'</td>'+
+    h+='<tr><td class="nombre-cell">'+esc(c.nombre)+'</td><td class="pwd-cell">'+esc(c.password)+'</td><td style="font-size:0.82rem;">'+esc(c.ciudad||'—')+'</td><td style="font-size:0.82rem;font-family:monospace;">'+esc(c.whatsapp||'—')+'</td>'+
        '<td><button class="btn-toggle '+(c.activo?'activo':'inactivo')+'" data-id="'+c.id+'" onclick="toggleActivo(this)">'+(c.activo?'Activo':'Inactivo')+'</button></td>'+
        '<td style="color:var(--text-muted);font-size:0.82rem;">'+f+'</td>'+
        '<td><button class="btn-danger" data-id="'+c.id+'" data-nombre="'+esc(c.nombre)+'" onclick="eliminarCliente(this)">Eliminar</button></td></tr>';
@@ -168,12 +176,16 @@ async function agregarCliente(){
   const btn=document.getElementById('btn-agregar');
   if(!nombre||!pwd){ msg.className='form-msg err'; msg.textContent='Completa nombre y contrasena.'; return; }
   btn.disabled=true; btn.textContent='Agregando...';
-  const {data,error}=await sb.rpc('admin_add_cliente',{admin_pwd:APWD,p_nombre:nombre,p_password:pwd});
+  const ciudad=document.getElementById('nuevo-ciudad').value.trim();
+  const whatsapp=document.getElementById('nuevo-whatsapp').value.trim();
+  const {data,error}=await sb.rpc('admin_add_cliente',{admin_pwd:APWD,p_nombre:nombre,p_password:pwd,p_ciudad:ciudad,p_whatsapp:whatsapp});
   btn.disabled=false; btn.textContent='Agregar';
   if(error||!data||!data.ok){ msg.className='form-msg err'; msg.textContent='Error al agregar.'; return; }
   msg.className='form-msg ok'; msg.textContent='Cliente agregado.';
   document.getElementById('nuevo-nombre').value='';
   document.getElementById('nuevo-pwd').value='';
+  document.getElementById('nuevo-ciudad').value='';
+  document.getElementById('nuevo-whatsapp').value='';
   setTimeout(function(){ msg.textContent=''; },3000);
   cargarClientes();
 }
