@@ -107,6 +107,10 @@ tr:hover td{background:var(--surface-2);}
           <label>WhatsApp</label>
           <input type="text" id="nuevo-whatsapp" placeholder="+591 7..."/>
         </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" id="nuevo-email" placeholder="agente@correo.com"/>
+        </div>
         <button class="btn btn-navy" id="btn-agregar" onclick="agregarCliente()">Agregar</button>
       </div>
       <div class="form-msg" id="add-msg"></div>
@@ -157,7 +161,7 @@ async function cargarClientes(){
 function renderTabla(list){
   document.getElementById('count-badge').textContent=list.length;
   if(!list.length){ document.getElementById('tabla-wrap').innerHTML='<div class="empty-state">No hay clientes todavia.</div>'; return; }
-  let h='<table><thead><tr><th>Nombre</th><th>Contrasena</th><th>Ciudad</th><th>WhatsApp</th><th>Estado</th><th>Desde</th><th></th></tr></thead><tbody>';
+  let h='<table><thead><tr><th>Nombre</th><th>Contrasena</th><th>Ciudad</th><th>WhatsApp</th><th>Email</th><th>Estado</th><th>Desde</th><th></th></tr></thead><tbody>';
   list.forEach(function(c){
     const f=new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
     h+='<tr><td class="nombre-cell">'+esc(c.nombre)+'</td><td class="pwd-cell">'+esc(c.password)+'</td><td style="font-size:0.82rem;">'+esc(c.ciudad||'—')+'</td><td style="font-size:0.82rem;font-family:monospace;">'+esc(c.whatsapp||'—')+'</td>'+
@@ -178,7 +182,8 @@ async function agregarCliente(){
   btn.disabled=true; btn.textContent='Agregando...';
   const ciudad=document.getElementById('nuevo-ciudad').value.trim();
   const whatsapp=document.getElementById('nuevo-whatsapp').value.trim();
-  const {data,error}=await sb.rpc('admin_add_cliente',{admin_pwd:APWD,p_nombre:nombre,p_password:pwd,p_ciudad:ciudad,p_whatsapp:whatsapp});
+  const email=document.getElementById('nuevo-email').value.trim();
+  const {data,error}=await sb.rpc('admin_add_cliente',{admin_pwd:APWD,p_nombre:nombre,p_password:pwd,p_ciudad:ciudad,p_whatsapp:whatsapp,p_email:email});
   btn.disabled=false; btn.textContent='Agregar';
   if(error||!data||!data.ok){ msg.className='form-msg err'; msg.textContent='Error al agregar.'; return; }
   msg.className='form-msg ok'; msg.textContent='Cliente agregado.';
@@ -186,6 +191,7 @@ async function agregarCliente(){
   document.getElementById('nuevo-pwd').value='';
   document.getElementById('nuevo-ciudad').value='';
   document.getElementById('nuevo-whatsapp').value='';
+  document.getElementById('nuevo-email').value='';
   setTimeout(function(){ msg.textContent=''; },3000);
   cargarClientes();
 }

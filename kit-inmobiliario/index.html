@@ -234,6 +234,10 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
       <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">WhatsApp</label>
       <input type="text" id="perfil-whatsapp" placeholder="Ej: +591 71234567" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
     </div>
+    <div class="form-group" style="margin-bottom:20px;">
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">Email</label>
+      <input type="email" id="perfil-email" placeholder="tu@correo.com" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+    </div>
     <div style="display:flex;gap:10px;">
       <button class="btn btn-primary" style="flex:1;" onclick="guardarPerfil()">Guardar cambios</button>
       <button class="btn btn-outline" onclick="cerrarPerfil()">Cancelar</button>
@@ -285,7 +289,8 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 const AGENTE = {
   nombre: sessionStorage.getItem('mk_nombre') || 'Agente',
   ciudad: sessionStorage.getItem('mk_ciudad') || 'Bolivia',
-  whatsapp: sessionStorage.getItem('mk_whatsapp') || ''
+  whatsapp: sessionStorage.getItem('mk_whatsapp') || '',
+  email: sessionStorage.getItem('mk_email') || ''
 };
 document.getElementById('agent-badge').textContent = AGENTE.nombre;
 
@@ -701,7 +706,11 @@ function toolFichaPropiedad(){
       <label>Características destacadas (una por línea)</label>
       <textarea id="ficha-features" placeholder="Garaje incluido&#10;Vista a la cordillera&#10;Conjunto cerrado&#10;Ascensor"></textarea>
     </div>
-    <div class="form-group" style="margin-bottom:12px;">      <label>Fotos de la propiedad (links, uno por linea)</label>      <textarea id="ficha-fotos" placeholder="https://link-foto-1.jpg" style="min-height:65px;"></textarea>    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>Fotos de la propiedad (max. 5, desde tu celular o computadora)</label>
+      <input type="file" id="ficha-fotos-input" accept="image/*" multiple onchange="cargarFotosPropiedad(this)" style="font-size:0.85rem;padding:6px 0;width:100%;"/>
+      <div id="ficha-fotos-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+    </div>
     <div class="btn-group">
       <button class="btn btn-gold" onclick="generarFicha()">Generar publicación</button>
     </div>
@@ -713,6 +722,7 @@ function toolFichaPropiedad(){
       <div class="btn-group">
         <button class="btn btn-primary btn-sm" onclick="copiar(document.getElementById('ficha-texto').textContent)">📋 Copiar</button>
         <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(document.getElementById('ficha-texto').textContent)">💬 Compartir</button>
+        <button class="btn btn-gold btn-sm" onclick="generarPDFFicha()">&#128196; Descargar PDF</button>
       </div>
     </div>
   </div>`;
@@ -785,7 +795,7 @@ function toolPropuestaPropietario(){
       </div>
       <div class="btn-group">
         <button class="btn btn-primary btn-sm" onclick="copiar(document.getElementById('prop-texto').textContent)">📋 Copiar</button>
-        <button class="btn btn-outline btn-sm" onclick="imprimirPropuesta()">🖨️ Imprimir / PDF</button>
+        <button class="btn btn-gold btn-sm" onclick="generarPDFPropuesta()">📄 Descargar PDF</button>
       </div>
     </div>
   </div>`;
@@ -1341,6 +1351,8 @@ function abrirPerfil(){
   $('perfil-nombre').value = AGENTE.nombre;
   $('perfil-ciudad').value = AGENTE.ciudad;
   $('perfil-whatsapp').value = AGENTE.whatsapp;
+  $('perfil-email').value = AGENTE.email;
+  $('perfil-email').value = AGENTE.email;
   const foto = localStorage.getItem('mk_foto');
   const ring = $('photo-ring-preview');
   if(foto){ ring.innerHTML = '<img src="'+foto+'" alt="foto"/>'; } else { ring.innerHTML = '&#128100;'; }
@@ -1366,6 +1378,7 @@ async function guardarPerfil(){
   const nombre = $('perfil-nombre').value.trim();
   const ciudad = $('perfil-ciudad').value.trim();
   const whatsapp = $('perfil-whatsapp').value.trim();
+  const email = $('perfil-email').value.trim();
   const msg = $('perfil-msg');
   if(!nombre){ msg.style.color='#c0392b'; msg.textContent='El nombre no puede estar vacio.'; return; }
   const id = sessionStorage.getItem('mk_id');
@@ -1373,15 +1386,17 @@ async function guardarPerfil(){
     await fetch(SB_URL+'/rest/v1/rpc/client_update_profile', {
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
-      body:JSON.stringify({p_id:id, p_ciudad:ciudad, p_whatsapp:whatsapp})
+      body:JSON.stringify({p_id:id, p_ciudad:ciudad, p_whatsapp:whatsapp, p_email:email})
     });
   } catch(e){ console.warn('Supabase update skipped'); }
   sessionStorage.setItem('mk_nombre', nombre);
   sessionStorage.setItem('mk_ciudad', ciudad);
   sessionStorage.setItem('mk_whatsapp', whatsapp);
+  sessionStorage.setItem('mk_email', email);
   AGENTE.nombre = nombre;
   AGENTE.ciudad = ciudad;
   AGENTE.whatsapp = whatsapp;
+  AGENTE.email = email;
   $('agent-badge').textContent = nombre;
   msg.style.color = '#2F9E6E';
   msg.textContent = 'Perfil actualizado.';
@@ -1409,6 +1424,168 @@ function buildMobileSidebar(){
 }
 
 function imprimirPropuesta(){ window.print(); }
+
+
+// ══════════════════════════════════════════════
+// FOTOS DE PROPIEDAD
+// ══════════════════════════════════════════════
+var _fotosPropiedad = [];
+
+function cargarFotosPropiedad(input){
+  var files = Array.from(input.files).slice(0, 5);
+  _fotosPropiedad = [];
+  var preview = $('ficha-fotos-preview');
+  if(preview) preview.innerHTML = '';
+  files.forEach(function(file, i){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      _fotosPropiedad[i] = e.target.result;
+      if(preview){
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.cssText = 'width:72px;height:54px;object-fit:cover;border-radius:6px;border:2px solid var(--gold);';
+        preview.appendChild(img);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ══════════════════════════════════════════════
+// GENERADOR DE PDF
+// ══════════════════════════════════════════════
+function loadJsPDF(){
+  return new Promise(function(resolve, reject){
+    if(window.jspdf){ resolve(true); return; }
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = function(){ resolve(true); };
+    s.onerror = function(){ reject(false); };
+    document.head.appendChild(s);
+  });
+}
+
+async function generarPDFDoc(titulo, texto, fotos){
+  toast('Preparando PDF...');
+  try{ await loadJsPDF(); } catch(e){ toast('Error: verifica tu conexion a internet.'); return; }
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+  var pageW = 210, pageH = 297, margin = 18, contentW = pageW - margin * 2;
+
+  // ---- HEADER ----
+  doc.setFillColor(27, 51, 94);
+  doc.rect(0, 0, pageW, 44, 'F');
+  doc.setFillColor(239, 174, 60);
+  doc.rect(0, 44, pageW, 2, 'F');
+
+  var textX = margin;
+  var foto = localStorage.getItem('mk_foto');
+  if(foto){
+    try{ doc.addImage(foto, 'JPEG', margin, 7, 28, 28); textX = margin + 34; } catch(e){}
+  }
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text(AGENTE.nombre, textX, 17);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(190, 205, 230);
+  var infoY = 25;
+  if(AGENTE.ciudad){ doc.text(AGENTE.ciudad, textX, infoY); infoY += 6; }
+  if(AGENTE.whatsapp){ doc.text('WhatsApp: ' + AGENTE.whatsapp, textX, infoY); infoY += 6; }
+  if(AGENTE.email){ doc.text('Email: ' + AGENTE.email, textX, infoY); }
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(239, 174, 60);
+  doc.text('MERKABA', pageW - margin, 12, { align:'right' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.setTextColor(160, 180, 210);
+  doc.text('Kit del Agente Inmobiliario Boliviano', pageW - margin, 18, { align:'right' });
+  var fecha = new Date().toLocaleDateString('es-BO', { day:'2-digit', month:'long', year:'numeric' });
+  doc.text(fecha, pageW - margin, 36, { align:'right' });
+
+  // ---- TITLE ----
+  var y = 56;
+  doc.setTextColor(27, 51, 94);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(15);
+  doc.text(titulo, pageW / 2, y, { align:'center' });
+  y += 6;
+  doc.setFillColor(239, 174, 60);
+  doc.rect(pageW/2 - 20, y, 40, 0.8, 'F');
+  y += 8;
+
+  // ---- CONTENT ----
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10.5);
+  doc.setTextColor(27, 35, 51);
+  var lineas = doc.splitTextToSize(texto, contentW);
+  lineas.forEach(function(linea){
+    if(y > pageH - 28){ doc.addPage(); y = 22; }
+    doc.text(linea, margin, y);
+    y += 5.8;
+  });
+  y += 6;
+
+  // ---- PROPERTY PHOTOS ----
+  var fotosFiltradas = (fotos || []).filter(function(f){ return !!f; }).slice(0, 5);
+  if(fotosFiltradas.length > 0){
+    if(y > pageH - 90){ doc.addPage(); y = 22; }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(27, 51, 94);
+    doc.text('Fotografias de la propiedad', margin, y);
+    y += 5;
+    doc.setFillColor(239, 174, 60);
+    doc.rect(margin, y, 50, 0.7, 'F');
+    y += 8;
+    var photoW = (contentW - 6) / 2;
+    var photoH = photoW * 0.62;
+    var col = 0;
+    fotosFiltradas.forEach(function(src){
+      if(col === 0 && y + photoH > pageH - 28){ doc.addPage(); y = 22; }
+      var x = margin + col * (photoW + 6);
+      try{ doc.addImage(src, 'JPEG', x, y, photoW, photoH); }
+      catch(e){ try{ doc.addImage(src, 'PNG', x, y, photoW, photoH); } catch(e2){} }
+      col++;
+      if(col >= 2){ col = 0; y += photoH + 6; }
+    });
+    if(col > 0) y += photoH + 6;
+  }
+
+  // ---- FOOTER (all pages) ----
+  var total = doc.internal.getNumberOfPages();
+  for(var p = 1; p <= total; p++){
+    doc.setPage(p);
+    doc.setFillColor(27, 51, 94);
+    doc.rect(0, pageH - 11, pageW, 11, 'F');
+    doc.setTextColor(180, 200, 230);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.text('Merkaba Consulting Group · Kit del Agente Inmobiliario Boliviano', pageW / 2, pageH - 4, { align:'center' });
+    doc.setTextColor(239, 174, 60);
+    doc.text('Pag. ' + p + ' / ' + total, pageW - margin, pageH - 4, { align:'right' });
+  }
+
+  var filename = titulo.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '_') + '.pdf';
+  doc.save(filename);
+  toast('PDF descargado.');
+}
+
+async function generarPDFPropuesta(){
+  var texto = $('prop-texto') ? $('prop-texto').textContent : '';
+  if(!texto){ toast('Genera la propuesta primero.'); return; }
+  await generarPDFDoc('Propuesta_de_Captacion', texto, []);
+}
+
+async function generarPDFFicha(){
+  var texto = $('ficha-texto') ? $('ficha-texto').textContent : '';
+  if(!texto){ toast('Genera la ficha primero.'); return; }
+  await generarPDFDoc('Ficha_de_Propiedad', texto, _fotosPropiedad);
+}
 
 
 // INICIALIZAR
