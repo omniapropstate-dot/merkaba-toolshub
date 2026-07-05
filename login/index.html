@@ -30,6 +30,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .access-box p{font-size:0.85rem;color:var(--text-muted);margin-bottom:20px;}
 .btn-primary{width:100%;background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);padding:13px;font-family:'Inter',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:filter .15s;}
 .btn-primary:hover{filter:brightness(1.15);}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;filter:none;}
 .password-field{display:none;flex-direction:column;gap:10px;}
 .password-field.visible{display:flex;}
 label{font-size:0.82rem;font-weight:600;color:var(--text-muted);}
@@ -68,7 +69,7 @@ footer{text-align:center;padding:40px 20px 20px;color:var(--text-muted);font-siz
       <label for="pw-input">Contrasena</label>
       <input type="password" id="pw-input" placeholder="..." autocomplete="current-password"/>
       <div class="error-msg" id="error-msg"></div>
-      <button class="btn-primary" onclick="verificar()">Entrar</button>
+      <button class="btn-primary" id="btn-entrar" onclick="verificar()">Entrar</button>
     </div>
     <button class="btn-primary" id="btn-mostrar" onclick="mostrarCampo()">Entrar a tu cuenta</button>
   </div>
@@ -76,26 +77,50 @@ footer{text-align:center;padding:40px 20px 20px;color:var(--text-muted);font-siz
 
 <footer>Merkaba Consulting Group - Solo para clientes con acceso</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const CONTRASENA = 'merkaba2025';
+  const SUPABASE_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
   function mostrarCampo(){
     document.getElementById('btn-mostrar').style.display='none';
     document.getElementById('password-field').classList.add('visible');
     document.getElementById('pw-input').focus();
   }
-  function verificar(){
-    const val=document.getElementById('pw-input').value.trim();
-    if(!val){document.getElementById('error-msg').textContent='Ingresa tu contrasena.';return;}
-    if(val===CONTRASENA){
-      sessionStorage.setItem('mk_auth','1');
-      window.location.href='../kit-inmobiliario/';
-    }else{
-      document.getElementById('error-msg').textContent='Contrasena incorrecta.';
-      document.getElementById('pw-input').value='';
+
+  async function verificar(){
+    const val = document.getElementById('pw-input').value.trim();
+    const errEl = document.getElementById('error-msg');
+    const btn = document.getElementById('btn-entrar');
+    if(!val){ errEl.textContent='Ingresa tu contrasena.'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+    errEl.textContent = '';
+
+    const { data, error } = await sb.rpc('verify_password', { pwd: val });
+
+    if(error || !data || !data.ok){
+      errEl.textContent = 'Contrasena incorrecta. Verifica con tu asesor.';
+      document.getElementById('pw-input').value = '';
       document.getElementById('pw-input').focus();
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+      return;
     }
+
+    sessionStorage.setItem('mk_auth', '1');
+    sessionStorage.setItem('mk_nombre', data.nombre);
+    sessionStorage.setItem('mk_id', data.id);
+    window.location.href = '/kit-inmobiliario';
   }
-  document.getElementById('pw-input').addEventListener('keydown',function(e){if(e.key==='Enter')verificar();});
+
+  document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('pw-input').addEventListener('keydown', function(e){
+      if(e.key==='Enter') verificar();
+    });
+  });
 </script>
 </body>
 </html>
