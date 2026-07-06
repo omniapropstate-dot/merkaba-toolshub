@@ -1452,6 +1452,8 @@ function cargarFotosPropiedad(input){
 }
 
 // ═══════════════════════
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
 // GENERADOR DE PDF v3 (html2canvas)
 // ═══════════════════════
 
@@ -1581,7 +1583,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
   ].filter(Boolean).join(' ');
 
   var statsArr = [];
-  if(dorm) statsArr.push({ icon:'&#127,823;', val:dorm, lbl:'Dormitorios' });
+  if(dorm) statsArr.push({ icon:'&#127951;', val:dorm, lbl:'Dormitorios' });
   if(banos) statsArr.push({ icon:'&#128698;', val:banos, lbl:'Ba&#241;os' });
   if(m2) statsArr.push({ icon:'&#128208;', val:m2+' m&#178;', lbl:'Superficie' });
 
