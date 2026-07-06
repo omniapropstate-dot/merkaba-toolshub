@@ -1431,21 +1431,45 @@ function imprimirPropuesta(){ window.print(); }
 // ══════════════════════════════════════════════
 var _fotosPropiedad = [];
 
+function _cropTo4x3(dataUrl, callback){
+  var img = new Image();
+  img.onload = function(){
+    var tw = 480, th = 360;
+    var srcRatio = img.width / img.height;
+    var tgtRatio = tw / th;
+    var sx, sy, sw, sh;
+    if(srcRatio > tgtRatio){
+      sh = img.height; sw = sh * tgtRatio;
+      sy = 0; sx = (img.width - sw) / 2;
+    } else {
+      sw = img.width; sh = sw / tgtRatio;
+      sx = 0; sy = (img.height - sh) / 2;
+    }
+    var cv = document.createElement('canvas');
+    cv.width = tw; cv.height = th;
+    cv.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, tw, th);
+    callback(cv.toDataURL('image/jpeg', 0.88));
+  };
+  img.src = dataUrl;
+}
+
 function cargarFotosPropiedad(input){
   var files = Array.from(input.files).slice(0, 5);
-  _fotosPropiedad = [];
+  _fotosPropiedad = new Array(files.length);
   var preview = $('ficha-fotos-preview');
   if(preview) preview.innerHTML = '';
   files.forEach(function(file, i){
     var reader = new FileReader();
     reader.onload = function(e){
-      _fotosPropiedad[i] = e.target.result;
-      if(preview){
-        var img = document.createElement('img');
-        img.src = e.target.result;
-        img.style.cssText = 'width:72px;height:54px;object-fit:cover;border-radius:6px;border:2px solid var(--gold);';
-        preview.appendChild(img);
-      }
+      _cropTo4x3(e.target.result, function(croppedUrl){
+        _fotosPropiedad[i] = croppedUrl;
+        if(preview){
+          var img = document.createElement('img');
+          img.src = croppedUrl;
+          img.style.cssText = 'width:72px;height:54px;object-fit:fill;border-radius:6px;border:2px solid var(--gold);';
+          preview.appendChild(img);
+        }
+      });
     };
     reader.readAsDataURL(file);
   });
@@ -1606,7 +1630,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
   var fotosHtml = '';
   if(fotosArr.length){
     var imgs = fotosArr.map(function(src){
-      return '<img src="'+src+'" style="width:calc(50% - 4px);height:140px;object-fit:cover;border-radius:8px;" />';
+      return '<img src="'+src+'" style="width:calc(50% - 4px);border-radius:8px;display:block;" />';
     }).join('');
     fotosHtml = '<div style="margin-top:24px;">'
       + '<h3 style="font-family:Georgia,serif;font-size:1rem;color:#1B335E;margin:0 0 12px;font-weight:700;">Fotograf&#237;as</h3>'
