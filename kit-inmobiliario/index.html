@@ -1451,178 +1451,227 @@ function cargarFotosPropiedad(input){
   });
 }
 
-// ══════════════════════════════════════════════
-// GENERADOR DE PDF
-// ══════════════════════════════════════════════
-function loadJsPDF(){
+// ═══════════════════════
+// GENERADOR DE PDF v3 (html2canvas)
+// ═══════════════════════
+
+function _loadScript(src){
   return new Promise(function(resolve, reject){
-    if(window.jspdf && window.jspdf.jsPDF){ resolve(true); return; }
     var s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
-    s.onload = function(){ setTimeout(function(){ resolve(true); }, 100); };
-    s.onerror = function(){ reject(new Error('No se pudo cargar jsPDF')); };
+    s.src = src;
+    s.onload = function(){ setTimeout(resolve, 80); };
+    s.onerror = function(){ reject(new Error('No se pudo cargar: ' + src)); };
     document.head.appendChild(s);
   });
 }
 
-function detectImgFormat(dataUrl){
-  if(!dataUrl) return 'JPEG';
-  if(dataUrl.indexOf('image/png') > -1) return 'PNG';
-  if(dataUrl.indexOf('image/gif') > -1) return 'GIF';
-  return 'JPEG';
+async function _loadLibs(){
+  if(!window.jspdf || !window.jspdf.jsPDF){
+    await _loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
+  }
+  if(!window.html2canvas){
+    await _loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+  }
 }
 
 function descargarBlob(blob, filename){
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
+  a.href = url; a.download = filename; a.style.display = 'none';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 300);
 }
 
-async function generarPDFDoc(titulo, texto, fotos){
-  toast('Preparando PDF...');
-  try{
-    await loadJsPDF();
-  } catch(e){
-    toast('Error al cargar el generador de PDF. Verifica tu conexion.');
-    return;
+async function renderPDF(htmlContent, filename){
+  var jsPDF = window.jspdf.jsPDF;
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;background:#fff;z-index:-1;';
+  wrap.innerHTML = htmlContent;
+  document.body.appendChild(wrap);
+  try {
+    var canvas = await html2canvas(wrap, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      width: 794,
+      windowWidth: 794
+    });
+    var pdf = new jsPDF({ orientation:'portrait', unit:'px', format:'a4', compress:true });
+    var pageW = pdf.internal.pageSize.getWidth();
+    var pageH = pdf.internal.pageSize.getHeight();
+    var canvasW = canvas.width / 2;
+    var canvasH = canvas.height / 2;
+    var scale = pageW / canvasW;
+    var scaledH = canvasH * scale;
+    var pagesNeeded = Math.ceil(scaledH / pageH);
+    for(var pg = 0; pg < pagesNeeded; pg++){
+      if(pg > 0) pdf.addPage();
+      var srcY = Math.round(pg * pageH / scale * 2);
+      var srcH = Math.min(Math.round(pageH / scale * 2), canvas.height - srcY);
+      var sliceCanvas = document.createElement('canvas');
+      sliceCanvas.width = canvas.width;
+      sliceCanvas.height = srcH;
+      var ctx = sliceCanvas.getContext('2d');
+      ctx.drawImage(canvas, 0, srcY, canvas.width, srcH, 0, 0, canvas.width, srcH);
+      var sliceData = sliceCanvas.toDataURL('image/jpeg', 0.92);
+      var sliceDisplayH = (srcH / 2) * scale;
+      pdf.addImage(sliceData, 'JPEG', 0, 0, pageW, sliceDisplayH);
+    }
+    var blob = pdf.output('blob');
+    descargarBlob(blob, filename);
+    toast('PDF descargado.');
+  } finally {
+    document.body.removeChild(wrap);
+  }
+}
+
+function _agentHeaderHTML(){
+  var foto = localStorage.getItem('mk_foto') || '';
+  var fotoHtml = foto
+    ? '<img src="'+foto+'" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid #EFAE3C;flex-shrink:0;" />'
+    : '<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid #EFAE3C;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">&#128100;</div>';
+  var contacto = [];
+  if(AGENTE.ciudad) contacto.push('<span>&#128205; '+esc(AGENTE.ciudad)+'</span>');
+  if(AGENTE.whatsapp) contacto.push('<span>&#128242; '+esc(AGENTE.whatsapp)+'</span>');
+  if(AGENTE.email) contacto.push('<span>&#9993;&#65039; '+esc(AGENTE.email)+'</span>');
+  var fecha = new Date().toLocaleDateString('es-BO', {day:'2-digit', month:'long', year:'numeric'});
+  return '<div style="background:linear-gradient(135deg,#1B335E 0%,#243f72 100%);color:#fff;padding:28px 36px;display:flex;align-items:center;gap:20px;">'
+    + fotoHtml
+    + '<div style="flex:1;">'
+    +   '<div style="font-family:Georgia,serif;font-size:1.3rem;font-weight:700;letter-spacing:0.5px;margin-bottom:6px;">'+esc(AGENTE.nombre || 'Agente')+'</div>'
+    +   '<div style="font-size:0.82rem;color:rgba(255,255,255,0.75);display:flex;flex-wrap:wrap;gap:12px;">'+contacto.join('')+'</div>'
+    + '</div>'
+    + '<div style="text-align:right;font-size:0.78rem;color:rgba(255,255,255,0.55);">'+fecha+'</div>'
+    + '</div>'
+    + '<div style="height:4px;background:linear-gradient(90deg,#EFAE3C,#f5c842,#EFAE3C);"></div>';
+}
+
+function buildPropuestaHTML(texto){
+  var parrafos = texto.split(/\n+/).filter(function(l){ return l.trim(); });
+  var parrafosHtml = parrafos.map(function(p){
+    var t = p.trim();
+    if(/^\d+\.\s/.test(t) || (t.length < 60 && t.endsWith(':'))){
+      return '<h3 style="font-family:Georgia,serif;font-size:1rem;color:#1B335E;margin:18px 0 6px;font-weight:700;border-left:3px solid #EFAE3C;padding-left:10px;">'+esc(t)+'</h3>';
+    }
+    return '<p style="margin:0 0 10px;line-height:1.7;color:#2d3748;font-size:0.92rem;">'+esc(t)+'</p>';
+  }).join('');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    + _agentHeaderHTML()
+    + '<div style="padding:32px 36px;">'
+    +   '<h1 style="font-family:Georgia,serif;font-size:1.6rem;color:#1B335E;margin:0 0 6px;font-weight:700;">Propuesta de Captaci&#243;n</h1>'
+    +   '<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:24px;"></div>'
+    +   '<div style="background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:20px 24px;margin-bottom:24px;">'
+    +     parrafosHtml
+    +   '</div>'
+    +   '<div style="margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +     '<div style="font-size:0.75rem;color:#94a3b8;">Documento confidencial &middot; Generado para uso profesional</div>'
+    +     '<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +   '</div>'
+    + '</div>'
+    + '</body></html>';
+}
+
+function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos){
+  var chips = [
+    op && '<span style="background:#1B335E;color:#fff;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;">'+esc(op)+'</span>',
+    tipo && '<span style="background:rgba(27,51,94,0.1);color:#1B335E;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">'+esc(tipo)+'</span>',
+    zona && '<span style="background:rgba(239,174,60,0.15);color:#b8860b;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">&#128205; '+esc(zona)+'</span>'
+  ].filter(Boolean).join(' ');
+
+  var statsArr = [];
+  if(dorm) statsArr.push({ icon:'&#127,823;', val:dorm, lbl:'Dormitorios' });
+  if(banos) statsArr.push({ icon:'&#128698;', val:banos, lbl:'Ba&#241;os' });
+  if(m2) statsArr.push({ icon:'&#128208;', val:m2+' m&#178;', lbl:'Superficie' });
+
+  var statsHtml = statsArr.map(function(s){
+    return '<div style="text-align:center;background:#f8f9fc;border-radius:10px;padding:14px 20px;flex:1;min-width:80px;">'
+      + '<div style="font-size:1.4rem;">'+s.icon+'</div>'
+      + '<div style="font-size:1.1rem;font-weight:700;color:#1B335E;">'+esc(String(s.val))+'</div>'
+      + '<div style="font-size:0.72rem;color:#718096;">'+s.lbl+'</div>'
+      + '</div>';
+  }).join('');
+
+  var featList = features ? features.split(/\n|,/).map(function(f){ return f.trim(); }).filter(Boolean) : [];
+  var featHtml = featList.length
+    ? '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;">'
+      + featList.map(function(f){ return '<span style="background:#eef1f6;color:#1B335E;padding:5px 12px;border-radius:999px;font-size:0.78rem;">&#10003; '+esc(f)+'</span>'; }).join('')
+      + '</div>'
+    : '';
+
+  var fotosArr = (fotos || []).filter(Boolean).slice(0,5);
+  var fotosHtml = '';
+  if(fotosArr.length){
+    var imgs = fotosArr.map(function(src){
+      return '<img src="'+src+'" style="width:calc(50% - 4px);height:140px;object-fit:cover;border-radius:8px;" />';
+    }).join('');
+    fotosHtml = '<div style="margin-top:24px;">'
+      + '<h3 style="font-family:Georgia,serif;font-size:1rem;color:#1B335E;margin:0 0 12px;font-weight:700;">Fotograf&#237;as</h3>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+imgs+'</div>'
+      + '</div>';
   }
 
-  try{
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-    var pageW = 210, pageH = 297, margin = 18, contentW = pageW - margin * 2;
+  var precioHtml = precio
+    ? '<div style="background:linear-gradient(135deg,#EFAE3C,#f5c842);border-radius:10px;padding:16px 24px;margin:20px 0;display:flex;align-items:center;justify-content:space-between;">'
+      + '<span style="font-size:0.85rem;font-weight:600;color:#7a5900;">Precio</span>'
+      + '<span style="font-size:1.4rem;font-weight:800;color:#1B335E;">'+esc(precio)+'</span>'
+      + '</div>'
+    : '';
 
-    // HEADER
-    doc.setFillColor(27, 51, 94);
-    doc.rect(0, 0, pageW, 44, 'F');
-    doc.setFillColor(239, 174, 60);
-    doc.rect(0, 44, pageW, 2, 'F');
-
-    var textX = margin;
-    var fotoAgente = localStorage.getItem('mk_foto');
-    if(fotoAgente){
-      try{
-        var fmt = detectImgFormat(fotoAgente);
-        doc.addImage(fotoAgente, fmt, margin, 7, 28, 28);
-        textX = margin + 34;
-      } catch(e){ textX = margin; }
-    }
-
-    doc.setTextColor(255, 255, 255);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(13);
-    doc.text(AGENTE.nombre || 'Agente', textX, 17);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.setTextColor(190, 205, 230);
-    var infoY = 25;
-    if(AGENTE.ciudad){ doc.text(AGENTE.ciudad, textX, infoY); infoY += 6; }
-    if(AGENTE.whatsapp){ doc.text('WhatsApp: ' + AGENTE.whatsapp, textX, infoY); infoY += 6; }
-    if(AGENTE.email){ doc.text('Email: ' + AGENTE.email, textX, infoY); }
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(239, 174, 60);
-    doc.text('MERKABA', pageW - margin, 12, { align:'right' });
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
-    doc.setTextColor(160, 180, 210);
-    doc.text('Kit del Agente Inmobiliario Boliviano', pageW - margin, 18, { align:'right' });
-    var fecha = new Date().toLocaleDateString('es-BO', { day:'2-digit', month:'long', year:'numeric' });
-    doc.text(fecha, pageW - margin, 36, { align:'right' });
-
-    // TITULO
-    var y = 56;
-    doc.setTextColor(27, 51, 94);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(15);
-    doc.text(titulo.replace(/_/g, ' '), pageW / 2, y, { align:'center' });
-    y += 6;
-    doc.setFillColor(239, 174, 60);
-    doc.rect(pageW/2 - 20, y, 40, 0.8, 'F');
-    y += 10;
-
-    // CONTENIDO
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10.5);
-    doc.setTextColor(27, 35, 51);
-    var lineas = doc.splitTextToSize(texto || '', contentW);
-    for(var li = 0; li < lineas.length; li++){
-      if(y > pageH - 28){ doc.addPage(); y = 22; }
-      doc.text(lineas[li], margin, y);
-      y += 5.8;
-    }
-    y += 8;
-
-    // FOTOS DE PROPIEDAD
-    var fotosFiltradas = (fotos || []).filter(function(f){ return !!f; }).slice(0, 5);
-    if(fotosFiltradas.length > 0){
-      if(y > pageH - 90){ doc.addPage(); y = 22; }
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.setTextColor(27, 51, 94);
-      doc.text('Fotografias de la propiedad', margin, y);
-      y += 5;
-      doc.setFillColor(239, 174, 60);
-      doc.rect(margin, y, 50, 0.7, 'F');
-      y += 10;
-      var photoW = (contentW - 6) / 2;
-      var photoH = photoW * 0.62;
-      var col = 0;
-      for(var fi = 0; fi < fotosFiltradas.length; fi++){
-        if(col === 0 && y + photoH > pageH - 28){ doc.addPage(); y = 22; }
-        var x = margin + col * (photoW + 6);
-        try{
-          var fmtP = detectImgFormat(fotosFiltradas[fi]);
-          doc.addImage(fotosFiltradas[fi], fmtP, x, y, photoW, photoH);
-        } catch(e2){}
-        col++;
-        if(col >= 2){ col = 0; y += photoH + 6; }
-      }
-      if(col > 0) y += photoH + 6;
-    }
-
-    // FOOTER
-    var total = doc.internal.getNumberOfPages();
-    for(var p = 1; p <= total; p++){
-      doc.setPage(p);
-      doc.setFillColor(27, 51, 94);
-      doc.rect(0, pageH - 11, pageW, 11, 'F');
-      doc.setTextColor(180, 200, 230);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7.5);
-      doc.text('Merkaba Consulting Group · Kit del Agente Inmobiliario Boliviano', pageW / 2, pageH - 4, { align:'center' });
-      doc.setTextColor(239, 174, 60);
-      doc.text('Pag. ' + p + ' / ' + total, pageW - margin, pageH - 4, { align:'right' });
-    }
-
-    // DESCARGA sin doc.save() para evitar conflicto con Cloudflare
-    var pdfBlob = doc.output('blob');
-    var filename = titulo.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '_') + '.pdf';
-    descargarBlob(pdfBlob, filename);
-    toast('PDF descargado correctamente.');
-
-  } catch(err){
-    toast('Error al generar el PDF: ' + (err.message || 'error desconocido'));
-    console.error('PDF error:', err);
-  }
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    + _agentHeaderHTML()
+    + '<div style="padding:28px 36px;">'
+    +   '<div style="margin-bottom:16px;">'
+    +     '<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 8px;font-weight:700;">Ficha de Propiedad</h1>'
+    +     '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+chips+'</div>'
+    +   '</div>'
+    +   precioHtml
+    +   (statsHtml ? '<div style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap;">'+statsHtml+'</div>' : '')
+    +   featHtml
+    +   fotosHtml
+    +   '<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +     '<div style="font-size:0.75rem;color:#94a3b8;">Documento generado para uso profesional</div>'
+    +     '<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +   '</div>'
+    + '</div>'
+    + '</body></html>';
 }
 
 async function generarPDFPropuesta(){
   var texto = $('prop-texto') ? $('prop-texto').textContent.trim() : '';
   if(!texto){ toast('Genera la propuesta primero.'); return; }
-  await generarPDFDoc('Propuesta de Captacion', texto, []);
+  toast('Preparando PDF...');
+  try{
+    await _loadLibs();
+    var html = buildPropuestaHTML(texto);
+    await renderPDF(html, 'Propuesta_Captacion.pdf');
+  } catch(e){
+    toast('Error al generar el PDF: ' + (e.message || 'error'));
+    console.error(e);
+  }
 }
 
 async function generarPDFFicha(){
+  var op = $('ficha-op') ? $('ficha-op').value : '';
+  var tipo = $('ficha-tipo') ? $('ficha-tipo').value : '';
+  var zona = $('ficha-zona') ? $('ficha-zona').value : '';
+  var precio = $('ficha-precio') ? $('ficha-precio').value : '';
+  var dorm = $('ficha-dorm') ? $('ficha-dorm').value : '';
+  var banos = $('ficha-banos') ? $('ficha-banos').value : '';
+  var m2 = $('ficha-m2') ? $('ficha-m2').value : '';
+  var features = $('ficha-features') ? $('ficha-features').value : '';
   var texto = $('ficha-texto') ? $('ficha-texto').textContent.trim() : '';
   if(!texto){ toast('Genera la ficha primero.'); return; }
-  await generarPDFDoc('Ficha de Propiedad', texto, _fotosPropiedad);
+  toast('Preparando PDF...');
+  try{
+    await _loadLibs();
+    var html = buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, _fotosPropiedad);
+    await renderPDF(html, 'Ficha_Propiedad.pdf');
+  } catch(e){
+    toast('Error al generar el PDF: ' + (e.message || 'error'));
+    console.error(e);
+  }
 }
 
 
