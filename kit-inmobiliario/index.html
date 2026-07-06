@@ -419,9 +419,9 @@ function renderTool(id){
     case 'comparador-inmuebles': return toolComparadorInmuebles();
     case 'mensaje-postventa': return toolMensajePostventa();
     case 'banco-scripts': return toolBancoScripts();
-    case 'cartera-propiedades-excel': return toolDescargable('cartera-propiedades-excel','📊','Control de cartera de propiedades','Excel .xlsx','Ficha unificada por inmueble — zonas, precios, estado de cada propiedad','Descargar Excel','ordena');
-    case 'control-seguimientos-excel': return toolDescargable('control-seguimientos-excel','📋','Control de seguimientos','Excel .xlsx','Registro de todos tus clientes y en qué etapa está cada uno','Descargar Excel','ordena');
-    case 'registro-comisiones-excel': return toolDescargable('registro-comisiones-excel','💰','Registro de comisiones del mes','Excel .xlsx','Cuánto ganaste, cuánto te deben — control mensual simple','Descargar Excel','ordena');
+    case 'cartera-propiedades-excel': return toolSheetExterno('&#128202;','Control de cartera de propiedades','Ficha unificada por inmueble &mdash; zonas, precios, estado de cada propiedad.','https://docs.google.com/spreadsheets/d/1aMABu5kMdiMzb94jJja2Yzs2J-4DuSGIcapRfOG9yiw/edit?usp=sharing');
+    case 'control-seguimientos-excel': return toolSheetExterno('&#128203;','Control de seguimientos','Registro de todos tus clientes y en qu&#233; etapa est&#225; cada uno.','https://docs.google.com/spreadsheets/d/1FnPhDPoBxD4O9Jayu0Ti6BQoB5Of9l34jaAgAM-D6n0/edit?usp=sharing');
+    case 'registro-comisiones-excel': return toolSheetExterno('&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/1YDezvbnRgJKFB5pheeN_gpB5oalrJwdvd771HLTMHPs/edit?usp=sharing');
     case 'ficha-captacion-pdf': return toolDescargable('ficha-captacion-pdf','📄','Ficha de captación imprimible','PDF','Para llenar a mano en la reunión con el propietario','Descargar PDF','ordena');
     case 'acuerdo-trabajo': return toolAcuerdoTrabajo();
     case 'docs-legales-pdf': return toolDescargable('docs-legales-pdf','📄','Checklist de documentos legales','PDF imprimible','Lista completa para llevar a la operación y no olvidar nada','Descargar PDF','ordena');
@@ -2090,6 +2090,29 @@ async function generarPDFPresentacion(){
   catch(e){ toast('Error: '+(e.message||'error')); }
 }
 
+
+
+// ══════════════════════════════════════════════
+// HERRAMIENTA: SHEET EXTERNO (Google Sheets)
+// ══════════════════════════════════════════════
+function toolSheetExterno(icon, titulo, desc, url){
+  return `<div class="tool-section">
+    <div class="tool-header">
+      <div class="tool-icon">${icon}</div>
+      <div>
+        <div class="tool-title">${titulo} <span class="tool-badge" style="background:rgba(66,133,244,0.1);color:#1a73e8;font-size:0.7rem;padding:2px 8px;border-radius:999px;font-weight:700;">Google Sheets</span></div>
+        <div class="tool-subtitle">${desc}</div>
+      </div>
+    </div>
+    <div style="background:#f8f9fc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div style="font-size:0.83rem;color:#4a5568;line-height:1.5;">Abre la planilla en Google Sheets. Puedes hacer una copia personal para editarla con tus datos.<br/><span style="font-size:0.78rem;color:#94a3b8;">Solo lectura &mdash; para guardar tus datos usa <strong>Archivo &rarr; Hacer una copia</strong></span></div>
+      <a href="${url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1a73e8;color:#fff;padding:10px 18px;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;flex-shrink:0;font-family:Inter,sans-serif;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+        Abrir planilla
+      </a>
+    </div>
+  </div>`;
+}
 
 // INICIALIZAR
 // ══════════════════════════════════════════════
