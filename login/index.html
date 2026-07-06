@@ -110,14 +110,14 @@ footer{text-align:center;padding:40px 20px 20px;color:var(--text-muted);font-siz
       return;
     }
 
-    sessionStorage.setItem('mk_auth', '1');
-    sessionStorage.setItem('mk_nombre', data.nombre);
-    sessionStorage.setItem('mk_id', data.id);
-    sessionStorage.setItem('mk_ciudad', data.ciudad || '');
-    sessionStorage.setItem('mk_whatsapp', data.whatsapp || '');
-    sessionStorage.setItem('mk_email', data.email || '');
-    sessionStorage.setItem('mk_plantillas', JSON.stringify(data.plantillas || []));
-    sessionStorage.setItem('mk_pendientes', JSON.stringify(data.pendientes || []));
+    localStorage.setItem('mk_auth', '1');
+    localStorage.setItem('mk_nombre', data.nombre);
+    localStorage.setItem('mk_id', data.id);
+    localStorage.setItem('mk_ciudad', data.ciudad || '');
+    localStorage.setItem('mk_whatsapp', data.whatsapp || '');
+    localStorage.setItem('mk_email', data.email || '');
+    localStorage.setItem('mk_plantillas', JSON.stringify(data.plantillas || []));
+    localStorage.setItem('mk_pendientes', JSON.stringify(data.pendientes || []));
     window.location.href = '/kit-inmobiliario';
   }
 

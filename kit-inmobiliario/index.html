@@ -280,17 +280,17 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 
 <script>
   // Chequeo de acceso — BORRADOR
-  if(!sessionStorage.getItem("mk_auth")){
+  if(!localStorage.getItem("mk_auth")){
     window.location.href = "../login/";
   }
 // ══════════════════════════════════════════════
 // DATOS DEL AGENTE (viene del perfil en Supabase)
 // ══════════════════════════════════════════════
 const AGENTE = {
-  nombre: sessionStorage.getItem('mk_nombre') || 'Agente',
-  ciudad: sessionStorage.getItem('mk_ciudad') || 'Bolivia',
-  whatsapp: sessionStorage.getItem('mk_whatsapp') || '',
-  email: sessionStorage.getItem('mk_email') || ''
+  nombre: localStorage.getItem('mk_nombre') || 'Agente',
+  ciudad: localStorage.getItem('mk_ciudad') || 'Bolivia',
+  whatsapp: localStorage.getItem('mk_whatsapp') || '',
+  email: localStorage.getItem('mk_email') || ''
 };
 document.getElementById('agent-badge').textContent = AGENTE.nombre;
 
@@ -1363,8 +1363,8 @@ function toolMisPlantillas(){
   </div>`;
 }
 
-function getPlantillas(){ return JSON.parse(sessionStorage.getItem('mk_plantillas')||'[]'); }
-function setPlantillas(arr){ sessionStorage.setItem('mk_plantillas', JSON.stringify(arr)); sbSavePlantillas(arr); }
+function getPlantillas(){ return JSON.parse(localStorage.getItem('mk_plantillas')||'[]'); }
+function setPlantillas(arr){ localStorage.setItem('mk_plantillas', JSON.stringify(arr)); sbSavePlantillas(arr); }
 
 function guardarNuevaPlantilla(){
   const titulo = ($('plt-titulo').value||'').trim();
@@ -1435,8 +1435,8 @@ function toolTableroPendientes(){
   </div>`;
 }
 
-function getPendientes(){ return JSON.parse(sessionStorage.getItem('mk_pendientes')||'[]'); }
-function setPendientes(arr){ sessionStorage.setItem('mk_pendientes', JSON.stringify(arr)); sbSavePendientes(arr); }
+function getPendientes(){ return JSON.parse(localStorage.getItem('mk_pendientes')||'[]'); }
+function setPendientes(arr){ localStorage.setItem('mk_pendientes', JSON.stringify(arr)); sbSavePendientes(arr); }
 
 function agregarPendiente(){
   const input = $('pend-nueva');
@@ -1494,11 +1494,11 @@ function renderPendientesLista(){
 function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 async function sbSavePlantillas(arr){
-  const id = sessionStorage.getItem('mk_id'); if(!id) return;
+  const id = localStorage.getItem('mk_id'); if(!id) return;
   try{ await fetch(SB_URL+'/rest/v1/rpc/save_plantillas',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_plantillas:arr})}); }catch(e){}
 }
 async function sbSavePendientes(arr){
-  const id = sessionStorage.getItem('mk_id'); if(!id) return;
+  const id = localStorage.getItem('mk_id'); if(!id) return;
   try{ await fetch(SB_URL+'/rest/v1/rpc/save_pendientes',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_pendientes:arr})}); }catch(e){}
 }
 
@@ -1564,7 +1564,7 @@ async function guardarPerfil(){
   const email = $('perfil-email').value.trim();
   const msg = $('perfil-msg');
   if(!nombre){ msg.style.color='#c0392b'; msg.textContent='El nombre no puede estar vacio.'; return; }
-  const id = sessionStorage.getItem('mk_id');
+  const id = localStorage.getItem('mk_id');
   try {
     await fetch(SB_URL+'/rest/v1/rpc/client_update_profile', {
       method:'POST',
@@ -1572,10 +1572,10 @@ async function guardarPerfil(){
       body:JSON.stringify({p_id:id, p_ciudad:ciudad, p_whatsapp:whatsapp, p_email:email})
     });
   } catch(e){ console.warn('Supabase update skipped'); }
-  sessionStorage.setItem('mk_nombre', nombre);
-  sessionStorage.setItem('mk_ciudad', ciudad);
-  sessionStorage.setItem('mk_whatsapp', whatsapp);
-  sessionStorage.setItem('mk_email', email);
+  localStorage.setItem('mk_nombre', nombre);
+  localStorage.setItem('mk_ciudad', ciudad);
+  localStorage.setItem('mk_whatsapp', whatsapp);
+  localStorage.setItem('mk_email', email);
   AGENTE.nombre = nombre;
   AGENTE.ciudad = ciudad;
   AGENTE.whatsapp = whatsapp;
@@ -1587,7 +1587,7 @@ async function guardarPerfil(){
 }
 
 function logoutKit(){
-  sessionStorage.clear();
+  localStorage.clear();
   window.location.href = '/login';
 }
 
