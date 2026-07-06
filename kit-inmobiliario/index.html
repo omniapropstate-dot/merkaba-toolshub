@@ -419,9 +419,9 @@ function renderTool(id){
     case 'comparador-inmuebles': return toolComparadorInmuebles();
     case 'mensaje-postventa': return toolMensajePostventa();
     case 'banco-scripts': return toolBancoScripts();
-    case 'cartera-propiedades-excel': return toolSheetExterno('&#128202;','Control de cartera de propiedades','Ficha unificada por inmueble &mdash; zonas, precios, estado de cada propiedad.','https://docs.google.com/spreadsheets/d/1aMABu5kMdiMzb94jJja2Yzs2J-4DuSGIcapRfOG9yiw/edit?usp=sharing');
-    case 'control-seguimientos-excel': return toolSheetExterno('&#128203;','Control de seguimientos','Registro de todos tus clientes y en qu&#233; etapa est&#225; cada uno.','https://docs.google.com/spreadsheets/d/1FnPhDPoBxD4O9Jayu0Ti6BQoB5Of9l34jaAgAM-D6n0/edit?usp=sharing');
-    case 'registro-comisiones-excel': return toolSheetExterno('&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/1YDezvbnRgJKFB5pheeN_gpB5oalrJwdvd771HLTMHPs/edit?usp=sharing');
+    case 'cartera-propiedades-excel': return toolSheetExterno('&#128202;','Control de cartera de propiedades','Ficha unificada por inmueble &mdash; zonas, precios, estado de cada propiedad.','https://docs.google.com/spreadsheets/d/1hdHS1z_UAVNyORy825muShGR21CAwFIm_iGqKZ2DOO0/edit?usp=sharing');
+    case 'control-seguimientos-excel': return toolSheetExterno('&#128203;','Control de seguimientos','Registro de todos tus clientes y en qu&#233; etapa est&#225; cada uno.','https://docs.google.com/spreadsheets/d/15OwSmZffrUeSTV_8uvBW_TEuYEX9QR66h-wxxUnbLk8/edit?usp=sharing');
+    case 'registro-comisiones-excel': return toolSheetExterno('&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/1ponSb8lU1wtw-v5ob3LpLdeHq8En9aHnL5PtJEQFCRc/edit?usp=sharing');
     case 'ficha-captacion-pdf': return toolDescargable('ficha-captacion-pdf','📄','Ficha de captación imprimible','PDF','Para llenar a mano en la reunión con el propietario','Descargar PDF','ordena');
     case 'acuerdo-trabajo': return toolAcuerdoTrabajo();
     case 'docs-legales-pdf': return toolDescargable('docs-legales-pdf','📄','Checklist de documentos legales','PDF imprimible','Lista completa para llevar a la operación y no olvidar nada','Descargar PDF','ordena');
@@ -505,7 +505,7 @@ function generarSeguimiento(){
   let novedadTexto = '';
   if(novedad) novedadTexto = `\n\nAdemás, quería contarte que ${novedad}.`;
 
-  const mensaje = `${saludo}, ${nombre}. Soy ${agente}.\n\n${cuerpo}${novedadTexto}\n\nQuedo a tu disposición. Saludos.`;
+  const mensaje = `${saludo}, ${nombre}. Soy ${agente}.\n\n${cuerpo}${novedadTexto}\n\nQuedo a tu disposición.\n\n📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
 
   $('seg-texto').textContent = mensaje;
   $('seg-resultado').hidden = false;
@@ -842,8 +842,7 @@ COMISIÓN: ${com}% sobre el precio de venta
 
 Quedo a su disposición para cualquier consulta.
 
-${AGENTE.nombre}
-${AGENTE.whatsapp}`;
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
 
   $('prop-texto').textContent = texto;
   $('prop-resultado').hidden = false;
@@ -902,7 +901,7 @@ function generarRespuesta(){
   else if(info==='precio') cuerpo = `Gracias por tu interés en ${propiedad}. Tengo toda la información disponible y podemos coordinar una visita.`;
   else cuerpo = `Gracias por tu consulta sobre ${propiedad}. En breve te confirmo todos los detalles. ¿Cuál es tu disponibilidad para coordinar una visita?`;
 
-  const texto = `${saludo}, soy ${AGENTE.nombre}, agente inmobiliario en ${AGENTE.ciudad}.\n\n${cuerpo}\n\n¿Tienes alguna pregunta específica? Quedo a tu disposición.\n\n📱 ${AGENTE.whatsapp}`;
+  const texto = `${saludo}, soy ${AGENTE.nombre}, agente inmobiliario en ${AGENTE.ciudad}.\n\n${cuerpo}\n\n¿Tienes alguna pregunta específica? Quedo a tu disposición.\n\n📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
   $('rr-texto').textContent = texto;
   $('rr-resultado').hidden = false;
 }
@@ -1282,11 +1281,17 @@ function generarPostventa(){
   const msg = $('pv-msg').value;
   let texto = '';
   if(msg==='seguimiento'){
-    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Han pasado ${tiempo} desde que concretamos la ${tipo} y quería saber cómo están. Espero que todo haya ido excelente. Cualquier consulta que tengas sobre la propiedad, con gusto te ayudo. ¡Saludos!`;
+    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Han pasado ${tiempo} desde que concretamos la ${tipo} y quería saber cómo están. Espero que todo haya ido excelente. Cualquier consulta que tengas sobre la propiedad, con gusto te ayudo.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
   } else if(msg==='referido'){
-    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conocen a alguien que esté buscando comprar, vender o alquilar en ${AGENTE.ciudad}, me alegra mucho si me recomiendan. El boca a boca es lo más valioso en este negocio. ¡Muchas gracias y saludos!`;
+    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conocen a alguien que esté buscando comprar, vender o alquilar en ${AGENTE.ciudad}, me alegra mucho si me recomiendan. El boca a boca es lo más valioso en este negocio.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
   } else {
-    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Hoy se cumple un año desde que concretamos la ${tipo}, y quería saludarles y desearles muchos años de felicidad. Ha sido un gusto acompañarles en ese proceso. ¡Saludos!`;
+    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Hoy se cumple un año desde que concretamos la ${tipo}, y quería saludarles y desearles muchos años de felicidad. Ha sido un gusto acompañarles en ese proceso.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
   }
   $('pv-texto').textContent = texto;
   $('pv-resultado').hidden = false;
