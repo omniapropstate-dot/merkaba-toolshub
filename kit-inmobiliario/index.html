@@ -1506,6 +1506,23 @@ function descargarBlob(blob, filename){
   setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 300);
 }
 
+function _findBestCut(canvas, naturalCutY, minY){
+  var ctx = canvas.getContext('2d');
+  var bestY = naturalCutY;
+  var bestScore = -1;
+  for(var y = naturalCutY; y >= minY; y -= 2){
+    var data = ctx.getImageData(0, y, canvas.width, 1).data;
+    var white = 0;
+    for(var i = 0; i < data.length; i += 4){
+      if(data[i] > 238 && data[i+1] > 238 && data[i+2] > 238) white++;
+    }
+    var score = white / (canvas.width);
+    if(score > bestScore){ bestScore = score; bestY = y; }
+    if(score > 0.97) break;
+  }
+  return bestY;
+}
+
 async function renderPDF(htmlContent, filename){
   var jsPDF = window.jspdf.jsPDF;
   var wrap = document.createElement('div');
@@ -1525,26 +1542,34 @@ async function renderPDF(htmlContent, filename){
     var pdf = new jsPDF({ orientation:'portrait', unit:'px', format:'a4', compress:true });
     var pageW = pdf.internal.pageSize.getWidth();
     var pageH = pdf.internal.pageSize.getHeight();
-    var canvasW = canvas.width / 2;
-    var canvasH = canvas.height / 2;
-    var scale = pageW / canvasW;
-    var scaledH = canvasH * scale;
-    var pagesNeeded = Math.ceil(scaledH / pageH);
-    for(var pg = 0; pg < pagesNeeded; pg++){
-      if(pg > 0) pdf.addPage();
-      var srcY = Math.round(pg * pageH / scale * 2);
-      var srcH = Math.min(Math.round(pageH / scale * 2), canvas.height - srcY);
+    var scale = pageW / (canvas.width / 2);
+    var pageHpx = Math.round(pageH / scale * 2);
+    var currentY = 0;
+    var firstPage = true;
+    while(currentY < canvas.height){
+      var naturalCut = currentY + pageHpx;
+      var cutY;
+      if(naturalCut >= canvas.height){
+        cutY = canvas.height;
+      } else {
+        var searchMin = currentY + Math.round(pageHpx * 0.78);
+        cutY = _findBestCut(canvas, naturalCut, searchMin);
+      }
+      var sliceH = cutY - currentY;
       var sliceCanvas = document.createElement('canvas');
       sliceCanvas.width = canvas.width;
-      sliceCanvas.height = srcH;
+      sliceCanvas.height = sliceH;
       var ctx = sliceCanvas.getContext('2d');
-      ctx.drawImage(canvas, 0, srcY, canvas.width, srcH, 0, 0, canvas.width, srcH);
-      var sliceData = sliceCanvas.toDataURL('image/jpeg', 0.92);
-      var sliceDisplayH = (srcH / 2) * scale;
-      pdf.addImage(sliceData, 'JPEG', 0, 0, pageW, sliceDisplayH);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, sliceH);
+      ctx.drawImage(canvas, 0, currentY, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+      if(!firstPage) pdf.addPage();
+      firstPage = false;
+      var displayH = (sliceH / 2) * scale;
+      pdf.addImage(sliceCanvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, pageW, displayH);
+      currentY = cutY;
     }
-    var blob = pdf.output('blob');
-    descargarBlob(blob, filename);
+    descargarBlob(pdf.output('blob'), filename);
     toast('PDF descargado.');
   } finally {
     document.body.removeChild(wrap);
