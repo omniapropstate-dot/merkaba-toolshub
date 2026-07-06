@@ -303,8 +303,8 @@ const FASES = [
   { id:'interesados', num:3, nombre:'Atención de interesados', desc:'Primera respuesta, filtrar leads, separar curiosos de compradores reales', color:'navy', tools:['respuesta-rapida','filtro-comprador'] },
   { id:'visita', num:4, nombre:'La visita', desc:'Checklist antes de mostrar, leer señales de cierre', color:'navy', tools:['checklist-visita'] },
   { id:'seguimiento', num:5, nombre:'Seguimiento post-visita', desc:'El agente promedio hace 1.3 contactos — se necesitan 5+', color:'gold', tools:['generador-seguimiento','control-seguimientos-excel'] },
-  { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles'] },
-  { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico','docs-legales-pdf'] },
+  { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles','comparador-inmuebles-excel'] },
+  { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico','calc-anticretico-excel','docs-legales-pdf'] },
   { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que nadie trabaja — referidos convierten 50x mejor', color:'gold', tools:['mensaje-postventa'] },
   { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, banco de scripts', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts'] },
 ];
@@ -422,6 +422,8 @@ function renderTool(id){
     case 'cartera-propiedades-excel': return toolSheetExterno('&#128202;','Control de cartera de propiedades','Ficha unificada por inmueble &mdash; zonas, precios, estado de cada propiedad.','https://docs.google.com/spreadsheets/d/1rJyieQfDYvjRKOHyPFdtHcCDZ9T-Bd7A/edit?usp=sharing');
     case 'control-seguimientos-excel': return toolSheetExterno('&#128203;','Control de seguimientos','Registro de todos tus clientes y en qu&#233; etapa est&#225; cada uno.','https://docs.google.com/spreadsheets/d/1BmsbDxB5S3cKt_5hCi7kr6Bga8fXcaBr/edit?usp=sharing');
     case 'registro-comisiones-excel': return toolSheetExterno('&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/14K14F8ly5eft-XRGhZjlX8VH2-ah9J07/edit?usp=sharing');
+    case 'comparador-inmuebles-excel': return toolSheetExterno('&#128200;','Comparador de inmuebles (plantilla)','Compara hasta 3 propiedades lado a lado &mdash; para mostrar al cliente y guiar la decisi&#243;n.','https://docs.google.com/spreadsheets/d/1M8aGTakJDSp9QIOTnDu5W07aDyLcN9kr/edit?usp=sharing');
+    case 'calc-anticretico-excel': return toolSheetExterno('&#128203;','Calculadora de anticr&#233;tico (plantilla)','C&#225;lculo completo: monto, IT, comisi&#243;n, gastos notariales &mdash; en USD y Bs.','https://docs.google.com/spreadsheets/d/1YA_9QK12_LLFBuyG8hFT7TCd1KL3lWil/edit?usp=sharing');
     case 'ficha-captacion-pdf': return toolDescargable('ficha-captacion-pdf','📄','Ficha de captación imprimible','PDF','Para llenar a mano en la reunión con el propietario','Descargar PDF','ordena');
     case 'acuerdo-trabajo': return toolAcuerdoTrabajo();
     case 'docs-legales-pdf': return toolDescargable('docs-legales-pdf','📄','Checklist de documentos legales','PDF imprimible','Lista completa para llevar a la operación y no olvidar nada','Descargar PDF','ordena');
