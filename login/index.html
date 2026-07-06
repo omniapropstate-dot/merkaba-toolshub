@@ -123,6 +123,7 @@ footer{
 <footer>Merkaba Consulting Group · Solo para clientes con acceso</footer>
 
 <script>
+  if(localStorage.getItem("mk_auth")==="1"){ window.location.replace("/kit-inmobiliario"); }
   // BORRADOR — contraseña temporal hasta conectar Supabase
   const CONTRASENA = 'merkaba2025';
 
