@@ -306,7 +306,7 @@ const FASES = [
   { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles','comparador-inmuebles-excel'] },
   { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico','calc-anticretico-excel'] },
   { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que nadie trabaja — referidos convierten 50x mejor', color:'gold', tools:['mensaje-postventa'] },
-  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, banco de scripts', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts'] },
+  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, banco de scripts', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes'] },
 ];
 
 // ══════════════════════════════════════════════
@@ -419,6 +419,8 @@ function renderTool(id){
     case 'comparador-inmuebles': return toolComparadorInmuebles();
     case 'mensaje-postventa': return toolMensajePostventa();
     case 'banco-scripts': return toolBancoScripts();
+    case 'mis-plantillas': return toolMisPlantillas();
+    case 'tablero-pendientes': return toolTableroPendientes();
     case 'cartera-propiedades-excel': return toolSheetExterno('&#128202;','Control de cartera de propiedades','Ficha unificada por inmueble &mdash; zonas, precios, estado de cada propiedad.','https://docs.google.com/spreadsheets/d/1rJyieQfDYvjRKOHyPFdtHcCDZ9T-Bd7A/edit?usp=sharing');
     case 'control-seguimientos-excel': return toolSheetExterno('&#128203;','Control de seguimientos','Registro de todos tus clientes y en qu&#233; etapa est&#225; cada uno.','https://docs.google.com/spreadsheets/d/1BmsbDxB5S3cKt_5hCi7kr6Bga8fXcaBr/edit?usp=sharing');
     case 'registro-comisiones-excel': return toolSheetExterno('&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/14K14F8ly5eft-XRGhZjlX8VH2-ah9J07/edit?usp=sharing');
@@ -1336,6 +1338,170 @@ function toolBancoScripts(){
 }
 
 // ══════════════════════════════════════════════
+
+// ══════════════════════════════════════════════
+// 18. MIS PLANTILLAS
+// ══════════════════════════════════════════════
+function toolMisPlantillas(){
+  setTimeout(renderPlantillasLista, 0);
+  return `<div class="tool-section" id="tool-mis-plantillas">
+    <div class="tool-header">
+      <div class="tool-icon">📋</div>
+      <div>
+        <div class="tool-title">Mis plantillas <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-subtitle">Guardá los mensajes que más usás. Se sincronizan entre tu celular y tu computadora.</div>
+      </div>
+    </div>
+    <div style="display:grid;gap:10px;margin-bottom:20px;">
+      <div class="form-group"><label>Título de la plantilla</label><input id="plt-titulo" type="text" placeholder="Ej: Seguimiento día 3, Respuesta a precio alto..."/></div>
+      <div class="form-group"><label>Mensaje</label><textarea id="plt-contenido" rows="3" placeholder="Escribí o pegá aquí el mensaje que querés guardar..."></textarea></div>
+      <button class="btn btn-primary" style="align-self:flex-start;" onclick="guardarNuevaPlantilla()">💾 Guardar plantilla</button>
+    </div>
+    <div id="plt-lista-container">
+      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tenés plantillas guardadas.</div>
+    </div>
+  </div>`;
+}
+
+function getPlantillas(){ return JSON.parse(sessionStorage.getItem('mk_plantillas')||'[]'); }
+function setPlantillas(arr){ sessionStorage.setItem('mk_plantillas', JSON.stringify(arr)); sbSavePlantillas(arr); }
+
+function guardarNuevaPlantilla(){
+  const titulo = ($('plt-titulo').value||'').trim();
+  const contenido = ($('plt-contenido').value||'').trim();
+  if(!titulo||!contenido){ toast('Completá el título y el mensaje'); return; }
+  const arr = getPlantillas();
+  arr.unshift({id: Date.now(), titulo, contenido});
+  setPlantillas(arr);
+  $('plt-titulo').value=''; $('plt-contenido').value='';
+  renderPlantillasLista();
+  toast('Plantilla guardada ✓');
+}
+
+function eliminarPlantilla(id){
+  setPlantillas(getPlantillas().filter(p => p.id !== id));
+  renderPlantillasLista();
+  toast('Plantilla eliminada');
+}
+
+function renderPlantillasLista(){
+  const cont = $('plt-lista-container');
+  if(!cont) return;
+  const arr = getPlantillas();
+  if(!arr.length){
+    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tenés plantillas guardadas.</div>';
+    return;
+  }
+  cont.innerHTML = '<div style="display:grid;gap:10px;">' + arr.map(p => {
+    const safe = p.contenido.replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');
+    return `<div class="script-card">
+      <div class="script-situation">${escHtml(p.titulo)}</div>
+      <div style="font-size:0.87rem;color:var(--text);margin-top:6px;white-space:pre-wrap;">${escHtml(p.contenido)}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="copiar(this.dataset.t)" data-t="${p.contenido.replace(/"/g,'&quot;')}">📋 Copiar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(this.dataset.t)" data-t="${p.contenido.replace(/"/g,'&quot;')}">💬 WhatsApp</button>
+        <button class="btn btn-outline btn-sm" style="color:#e74c3c;border-color:#e74c3c;" onclick="eliminarPlantilla(${p.id})">🗑 Eliminar</button>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+// ══════════════════════════════════════════════
+// 19. TABLERO DE PENDIENTES
+// ══════════════════════════════════════════════
+function toolTableroPendientes(){
+  setTimeout(renderPendientesLista, 0);
+  const hoy = new Date().toLocaleDateString('es-BO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const hoyFmt = hoy.charAt(0).toUpperCase() + hoy.slice(1);
+  return `<div class="tool-section" id="tool-tablero-pendientes">
+    <div class="tool-header">
+      <div class="tool-icon">📅</div>
+      <div>
+        <div class="tool-title">Pendientes del día <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-subtitle">${hoyFmt} — Tus tareas de hoy, sincronizadas entre todos tus dispositivos.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <input id="pend-nueva" type="text" style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.9rem;background:var(--surface-2);color:var(--text);" placeholder="Ej: Llamar a María sobre el dpto. en Sopocachi..." onkeydown="if(event.key==='Enter')agregarPendiente()"/>
+      <button class="btn btn-primary" onclick="agregarPendiente()">+ Agregar</button>
+    </div>
+    <div id="pend-lista-container">
+      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agregá la primera!</div>
+    </div>
+    <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+      <div id="pend-contador" style="font-size:0.8rem;color:var(--text-muted);"></div>
+      <button class="btn btn-outline btn-sm" onclick="limpiarPendientesHechos()">🗑 Limpiar completadas</button>
+    </div>
+  </div>`;
+}
+
+function getPendientes(){ return JSON.parse(sessionStorage.getItem('mk_pendientes')||'[]'); }
+function setPendientes(arr){ sessionStorage.setItem('mk_pendientes', JSON.stringify(arr)); sbSavePendientes(arr); }
+
+function agregarPendiente(){
+  const input = $('pend-nueva');
+  const texto = (input.value||'').trim();
+  if(!texto){ toast('Escribí una tarea primero'); return; }
+  const arr = getPendientes();
+  arr.push({id: Date.now(), texto, hecho: false});
+  setPendientes(arr);
+  input.value='';
+  renderPendientesLista();
+}
+
+function togglePendiente(id){
+  const arr = getPendientes().map(p => p.id===id ? Object.assign({},p,{hecho:!p.hecho}) : p);
+  setPendientes(arr);
+  renderPendientesLista();
+}
+
+function eliminarPendiente(id){
+  setPendientes(getPendientes().filter(p => p.id !== id));
+  renderPendientesLista();
+}
+
+function limpiarPendientesHechos(){
+  const antes = getPendientes().length;
+  const arr = getPendientes().filter(p => !p.hecho);
+  if(antes === arr.length){ toast('No hay completadas'); return; }
+  setPendientes(arr);
+  renderPendientesLista();
+  toast('Completadas eliminadas');
+}
+
+function renderPendientesLista(){
+  const cont = $('pend-lista-container');
+  const counter = $('pend-contador');
+  if(!cont) return;
+  const arr = getPendientes();
+  if(!arr.length){
+    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agregá la primera!</div>';
+    if(counter) counter.textContent='';
+    return;
+  }
+  const hechas = arr.filter(p=>p.hecho).length;
+  cont.innerHTML = '<div style="display:grid;gap:8px;">' + arr.map(p =>
+    `<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:${p.hecho?'var(--surface-2)':'var(--surface)'};border:1px solid var(--border);border-radius:var(--radius-sm);${p.hecho?'opacity:0.65;':''}">
+      <input type="checkbox" ${p.hecho?'checked':''} onchange="togglePendiente(${p.id})" style="margin-top:3px;width:16px;height:16px;accent-color:var(--navy);flex-shrink:0;cursor:pointer;">
+      <span style="flex:1;font-size:0.9rem;${p.hecho?'text-decoration:line-through;color:var(--text-muted);':''}">${escHtml(p.texto)}</span>
+      <button onclick="eliminarPendiente(${p.id})" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:1rem;padding:0 2px;flex-shrink:0;" title="Eliminar">✕</button>
+    </div>`
+  ).join('') + '</div>';
+  if(counter) counter.textContent = hechas + ' de ' + arr.length + ' completadas';
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+async function sbSavePlantillas(arr){
+  const id = sessionStorage.getItem('mk_id'); if(!id) return;
+  try{ await fetch(SB_URL+'/rest/v1/rpc/save_plantillas',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_plantillas:arr})}); }catch(e){}
+}
+async function sbSavePendientes(arr){
+  const id = sessionStorage.getItem('mk_id'); if(!id) return;
+  try{ await fetch(SB_URL+'/rest/v1/rpc/save_pendientes',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_pendientes:arr})}); }catch(e){}
+}
+
 // 17. DESCARGABLES (placeholder hasta tener los archivos reales)
 // ══════════════════════════════════════════════
 function toolDescargable(id, icon, nombre, formato, desc, btnLabel, familia){

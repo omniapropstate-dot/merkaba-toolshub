@@ -116,6 +116,8 @@ footer{text-align:center;padding:40px 20px 20px;color:var(--text-muted);font-siz
     sessionStorage.setItem('mk_ciudad', data.ciudad || '');
     sessionStorage.setItem('mk_whatsapp', data.whatsapp || '');
     sessionStorage.setItem('mk_email', data.email || '');
+    sessionStorage.setItem('mk_plantillas', JSON.stringify(data.plantillas || []));
+    sessionStorage.setItem('mk_pendientes', JSON.stringify(data.pendientes || []));
     window.location.href = '/kit-inmobiliario';
   }
 
