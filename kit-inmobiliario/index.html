@@ -9,12 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#1B335E; --navy-dark:#142546; --navy-soft:rgba(27,51,94,0.08);
+  --navy:#4A90D9; --navy-dark:#3272B0; --navy-soft:rgba(74,144,217,0.12);
   --gold:#EFAE3C; --gold-soft:rgba(239,174,60,0.15);
-  --bg:#F6F7FB; --surface:#FFFFFF; --surface-2:#EEF1F6;
-  --border:#E1E5EC; --border-strong:#C8CEDB;
-  --text:#1B2333; --text-muted:#6B7280; --text-light:#9CA3AF;
-  --success:#2F9E6E; --success-soft:rgba(47,158,110,0.12);
+  --bg:#0B1422; --surface:#101C30; --surface-2:#162438;
+  --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14);
+  --text:rgba(238,245,255,0.94); --text-muted:rgba(175,200,240,0.58); --text-light:rgba(140,175,220,0.36);
+  --success:#3DD68C; --success-soft:rgba(61,214,140,0.12);
   --radius:14px; --radius-sm:9px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -112,8 +112,8 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .checklist-text{font-size:0.88rem;color:var(--text);}
 .checklist-text.checked{text-decoration:line-through;color:var(--text-muted);}
 .checklist-tag{display:inline-block;font-size:0.68rem;padding:1px 6px;border-radius:4px;font-weight:600;margin-left:6px;}
-.tag-obligatorio{background:#FDECEA;color:#991B1B;}
-.tag-importante{background:var(--gold-soft);color:#7A5200;}
+.tag-obligatorio{background:rgba(255,80,80,0.12);color:#FF7878;}
+.tag-importante{background:var(--gold-soft);color:var(--gold);}
 
 /* ── BANCO DE SCRIPTS ── */
 .scripts-grid{display:grid;gap:10px;}
@@ -128,7 +128,7 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .guide-step-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;flex-shrink:0;}
 .guide-step-content h4{font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
 .guide-step-content p{font-size:0.82rem;color:var(--text-muted);line-height:1.5;}
-.guide-alert{background:#FEF9EC;border:1px solid var(--gold);border-radius:var(--radius-sm);padding:12px 14px;font-size:0.82rem;color:#7A5200;margin-top:12px;}
+.guide-alert{background:rgba(239,174,60,0.08);border:1px solid rgba(239,174,60,0.28);border-radius:var(--radius-sm);padding:12px 14px;font-size:0.82rem;color:rgba(239,174,60,0.85);margin-top:12px;}
 .guide-alert strong{display:block;margin-bottom:2px;}
 
 /* ── DESCARGABLES ── */
