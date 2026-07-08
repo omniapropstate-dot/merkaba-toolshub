@@ -22,6 +22,7 @@ icon512_b64 = encode_bin('icons/logo-512.png')
 
 manifest = '{"name":"Kit Inmobiliario Bolivia","short_name":"Merkaba Kit","start_url":"/kit-inmobiliario","display":"standalone","background_color":"#0a1628","theme_color":"#0a1628","icons":[{"src":"/icons/logo-192.png","sizes":"192x192","type":"image/png"},{"src":"/icons/logo-512.png","sizes":"512x512","type":"image/png"}]}'
 
+# Service worker - usar backticks para evitar conflicto con comillas simples internas
 sw = "self.addEventListener('install',function(e){e.waitUntil(self.skipWaiting());});self.addEventListener('activate',function(e){e.waitUntil(self.clients.claim());});self.addEventListener('fetch',function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request);}));});"
 
 worker = '\n'.join([
@@ -30,8 +31,8 @@ worker = '\n'.join([
     'const ADMIN="'   + admin_b64   + '";',
     'const ICON192="' + icon192_b64 + '";',
     'const ICON512="' + icon512_b64 + '";',
-    "const MANIFEST='" + manifest + "';",
-    "const SW='" + sw + "';",
+    'const MANIFEST="' + manifest.replace('"', '\\"') + '";',
+    'const SW=`'      + sw          + '`;',
     '',
     'function serve(b64){const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));const html=new TextDecoder("utf-8").decode(bytes);return new Response(html,{headers:{"Content-Type":"text/html; charset=UTF-8"}});}',
     'function serveIcon(b64){const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));return new Response(bytes,{headers:{"Content-Type":"image/png","Cache-Control":"public, max-age=86400"}});}',
