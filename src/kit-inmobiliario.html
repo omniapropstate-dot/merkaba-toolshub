@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kit del Agente Inmobiliario Boliviano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#4A90D9; --navy-dark:#3272B0; --navy-soft:rgba(74,144,217,0.12);
+  --gold:#EFAE3C; --gold-soft:rgba(239,174,60,0.15);
+  --bg:#0B1422; --surface:#101C30; --surface-2:#162438;
+  --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14);
+  --text:rgba(238,245,255,0.94); --text-muted:rgba(175,200,240,0.58); --text-light:rgba(140,175,220,0.36);
+  --success:#3DD68C; --success-soft:rgba(61,214,140,0.12);
+  --radius:14px; --radius-sm:9px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+[hidden]{display:none!important;}
+html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;}
+
+/* ── HEADER ── */
+.kit-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px clamp(16px,4vw,48px);display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;}
+.kit-header img{height:36px;width:auto;}
+.kit-header-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;color:var(--navy);}
+.kit-header-title span{color:var(--text-muted);font-weight:500;}
+.kit-header .spacer{flex:1;}
+.agent-badge{background:var(--navy-soft);border-radius:999px;padding:6px 14px;font-size:0.8rem;color:var(--navy);font-weight:600;}
+
+/* ── LAYOUT ── */
+.kit-body{display:flex;min-height:calc(100vh - 65px);}
+
+/* ── SIDEBAR ── */
+.sidebar{width:260px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;position:sticky;top:65px;height:calc(100vh - 65px);overflow-y:auto;}
+.sidebar-phase{margin-bottom:4px;}
+.phase-btn{width:100%;text-align:left;padding:8px 20px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:8px;}
+.phase-btn:hover{color:var(--navy);}
+.phase-btn .phase-num{background:var(--surface-2);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;}
+.phase-btn.active .phase-num{background:var(--navy);color:#fff;}
+.tool-links{padding:0;}
+.tool-link{display:block;width:100%;text-align:left;padding:7px 20px 7px 48px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--text-muted);border-left:2px solid transparent;}
+.tool-link:hover{color:var(--navy);background:var(--navy-soft);}
+.tool-link.active{color:var(--navy);font-weight:600;border-left-color:var(--gold);background:var(--gold-soft);}
+
+/* ── MAIN CONTENT ── */
+.kit-main{flex:1;padding:clamp(20px,4vw,40px);max-width:860px;}
+
+/* ── MAPA DEL PROCESO ── */
+.mapa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:32px;}
+.mapa-card{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--navy);border-radius:var(--radius);padding:16px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.mapa-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(27,51,94,0.1);}
+.mapa-card.gold{border-top-color:var(--gold);}
+.mapa-num{font-size:0.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.mapa-name{font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.mapa-desc{font-size:0.78rem;color:var(--text-muted);}
+.mapa-tools{font-size:0.72rem;color:var(--gold);font-weight:600;margin-top:6px;}
+
+/* ── SECCIÓN HERRAMIENTA ── */
+.tool-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
+.tool-section:last-child{margin-bottom:0;}
+.tool-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;}
+.tool-icon{width:40px;height:40px;border-radius:10px;background:var(--navy-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;}
+.tool-icon.gold{background:var(--gold-soft);}
+.tool-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);}
+.tool-subtitle{font-size:0.82rem;color:var(--text-muted);margin-top:2px;}
+.tool-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-left:8px;}
+.badge-hace{background:var(--navy-soft);color:var(--navy);}
+.badge-guia{background:var(--gold-soft);color:#7A5200;}
+.badge-ordena{background:var(--success-soft);color:#1A6645;}
+
+/* ── FORMULARIO ── */
+.form-row{display:grid;gap:12px;margin-bottom:16px;}
+.form-row.cols-2{grid-template-columns:1fr 1fr;}
+.form-row.cols-3{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:600px){.form-row.cols-2,.form-row.cols-3{grid-template-columns:1fr;}}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:0.82rem;font-weight:600;color:var(--text-muted);}
+.form-group input,.form-group select,.form-group textarea{padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface-2);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:2px solid var(--navy);outline-offset:1px;}
+.form-group textarea{resize:vertical;min-height:80px;}
+
+/* ── BOTONES ── */
+.btn{padding:10px 20px;border-radius:var(--radius-sm);font-weight:700;font-size:0.88rem;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:filter .15s;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:hover{filter:brightness(1.15);}
+.btn-gold{background:var(--gold);color:#1a1306;}
+.btn-gold:hover{filter:brightness(1.08);}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--text-muted);}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy);}
+.btn-sm{padding:7px 14px;font-size:0.8rem;}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+
+/* ── RESULTADO ── */
+.result-box{background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius-sm);padding:16px;margin-top:16px;}
+.result-box.navy-accent{border-left-color:var(--navy);}
+.result-label{font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;}
+.result-text{font-size:0.9rem;line-height:1.7;color:var(--text);white-space:pre-wrap;}
+.result-number{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;color:var(--navy);}
+.result-number span{font-size:1rem;font-weight:500;color:var(--text-muted);}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px;}
+.result-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;}
+.result-item-label{font-size:0.72rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;}
+.result-item-value{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-top:2px;}
+
+/* ── CHECKLIST ── */
+.checklist{list-style:none;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.checklist li:last-child{border-bottom:none;}
+.checklist input[type="checkbox"]{width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--navy);}
+.checklist-text{font-size:0.88rem;color:var(--text);}
+.checklist-text.checked{text-decoration:line-through;color:var(--text-muted);}
+.checklist-tag{display:inline-block;font-size:0.68rem;padding:1px 6px;border-radius:4px;font-weight:600;margin-left:6px;}
+.tag-obligatorio{background:rgba(255,80,80,0.12);color:#FF7878;}
+.tag-importante{background:var(--gold-soft);color:var(--gold);}
+
+/* ── BANCO DE SCRIPTS ── */
+.scripts-grid{display:grid;gap:10px;}
+.script-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;}
+.script-situation{font-size:0.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.script-text{font-size:0.86rem;color:var(--text);line-height:1.6;}
+.script-copy{float:right;margin-top:-2px;}
+
+/* ── GUÍA ── */
+.guide-steps{display:flex;flex-direction:column;gap:12px;}
+.guide-step{display:flex;gap:14px;padding:14px;background:var(--surface-2);border-radius:var(--radius-sm);}
+.guide-step-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;flex-shrink:0;}
+.guide-step-content h4{font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.guide-step-content p{font-size:0.82rem;color:var(--text-muted);line-height:1.5;}
+.guide-alert{background:rgba(239,174,60,0.08);border:1px solid rgba(239,174,60,0.28);border-radius:var(--radius-sm);padding:12px 14px;font-size:0.82rem;color:rgba(239,174,60,0.85);margin-top:12px;}
+.guide-alert strong{display:block;margin-bottom:2px;}
+
+/* ── DESCARGABLES ── */
+.download-card{display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;}
+.download-icon{font-size:1.6rem;flex-shrink:0;}
+.download-info h4{font-size:0.9rem;font-weight:700;color:var(--navy);}
+.download-info p{font-size:0.78rem;color:var(--text-muted);}
+.download-info{flex:1;}
+
+/* ── DIVIDER ── */
+.phase-divider{font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:20px;margin-top:32px;display:flex;align-items:center;gap:10px;}
+.phase-divider:first-child{margin-top:0;}
+.phase-divider span{background:var(--navy);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;}
+.phase-divider.gold span{background:var(--gold);color:#1a1306;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy-dark);color:#fff;padding:10px 22px;border-radius:999px;font-size:0.85rem;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .kit-main{padding:16px;}
+}
+
+/* MOBILE MENU */
+.hamburger-btn{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--navy);padding:4px 8px;border-radius:6px;line-height:1;}
+.hamburger-btn:hover{background:var(--navy-soft);}
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:150;}
+.mobile-overlay.open{display:block;}
+.mobile-sidebar{position:fixed;top:0;left:-290px;width:280px;height:100vh;background:var(--surface);z-index:200;transition:left .22s ease;overflow-y:auto;box-shadow:4px 0 24px rgba(0,0,0,0.18);}
+.mobile-sidebar.open{left:0;}
+.mobile-sidebar-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);}
+.mobile-close-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text-muted);}
+@media(max-width:768px){.hamburger-btn{display:flex!important;}.sidebar{display:none!important;}}
+/* PERFIL MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal-box{background:var(--surface);border-radius:var(--radius);padding:28px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.2);}
+.modal-box h2{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.modal-sub{font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;}
+.photo-ring{width:72px;height:72px;border-radius:50%;border:3px solid var(--border);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;overflow:hidden;}
+.photo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.photo-wrap{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+/* HEADER EXTRAS */
+.logout-kit-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-size:0.78rem;padding:5px 12px;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;flex-shrink:0;}
+.logout-kit-btn:hover{color:#c0392b;border-color:#c0392b;}
+.agent-badge{cursor:pointer;}
+.agent-badge:hover{background:var(--gold-soft);color:#7A5200;}
+/* PRINT */
+@media print{
+  .kit-header,.sidebar,.btn-group,.phase-divider,.mapa-grid,nav,button,.hamburger-btn,.logout-kit-btn,.no-print{display:none!important;}
+  .kit-body{display:block;}.kit-main{padding:0;max-width:100%;}
+  .tool-section{border:none;padding:0;box-shadow:none;}.result-box{border:1px solid #ccc;}
+  #prop-formulario,.form-row,.form-group{display:none!important;}
+}
+</style>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#0a1628"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Merkaba Kit"></head>
+<body>
+
+<header class="kit-header">
+  <button class="hamburger-btn" onclick="toggleMobileMenu()" title="Menu">&#9776;</button>
+  <div style="width:32px;height:32px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+    <svg width="18" height="18" viewBox="0 0 100 100" fill="none"><polygon points="50,6 91,76 9,76" stroke="#EFAE3C" stroke-width="6" stroke-linejoin="round"/><polygon points="50,94 9,24 91,24" stroke="#EFAE3C" stroke-width="6" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="kit-header-title">Kit Inmobiliario <span>Bolivia</span></div>
+  <div class="spacer"></div>
+  <div class="agent-badge" id="agent-badge" onclick="abrirPerfil()" title="Mi perfil">Agente</div>
+  <button class="logout-kit-btn" onclick="logoutKit()">Salir</button>
+</header>
+
+<!-- MOBILE OVERLAY -->
+<div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+<div class="mobile-sidebar" id="mobile-sidebar">
+  <div class="mobile-sidebar-top">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.9rem;color:var(--navy);">Herramientas</div>
+    <button class="mobile-close-btn" onclick="toggleMobileMenu()">&#10005;</button>
+  </div>
+  <div id="mobile-sidebar-phases"></div><div style="padding:10px 20px;border-top:1px solid var(--border);"><button id="install-wrap" onclick="instalarApp();toggleMobileMenu();" style="width:100%;text-align:left;padding:10px 0;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);">&#128242; Instalar App en mi celular</button></div>
+</div>
+
+<!-- PERFIL MODAL -->
+<div class="modal-bg" id="perfil-modal">
+  <div class="modal-box">
+    <h2>Mi perfil</h2>
+    <p class="modal-sub">Tu informacion aparece en todos los textos y documentos generados.</p>
+    <div class="photo-wrap">
+      <div class="photo-ring" id="photo-ring-preview">&#128100;</div>
+      <div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:4px;">Foto de perfil</div>
+        <input type="file" id="foto-input" accept="image/*" style="font-size:0.78rem;" onchange="cargarFoto(this)"/>
+        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">Se guarda solo en tu dispositivo.</div>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">Nombre</label>
+      <input type="text" id="perfil-nombre" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">Ciudad</label>
+      <input type="text" id="perfil-ciudad" placeholder="Ej: La Paz, Cochabamba..." style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+    </div>
+    <div class="form-group" style="margin-bottom:20px;">
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">WhatsApp</label>
+      <input type="text" id="perfil-whatsapp" placeholder="Ej: +591 71234567" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+    </div>
+    <div class="form-group" style="margin-bottom:20px;">
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">Email</label>
+      <input type="email" id="perfil-email" placeholder="tu@correo.com" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-primary" style="flex:1;" onclick="guardarPerfil()">Guardar cambios</button>
+      <button class="btn btn-outline" onclick="cerrarPerfil()">Cancelar</button>
+    </div>
+    <div id="perfil-msg" style="font-size:0.82rem;margin-top:10px;min-height:1em;"></div>
+  </div>
+</div>
+
+<div class="kit-body">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-phase">
+    <button class="phase-btn active" onclick="showPhase(0)">
+      <span class="phase-num active">★</span> Mapa del proceso
+    </button>
+  </div>
+  <div id="sidebar-phases"></div>
+</nav>
+
+<!-- MAIN -->
+<main class="kit-main" id="kit-main">
+
+  <!-- MAPA DEL PROCESO -->
+  <div id="phase-mapa">
+    <div style="margin-bottom:24px;">
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:6px;">Tu proceso de venta</h1>
+      <p style="color:var(--text-muted);font-size:0.9rem;">Haz clic en la etapa donde estás para ir directo a las herramientas que necesitas.</p>
+    </div>
+    <div class="mapa-grid" id="mapa-grid"></div>
+  </div>
+
+  <!-- FASES (se muestran/ocultan) -->
+  <div id="phase-content" hidden></div>
+
+</main>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+  // Chequeo de acceso — BORRADOR
+  if(!localStorage.getItem("mk_auth")){
+    window.location.href = "../login/";
+  }
+// ══════════════════════════════════════════════
+// DATOS DEL AGENTE (viene del perfil en Supabase)
+// ══════════════════════════════════════════════
+const AGENTE = {
+  nombre: localStorage.getItem('mk_nombre') || 'Agente',
+  ciudad: localStorage.getItem('mk_ciudad') || 'Bolivia',
+  whatsapp: localStorage.getItem('mk_whatsapp') || '',
+  email: localStorage.getItem('mk_email') || ''
+};
+document.getElementById('agent-badge').textContent = AGENTE.nombre;
+
+// ══════════════════════════════════════════════
+// FASES Y HERRAMIENTAS
+// ══════════════════════════════════════════════
+const FASES = [
+  { id:'captacion', num:1, nombre:'Captación', desc:'Reunión con el propietario, precio de salida, acuerdo de trabajo', color:'navy', tools:['guia-captacion','propuesta-propietario','calc-comision','acuerdo-trabajo'] },
+  { id:'publicacion', num:2, nombre:'Publicación y marketing', desc:'Ficha de propiedad, canales, portales', color:'navy', tools:['ficha-propiedad','cartera-propiedades-excel'] },
+  { id:'interesados', num:3, nombre:'Atención de interesados', desc:'Primera respuesta, filtrar leads, separar curiosos de compradores reales', color:'navy', tools:['respuesta-rapida','filtro-comprador'] },
+  { id:'visita', num:4, nombre:'La visita', desc:'Checklist antes de mostrar, leer señales de cierre', color:'navy', tools:['checklist-visita'] },
+  { id:'seguimiento', num:5, nombre:'Seguimiento post-visita', desc:'El agente promedio hace 1.3 contactos — se necesitan 5+', color:'gold', tools:['generador-seguimiento','control-seguimientos-excel'] },
+  { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles','comparador-inmuebles-excel'] },
+  { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico','calc-anticretico-excel'] },
+  { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que nadie trabaja — referidos convierten 50x mejor', color:'gold', tools:['mensaje-postventa'] },
+  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, banco de scripts', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes'] },
+];
+
+// ══════════════════════════════════════════════
+// UTILIDADES
+// ══════════════════════════════════════════════
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.hidden=false; clearTimeout(t._t); t._t=setTimeout(()=>{t.hidden=true;},2500); }
+
+function copiar(texto){
+  navigator.clipboard.writeText(texto).then(()=>toast('Copiado al portapapeles ✓')).catch(()=>{ const ta=document.createElement('textarea'); ta.value=texto; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); toast('Copiado ✓'); });
+}
+
+function abrirWhatsApp(texto){
+  window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');
+}
+
+function $(id){ return document.getElementById(id); }
+
+// ══════════════════════════════════════════════
+// MAPA DEL PROCESO
+// ══════════════════════════════════════════════
+function buildMapa(){
+  const grid = $('mapa-grid');
+  FASES.forEach((f,i)=>{
+    if(f.id==='transversal') return;
+    const card = document.createElement('div');
+    card.className = 'mapa-card' + (f.color==='gold'?' gold':'');
+    card.innerHTML = `
+      <div class="mapa-num">Etapa ${f.num}</div>
+      <div class="mapa-name">${f.nombre}</div>
+      <div class="mapa-desc">${f.desc}</div>
+      <div class="mapa-tools">${f.tools.length} herramienta${f.tools.length>1?'s':''} →</div>
+    `;
+    card.onclick = ()=>showPhase(i);
+    grid.appendChild(card);
+  });
+  // Transversal
+  const card = document.createElement('div');
+  card.className = 'mapa-card';
+  const ft = FASES[FASES.length-1];
+  card.innerHTML = `<div class="mapa-num">Siempre disponible</div><div class="mapa-name">${ft.nombre}</div><div class="mapa-desc">${ft.desc}</div><div class="mapa-tools">${ft.tools.length} recursos →</div>`;
+  card.onclick = ()=>showPhase(FASES.length-1);
+  grid.appendChild(card);
+}
+
+// ══════════════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════════════
+function buildSidebar(){
+  const container = $('sidebar-phases');
+  FASES.forEach((f,fi)=>{
+    const ph = document.createElement('div');
+    ph.className = 'sidebar-phase';
+    ph.innerHTML = `<button class="phase-btn" id="sidebar-phase-${fi}" onclick="showPhase(${fi})"><span class="phase-num">${f.num||'∞'}</span>${f.nombre}</button>`;
+    container.appendChild(ph);
+  });
+}
+
+// ══════════════════════════════════════════════
+// NAVEGACIÓN
+// ══════════════════════════════════════════════
+function showPhase(idx){
+  $('phase-mapa').hidden = true;
+  $('phase-content').hidden = false;
+  $('phase-content').innerHTML = renderFase(FASES[idx], idx);
+  // scroll top
+  document.querySelector('.kit-main').scrollTop = 0;
+  window.scrollTo(0,0);
+}
+
+function showMapa(){
+  $('phase-mapa').hidden = false;
+  $('phase-content').hidden = true;
+}
+
+// ══════════════════════════════════════════════
+// RENDER DE FASE
+// ══════════════════════════════════════════════
+function renderFase(fase, idx){
+  let html = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <button onclick="showMapa()" class="btn btn-outline btn-sm">← Volver al mapa</button>
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;color:var(--navy);">${fase.num ? 'Etapa '+fase.num+' — ' : ''}${fase.nombre}</h2>
+        <p style="font-size:0.82rem;color:var(--text-muted);">${fase.desc}</p>
+      </div>
+    </div>
+  `;
+  fase.tools.forEach(tid => { html += renderTool(tid); });
+  return html;
+}
+
+// ══════════════════════════════════════════════
+// HERRAMIENTAS
+// ══════════════════════════════════════════════
+function renderTool(id){
+  switch(id){
+    case 'generador-seguimiento': return toolGeneradorSeguimiento();
+    case 'calc-comision': return toolCalculadoraComision();
+    case 'calc-tipo-cambio': return toolCalculadoraTipoCambio();
+    case 'calc-antictretico': return toolCalculadoraAntictretico();
+    case 'ficha-propiedad': return toolFichaPropiedad();
+    case 'propuesta-propietario': return toolPropuestaPropietario();
+    case 'respuesta-rapida': return toolRespuestaRapida();
+    case 'filtro-comprador': return toolFiltroComprador();
+    case 'manejador-objeciones': return toolManejadorObjeciones();
+    case 'checklist-visita': return toolChecklistVisita();
+    case 'checklist-antictretico': return toolChecklistAntictretico();
+    case 'guia-captacion': return toolGuiaCaptacion();
+    case 'guia-legal': return toolGuiaLegal();
+    case 'comparador-inmuebles': return toolComparadorInmuebles();
+    case 'mensaje-postventa': return toolMensajePostventa();
+    case 'banco-scripts': return toolBancoScripts();
+    case 'mis-plantillas': return toolMisPlantillas();
+    case 'tablero-pendientes': return toolTableroPendientes();
+    case 'cartera-propiedades-excel': return toolSheetExterno('&#128202;','Control de cartera de propiedades','Ficha unificada por inmueble &mdash; zonas, precios, estado de cada propiedad.','https://docs.google.com/spreadsheets/d/1rJyieQfDYvjRKOHyPFdtHcCDZ9T-Bd7A/edit?usp=sharing');
+    case 'control-seguimientos-excel': return toolSheetExterno('&#128203;','Control de seguimientos','Registro de todos tus clientes y en qu&#233; etapa est&#225; cada uno.','https://docs.google.com/spreadsheets/d/1BmsbDxB5S3cKt_5hCi7kr6Bga8fXcaBr/edit?usp=sharing');
+    case 'registro-comisiones-excel': return toolSheetExterno('&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/14K14F8ly5eft-XRGhZjlX8VH2-ah9J07/edit?usp=sharing');
+    case 'comparador-inmuebles-excel': return toolSheetExterno('&#128200;','Comparador de inmuebles (plantilla)','Compara hasta 3 propiedades lado a lado &mdash; para mostrar al cliente y guiar la decisi&#243;n.','https://docs.google.com/spreadsheets/d/1M8aGTakJDSp9QIOTnDu5W07aDyLcN9kr/edit?usp=sharing');
+    case 'calc-anticretico-excel': return toolSheetExterno('&#128203;','Calculadora de anticr&#233;tico (plantilla)','C&#225;lculo completo: monto, IT, comisi&#243;n, gastos notariales &mdash; en USD y Bs.','https://docs.google.com/spreadsheets/d/1YA_9QK12_LLFBuyG8hFT7TCd1KL3lWil/edit?usp=sharing');
+    case 'ficha-captacion-pdf': return toolDescargable('ficha-captacion-pdf','📄','Ficha de captación imprimible','PDF','Para llenar a mano en la reunión con el propietario','Descargar PDF','ordena');
+    case 'acuerdo-trabajo': return toolAcuerdoTrabajo();
+    case 'docs-legales-pdf': return toolDescargable('docs-legales-pdf','📄','Checklist de documentos legales','PDF imprimible','Lista completa para llevar a la operación y no olvidar nada','Descargar PDF','ordena');
+    case 'presentacion-personal-word': return toolPresentacionPersonal();
+    default: return `<div class="tool-section"><p style="color:var(--text-muted);">Herramienta "${id}" en construcción.</p></div>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// 1. GENERADOR DE SEGUIMIENTO ★ DEMO
+// ══════════════════════════════════════════════
+function toolGeneradorSeguimiento(){
+  return `<div class="tool-section" id="tool-seguimiento">
+    <div class="tool-header">
+      <div class="tool-icon gold">💬</div>
+      <div><div class="tool-title">Generador de seguimiento <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">El agente promedio hace 1.3 contactos — el 80% de las ventas requiere 5 o más. Genera el mensaje exacto para cada momento.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Nombre del cliente</label><input id="seg-nombre" type="text" placeholder="María Quispe"/></div>
+      <div class="form-group"><label>Propiedad que visitó</label><input id="seg-propiedad" type="text" placeholder="Dpto. 3 amb. en Sopocachi"/></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>¿Cuánto tiempo pasó desde la visita?</label>
+        <select id="seg-tiempo">
+          <option value="1dia">1 día</option>
+          <option value="3dias">3 días</option>
+          <option value="1semana">1 semana</option>
+          <option value="2semanas">2 semanas</option>
+          <option value="1mes">1 mes o más</option>
+        </select>
+      </div>
+      <div class="form-group"><label>¿Qué dijo al finalizar la visita?</label>
+        <select id="seg-reaccion">
+          <option value="positivo">Le gustó, quedó en pensar</option>
+          <option value="precio">Le interesó pero el precio le pareció alto</option>
+          <option value="otro">Dijo que tiene otro inmueble en vista</option>
+          <option value="frio">No dio señales claras</option>
+          <option value="esposo">Quiere consultar con su pareja/familia</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label>¿Hay algo nuevo que puedas compartirle? (opcional)</label>
+      <input id="seg-novedad" type="text" placeholder="Ej: el propietario aceptaría negociar el precio, hay otra propiedad similar…"/>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="generarSeguimiento()">Generar mensaje</button>
+    </div>
+    <div id="seg-resultado" hidden>
+      <div class="result-box">
+        <div class="result-label">Tu mensaje de seguimiento</div>
+        <div class="result-text" id="seg-texto"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="copiar(document.getElementById('seg-texto').textContent)">📋 Copiar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(document.getElementById('seg-texto').textContent)">💬 Abrir en WhatsApp</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function generarSeguimiento(){
+  const nombre = $('seg-nombre').value.trim() || 'el cliente';
+  const propiedad = $('seg-propiedad').value.trim() || 'la propiedad';
+  const tiempo = $('seg-tiempo').value;
+  const reaccion = $('seg-reaccion').value;
+  const novedad = $('seg-novedad').value.trim();
+  const agente = AGENTE.nombre;
+
+  const saludos = {'1dia':'Hola', '3dias':'Hola', '1semana':'Hola, espero que estés bien', '2semanas':'Hola, espero que estés bien', '1mes':'Hola, ¿cómo estás?'};
+  const saludo = saludos[tiempo];
+
+  let cuerpo = '';
+  if(reaccion==='positivo') cuerpo = `Quería saber si pudiste reflexionar sobre ${propiedad} que visitamos. Si tienes alguna pregunta o te gustaría visitarla de nuevo, estoy disponible para coordinar.`;
+  else if(reaccion==='precio') cuerpo = `Quería comentarte que he podido conversar con el propietario de ${propiedad} y hay posibilidad de negociar. Si te interesa retomarlo, con gusto coordinamos.`;
+  else if(reaccion==='otro') cuerpo = `Quería saber cómo avanzó tu búsqueda. Si el otro inmueble no terminó de convencerte, ${propiedad} sigue disponible y el propietario está abierto a conversar.`;
+  else if(reaccion==='frio') cuerpo = `Pasaron unos días desde que visitamos ${propiedad} y quería saber si surgió alguna duda o necesitas más información para tomar una decisión.`;
+  else cuerpo = `¿Pudiste conversar con tu familia sobre ${propiedad}? Quería saber si llegaron a una conclusión o si necesitan ver la propiedad nuevamente.`;
+
+  let novedadTexto = '';
+  if(novedad) novedadTexto = `\n\nAdemás, quería contarte que ${novedad}.`;
+
+  const mensaje = `${saludo}, ${nombre}. Soy ${agente}.\n\n${cuerpo}${novedadTexto}\n\nQuedo a tu disposición.\n\n📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+
+  $('seg-texto').textContent = mensaje;
+  $('seg-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 2. CALCULADORA DE COMISIÓN
+// ══════════════════════════════════════════════
+function toolCalculadoraComision(){
+  return `<div class="tool-section" id="tool-comision">
+    <div class="tool-header">
+      <div class="tool-icon">💰</div>
+      <div><div class="tool-title">Calculadora de comisión <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Calcula tu comisión en USD y Bs. para mostrarle al propietario cuánto te corresponde.</div></div>
+    </div>
+    <div class="form-row cols-3">
+      <div class="form-group"><label>Precio de venta (USD)</label><input id="com-precio" type="number" placeholder="80000"/></div>
+      <div class="form-group"><label>Tu comisión (%)</label><input id="com-pct" type="number" placeholder="3" step="0.5"/></div>
+      <div class="form-group"><label>Tipo de cambio (Bs. por USD)</label><input id="com-tc" type="number" placeholder="10.5" step="0.5"/></div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="calcComision()">Calcular</button>
+    </div>
+    <div id="com-resultado" hidden>
+      <div class="result-box navy-accent" style="margin-top:16px;">
+        <div class="result-label">Tu comisión</div>
+        <div class="result-grid">
+          <div class="result-item"><div class="result-item-label">En USD</div><div class="result-item-value" id="com-usd">—</div></div>
+          <div class="result-item"><div class="result-item-label">En Bolivianos</div><div class="result-item-value" id="com-bs">—</div></div>
+          <div class="result-item"><div class="result-item-label">Precio de venta</div><div class="result-item-value" id="com-total">—</div></div>
+          <div class="result-item"><div class="result-item-label">Al propietario</div><div class="result-item-value" id="com-neto">—</div></div>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="btn btn-gold btn-sm" onclick="generarPDFComision()">&#128196; Propuesta de honorarios PDF</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function calcComision(){
+  const precio = parseFloat($('com-precio').value)||0;
+  const pct = parseFloat($('com-pct').value)||0;
+  const tc = parseFloat($('com-tc').value)||10.5;
+  if(!precio||!pct){ toast('Completa el precio y el porcentaje'); return; }
+  const comUSD = precio * (pct/100);
+  const comBs = comUSD * tc;
+  const neto = precio - comUSD;
+  $('com-usd').textContent = '$ '+comUSD.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
+  $('com-bs').textContent = 'Bs. '+comBs.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
+  $('com-total').textContent = '$ '+precio.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
+  $('com-neto').textContent = '$ '+neto.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
+  $('com-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 3. CALCULADORA DOBLE TIPO DE CAMBIO
+// ══════════════════════════════════════════════
+function toolCalculadoraTipoCambio(){
+  return `<div class="tool-section" id="tool-tc">
+    <div class="tool-header">
+      <div class="tool-icon">💱</div>
+      <div><div class="tool-title">Doble tipo de cambio <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">El campo minado boliviano: en qué moneda pactar, a qué tasa, quién asume la brecha entre oficial y paralelo.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Precio pactado (USD)</label><input id="tc-precio" type="number" placeholder="80000"/></div>
+      <div class="form-group"><label>Tipo de cambio oficial (Bs.)</label><input id="tc-oficial" type="number" placeholder="6.96" step="0.01"/></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Tipo de cambio paralelo (Bs.)</label><input id="tc-paralelo" type="number" placeholder="10.5" step="0.1"/></div>
+      <div class="form-group"><label>¿Quién paga en Bs.?</label>
+        <select id="tc-quien">
+          <option value="comprador">El comprador paga en Bs.</option>
+          <option value="vendedor">El vendedor recibe en Bs.</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="calcTC()">Calcular</button>
+    </div>
+    <div id="tc-resultado" hidden>
+      <div class="result-box" style="margin-top:16px;">
+        <div class="result-label">Equivalencias</div>
+        <div class="result-grid">
+          <div class="result-item"><div class="result-item-label">Al tipo oficial</div><div class="result-item-value" id="tc-en-oficial">—</div></div>
+          <div class="result-item"><div class="result-item-label">Al tipo paralelo</div><div class="result-item-value" id="tc-en-paralelo">—</div></div>
+          <div class="result-item"><div class="result-item-label">Brecha (diferencia)</div><div class="result-item-value" id="tc-brecha">—</div></div>
+        </div>
+        <div id="tc-consejo" style="margin-top:12px;font-size:0.82rem;color:var(--text-muted);"></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function calcTC(){
+  const precio = parseFloat($('tc-precio').value)||0;
+  const oficial = parseFloat($('tc-oficial').value)||6.96;
+  const paralelo = parseFloat($('tc-paralelo').value)||0;
+  if(!precio||!paralelo){ toast('Completa todos los campos'); return; }
+  const enOficial = precio * oficial;
+  const enParalelo = precio * paralelo;
+  const brecha = enParalelo - enOficial;
+  $('tc-en-oficial').textContent = 'Bs. '+enOficial.toLocaleString('es-BO',{maximumFractionDigits:0});
+  $('tc-en-paralelo').textContent = 'Bs. '+enParalelo.toLocaleString('es-BO',{maximumFractionDigits:0});
+  $('tc-brecha').textContent = 'Bs. '+brecha.toLocaleString('es-BO',{maximumFractionDigits:0});
+  const quien = $('tc-quien').value;
+  $('tc-consejo').textContent = quien==='comprador'
+    ? `Si el comprador paga en Bs. al tipo paralelo (Bs. ${paralelo}), está pagando Bs. ${brecha.toLocaleString('es-BO',{maximumFractionDigits:0})} más de lo que correspondería al tipo oficial. Conviene pactar en USD con acuerdo explícito del tipo de cambio.`
+    : `Si el vendedor recibe en Bs. al tipo oficial (Bs. ${oficial}), recibe Bs. ${brecha.toLocaleString('es-BO',{maximumFractionDigits:0})} menos de lo que valdría al tipo paralelo. Conviene negociar a qué tasa se hace la conversión.`;
+  $('tc-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 4. CALCULADORA DE ANTICRÉTICO
+// ══════════════════════════════════════════════
+function toolCalculadoraAntictretico(){
+  return `<div class="tool-section" id="tool-antictretico">
+    <div class="tool-header">
+      <div class="tool-icon">🏛️</div>
+      <div><div class="tool-title">Calculadora de anticrético <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Figura casi exclusiva de Bolivia. Calcula equivalencias, comisión y recordatorio de registro obligatorio en Derechos Reales.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Capital del anticrético (USD)</label><input id="anti-capital" type="number" placeholder="30000"/></div>
+      <div class="form-group"><label>Duración del contrato (años)</label><input id="anti-años" type="number" placeholder="2"/></div>
+    </div>
+    <div class="form-row cols-3">
+      <div class="form-group"><label>Tu comisión (%)</label><input id="anti-com" type="number" placeholder="3" step="0.5"/></div>
+      <div class="form-group"><label>Tipo de cambio paralelo</label><input id="anti-tc" type="number" placeholder="10.5" step="0.1"/></div>
+      <div class="form-group"><label>Alquiler mensual equiv. (USD)</label><input id="anti-alquiler" type="number" placeholder="300"/></div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="calcAntictretico()">Calcular</button>
+    </div>
+    <div id="anti-resultado" hidden>
+      <div class="result-box" style="margin-top:16px;">
+        <div class="result-label">Resumen del anticrético</div>
+        <div class="result-grid">
+          <div class="result-item"><div class="result-item-label">Capital en Bs.</div><div class="result-item-value" id="anti-cap-bs">—</div></div>
+          <div class="result-item"><div class="result-item-label">Tu comisión (USD)</div><div class="result-item-value" id="anti-com-usd">—</div></div>
+          <div class="result-item"><div class="result-item-label">Ahorro vs. alquiler</div><div class="result-item-value" id="anti-ahorro">—</div></div>
+          <div class="result-item"><div class="result-item-label">Rendimiento implícito</div><div class="result-item-value" id="anti-rendimiento">—</div></div>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="btn btn-gold btn-sm" onclick="generarPDFAntictretico()">&#128196; Resumen del antictretico PDF</button>
+      </div>
+      <div class="guide-alert" style="margin-top:12px;">
+        <strong>&#9888;&#65039; Obligatorio por ley</strong>
+        El contrato de antictretico debe elevarse a escritura publica e inscribirse en Derechos Reales. Sin registro, el capital del anticretista queda desprotegido. No firmar solo con documento privado.
+      </div>
+    </div>
+  </div>`;
+}
+
+function calcAntictretico(){
+  const capital = parseFloat($('anti-capital').value)||0;
+  const años = parseFloat($('anti-años').value)||2;
+  const com = parseFloat($('anti-com').value)||3;
+  const tc = parseFloat($('anti-tc').value)||10.5;
+  const alquiler = parseFloat($('anti-alquiler').value)||0;
+  if(!capital){ toast('Ingresa el capital del anticrético'); return; }
+  const capBs = capital * tc;
+  const comUSD = capital * (com/100);
+  const totalAlquiler = alquiler * 12 * años;
+  const ahorro = totalAlquiler - 0;
+  const rendimiento = alquiler>0 ? ((alquiler*12)/capital*100).toFixed(1) : '—';
+  $('anti-cap-bs').textContent = 'Bs. '+capBs.toLocaleString('es-BO',{maximumFractionDigits:0});
+  $('anti-com-usd').textContent = '$ '+comUSD.toLocaleString('es-BO',{maximumFractionDigits:0});
+  $('anti-ahorro').textContent = alquiler>0 ? '$ '+totalAlquiler.toLocaleString('es-BO',{maximumFractionDigits:0})+' equiv.' : 'N/A';
+  $('anti-rendimiento').textContent = rendimiento !== '—' ? rendimiento+'% anual' : '—';
+  $('anti-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 5. FICHA DE PROPIEDAD
+// ══════════════════════════════════════════════
+function toolFichaPropiedad(){
+  return `<div class="tool-section" id="tool-ficha">
+    <div class="tool-header">
+      <div class="tool-icon">🏠</div>
+      <div><div class="tool-title">Generador de ficha de propiedad <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Completa los datos y genera una publicación profesional lista para Facebook, UltraCasas o InfoCasas — con tu marca.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Tipo de operación</label>
+        <select id="ficha-op"><option>Venta</option><option>Alquiler</option><option>Anticrético</option></select>
+      </div>
+      <div class="form-group"><label>Tipo de inmueble</label>
+        <select id="ficha-tipo"><option>Departamento</option><option>Casa</option><option>Terreno</option><option>Local comercial</option><option>Oficina</option></select>
+      </div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Zona / barrio</label><input id="ficha-zona" type="text" placeholder="Sopocachi, La Paz"/></div>
+      <div class="form-group"><label>Precio</label><input id="ficha-precio" type="text" placeholder="$ 85,000 o Bs. 50,000/mes"/></div>
+    </div>
+    <div class="form-row cols-3">
+      <div class="form-group"><label>Dormitorios</label><input id="ficha-dorm" type="number" placeholder="3"/></div>
+      <div class="form-group"><label>Baños</label><input id="ficha-baños" type="number" placeholder="2"/></div>
+      <div class="form-group"><label>Superficie (m²)</label><input id="ficha-m2" type="number" placeholder="120"/></div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>Características destacadas (una por línea)</label>
+      <textarea id="ficha-features" placeholder="Garaje incluido&#10;Vista a la cordillera&#10;Conjunto cerrado&#10;Ascensor"></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>Fotos de la propiedad (max. 5, desde tu celular o computadora)</label>
+      <input type="file" id="ficha-fotos-input" accept="image/*" multiple onchange="cargarFotosPropiedad(this)" style="font-size:0.85rem;padding:6px 0;width:100%;"/>
+      <div id="ficha-fotos-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="generarFicha()">Generar publicación</button>
+    </div>
+    <div id="ficha-resultado" hidden>
+      <div class="result-box">
+        <div class="result-label">Tu publicación lista para copiar</div>
+        <div class="result-text" id="ficha-texto"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="copiar(document.getElementById('ficha-texto').textContent)">📋 Copiar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(document.getElementById('ficha-texto').textContent)">💬 Compartir</button>
+        <button class="btn btn-gold btn-sm" onclick="generarPDFFicha()">&#128196; Descargar PDF</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function generarFicha(){
+  const op = $('ficha-op').value;
+  const tipo = $('ficha-tipo').value;
+  const zona = $('ficha-zona').value.trim()||'Zona a confirmar';
+  const precio = $('ficha-precio').value.trim()||'Consultar precio';
+  const dorm = $('ficha-dorm').value;
+  const baños = $('ficha-baños').value;
+  const m2 = $('ficha-m2').value;
+  const featuresRaw = $('ficha-features').value.trim();
+  const features = featuresRaw ? featuresRaw.split('\n').filter(f=>f.trim()).map(f=>'✅ '+f.trim()).join('\n') : '';
+
+  const emojis = {Venta:'🔑',Alquiler:'🏡',Anticrético:'🤝'};
+  const emoji = emojis[op]||'🏠';
+
+  let detalles = [];
+  if(dorm) detalles.push(`🛏 ${dorm} dormitorio${dorm>1?'s':''}`);
+  if(baños) detalles.push(`🚿 ${baños} baño${baños>1?'s':''}`);
+  if(m2) detalles.push(`📐 ${m2} m²`);
+
+  const texto = `${emoji} EN ${op.toUpperCase()}: ${tipo} en ${zona}
+
+💲 Precio: ${precio}
+
+${detalles.join('   ')}
+
+${features ? features+'\n' : ''}
+📍 Ubicación: ${zona}
+
+${features ? '' : ''}Interesados comunicarse al WhatsApp 👇
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+
+  $('ficha-texto').textContent = texto;
+  $('ficha-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 6. PROPUESTA AL PROPIETARIO
+// ══════════════════════════════════════════════
+function toolPropuestaPropietario(){
+  return `<div class="tool-section" id="tool-propuesta">
+    <div class="tool-header">
+      <div class="tool-icon">📑</div>
+      <div><div class="tool-title">Propuesta al propietario <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Genera un argumento sólido para presentar al propietario — justifica el precio de salida y tu comisión.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Nombre del propietario</label><input id="prop-nombre" type="text" placeholder="Sr. Mamani"/></div>
+      <div class="form-group"><label>Tipo de inmueble</label><input id="prop-inmueble" type="text" placeholder="Departamento en Miraflores"/></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Precio sugerido de salida (USD)</label><input id="prop-precio" type="number" placeholder="85000"/></div>
+      <div class="form-group"><label>Tu comisión (%)</label><input id="prop-com" type="number" placeholder="3" step="0.5"/></div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>¿Por qué ese precio? (argumentos de mercado)</label>
+      <textarea id="prop-argumentos" placeholder="Propiedades similares en la zona se vendieron entre $80,000 y $90,000 en los últimos 3 meses&#10;La zona tiene alta demanda por cercanía al centro&#10;El inmueble está en excelentes condiciones"></textarea>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="generarPropuesta()">Generar propuesta</button>
+    </div>
+    <div id="prop-resultado" hidden>
+      <div class="result-box navy-accent">
+        <div class="result-label">Tu propuesta lista</div>
+        <div class="result-text" id="prop-texto"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="copiar(document.getElementById('prop-texto').textContent)">📋 Copiar</button>
+        <button class="btn btn-gold btn-sm" onclick="generarPDFPropuesta()">📄 Descargar PDF</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function generarPropuesta(){
+  const propNombre = $('prop-nombre').value.trim()||'Estimado propietario';
+  const inmueble = $('prop-inmueble').value.trim()||'su inmueble';
+  const precio = parseFloat($('prop-precio').value)||0;
+  const com = parseFloat($('prop-com').value)||3;
+  const args = $('prop-argumentos').value.trim();
+  if(!precio){ toast('Ingresa el precio sugerido'); return; }
+  const comMonto = precio*(com/100);
+  const neto = precio - comMonto;
+
+  const texto = `PROPUESTA DE CAPTACIÓN
+Preparada por: ${AGENTE.nombre} | ${AGENTE.whatsapp}
+
+Estimado/a ${propNombre}:
+
+Le presento mi propuesta para la comercialización de ${inmueble}.
+
+PRECIO SUGERIDO DE SALIDA: USD ${precio.toLocaleString('es-BO')}
+
+FUNDAMENTO DE MERCADO:
+${args||'— (Completa los argumentos de mercado)'}
+
+MI SERVICIO INCLUYE:
+✓ Publicación en portales UltraCasas, InfoCasas y redes sociales
+✓ Atención personalizada a cada interesado
+✓ Filtro de compradores serios antes de cada visita
+✓ Acompañamiento en todo el proceso legal y administrativo
+✓ Asesoría en negociación y cierre
+
+COMISIÓN: ${com}% sobre el precio de venta
+— Su ingreso neto estimado: USD ${neto.toLocaleString('es-BO')}
+— Mi comisión: USD ${comMonto.toLocaleString('es-BO')} (solo al concretarse la venta)
+
+Quedo a su disposición para cualquier consulta.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+
+  $('prop-texto').textContent = texto;
+  $('prop-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 7. RESPUESTA RÁPIDA
+// ══════════════════════════════════════════════
+function toolRespuestaRapida(){
+  return `<div class="tool-section" id="tool-respuesta">
+    <div class="tool-header">
+      <div class="tool-icon gold">⚡</div>
+      <div><div class="tool-title">Respuesta rápida a consultas <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Responder en 5 minutos = 21x más probabilidad de calificar el lead. Genera tu primera respuesta lista para pegar.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Nombre del interesado (si lo sabes)</label><input id="rr-nombre" type="text" placeholder="Juan (o dejarlo vacío)"/></div>
+      <div class="form-group"><label>¿Por qué canal llegó la consulta?</label>
+        <select id="rr-canal"><option>Facebook</option><option>UltraCasas</option><option>InfoCasas</option><option>WhatsApp directo</option><option>Instagram</option></select>
+      </div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Propiedad por la que pregunta</label><input id="rr-propiedad" type="text" placeholder="Dpto. en Sopocachi de 3 ambientes"/></div>
+      <div class="form-group"><label>¿Qué información tienes disponible ahora?</label>
+        <select id="rr-info">
+          <option value="completa">Toda la información disponible</option>
+          <option value="precio">Solo el precio</option>
+          <option value="sin-precio">Sin el precio definido aún</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="generarRespuesta()">Generar respuesta</button>
+    </div>
+    <div id="rr-resultado" hidden>
+      <div class="result-box">
+        <div class="result-label">Tu primera respuesta</div>
+        <div class="result-text" id="rr-texto"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="copiar(document.getElementById('rr-texto').textContent)">📋 Copiar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(document.getElementById('rr-texto').textContent)">💬 Abrir en WhatsApp</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function generarRespuesta(){
+  const nombre = $('rr-nombre').value.trim();
+  const canal = $('rr-canal').value;
+  const propiedad = $('rr-propiedad').value.trim()||'la propiedad';
+  const info = $('rr-info').value;
+  const saludo = nombre ? `Hola, ${nombre}` : 'Hola';
+  let cuerpo = '';
+  if(info==='completa') cuerpo = `Gracias por tu interés en ${propiedad}. Con gusto te comparto toda la información y coordinamos una visita a tu conveniencia.`;
+  else if(info==='precio') cuerpo = `Gracias por tu interés en ${propiedad}. Tengo toda la información disponible y podemos coordinar una visita.`;
+  else cuerpo = `Gracias por tu consulta sobre ${propiedad}. En breve te confirmo todos los detalles. ¿Cuál es tu disponibilidad para coordinar una visita?`;
+
+  const texto = `${saludo}, soy ${AGENTE.nombre}, agente inmobiliario en ${AGENTE.ciudad}.\n\n${cuerpo}\n\n¿Tienes alguna pregunta específica? Quedo a tu disposición.\n\n📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+  $('rr-texto').textContent = texto;
+  $('rr-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 8. FILTRO COMPRADOR
+// ══════════════════════════════════════════════
+function toolFiltroComprador(){
+  const preguntas = [
+    {q:'¿Para cuándo necesitas mudarte o concretar la operación?', a:['En menos de 1 mes','En 1 a 3 meses','Sin urgencia, estoy explorando']},
+    {q:'¿Ya definiste el presupuesto máximo?', a:['Sí, tengo el monto claro','Tengo un rango aproximado','No, todavía no sé cuánto gastar']},
+    {q:'¿Cómo financiarás la compra?', a:['Efectivo disponible','Crédito hipotecario aprobado','Crédito hipotecario en trámite','Aún no lo he definido']},
+    {q:'¿Has visto otras propiedades recientemente?', a:['Sí, he visitado varias','He visto algunas','No, esta es la primera']},
+    {q:'¿Quién toma la decisión final de compra?', a:['Yo solo','Yo y mi pareja/familia','Depende de financiamiento o terceros']},
+  ];
+  let html = `<div class="tool-section" id="tool-filtro">
+    <div class="tool-header">
+      <div class="tool-icon">🔍</div>
+      <div><div class="tool-title">Filtro: ¿comprador real o mirón? <span class="tool-badge badge-guia">Guía</span></div>
+      <div class="tool-subtitle">Usa estas preguntas antes de coordinar la visita para no perder tiempo en personas sin capacidad o intención real de compra.</div></div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">Marca las respuestas del interesado para ver su perfil de comprador.</p>
+    <div id="filtro-preguntas">`;
+
+  preguntas.forEach((p,i)=>{
+    html += `<div style="margin-bottom:16px;padding:14px;background:var(--surface-2);border-radius:var(--radius-sm);">
+      <div style="font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:10px;">${i+1}. ${p.q}</div>`;
+    p.a.forEach((a,j)=>{
+      html += `<label style="display:flex;align-items:center;gap:8px;font-size:0.83rem;color:var(--text);margin-bottom:6px;cursor:pointer;">
+        <input type="radio" name="filtro-${i}" value="${j}" style="accent-color:var(--navy);" onchange="evaluarFiltro()"> ${a}
+      </label>`;
+    });
+    html += `</div>`;
+  });
+
+  html += `</div>
+    <div id="filtro-resultado" hidden>
+      <div class="result-box" id="filtro-resultado-box">
+        <div class="result-label">Perfil del comprador</div>
+        <div class="result-text" id="filtro-texto"></div>
+      </div>
+    </div>
+  </div>`;
+  return html;
+}
+
+function evaluarFiltro(){
+  const vals = [];
+  for(let i=0;i<5;i++){
+    const sel = document.querySelector(`input[name="filtro-${i}"]:checked`);
+    if(sel) vals.push(parseInt(sel.value));
+  }
+  if(vals.length<3) return;
+  const score = vals.reduce((s,v)=>s+(v===0?2:v===1?1:0),0);
+  let perfil='', consejo='';
+  if(score>=7){ perfil='🟢 Comprador serio'; consejo='Coordina la visita cuanto antes. Tiene urgencia, presupuesto definido y capacidad de decisión. No lo hagas esperar.'; }
+  else if(score>=4){ perfil='🟡 Interesado potencial'; consejo='Vale la pena seguir conversando. Confirma el presupuesto y el financiamiento antes de agendar la visita para asegurarte de que es viable.'; }
+  else{ perfil='🔴 Mirón o explorador temprano'; consejo='No coordines una visita aún. Mantén el contacto, compártele información general y vuelve a calificarlo en 2-3 semanas cuando su situación haya avanzado.'; }
+  $('filtro-texto').textContent = perfil+'\n\n'+consejo;
+  $('filtro-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 9. CHECKLIST DE VISITA
+// ══════════════════════════════════════════════
+function toolChecklistVisita(){
+  const items = [
+    {t:'Antes de la visita', items:[
+      {txt:'Confirmar la cita con 1 hora de anticipación',tag:'obligatorio'},
+      {txt:'Llevar la ficha de la propiedad impresa o en el celular',tag:'importante'},
+      {txt:'Conocer el precio de propiedades similares en la zona',tag:'importante'},
+      {txt:'Preparar 2-3 fortalezas del inmueble para destacar',tag:''},
+    ]},
+    {t:'Durante la visita', items:[
+      {txt:'Llegar 10 minutos antes para revisar el estado del inmueble',tag:'importante'},
+      {txt:'Dejar que el cliente recorra sin interrumpir — observar su reacción',tag:''},
+      {txt:'Preguntar: "¿Qué te parece hasta ahora?"',tag:'importante'},
+      {txt:'Identificar señales positivas: preguntas sobre mudanza, medidas, vecinos',tag:''},
+      {txt:'Preguntar: "¿Hay algo que te gustaría que fuera diferente?"',tag:'importante'},
+    ]},
+    {t:'Al finalizar la visita', items:[
+      {txt:'Preguntar directamente: "¿Te interesa avanzar?"',tag:'obligatorio'},
+      {txt:'Si hay interés: definir próximo paso concreto (fecha, condición, precio)',tag:'obligatorio'},
+      {txt:'Tomar nota del nombre completo y WhatsApp del visitante',tag:'obligatorio'},
+      {txt:'Registrar fecha y observaciones en tu control de seguimientos',tag:'importante'},
+    ]},
+  ];
+  let html = `<div class="tool-section" id="tool-checklist-visita">
+    <div class="tool-header">
+      <div class="tool-icon">✅</div>
+      <div><div class="tool-title">Checklist de visita <span class="tool-badge badge-guia">Guía</span></div>
+      <div class="tool-subtitle">No improvises la visita. Sigue este checklist para leer al comprador y no perder señales de cierre.</div></div>
+    </div>`;
+  items.forEach((sec,si)=>{
+    html += `<div style="margin-bottom:20px;"><div style="font-size:0.8rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">${sec.t}</div><ul class="checklist">`;
+    sec.items.forEach((it,ii)=>{
+      const id=`cv-${si}-${ii}`;
+      const tagHtml = it.tag ? `<span class="checklist-tag tag-${it.tag}">${it.tag}</span>` : '';
+      html += `<li><input type="checkbox" id="${id}" onchange="toggleCheck('${id}')"><label class="checklist-text" id="label-${id}" for="${id}">${it.txt}${tagHtml}</label></li>`;
+    });
+    html += `</ul></div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+function toggleCheck(id){
+  const cb = document.getElementById(id);
+  const label = document.getElementById('label-'+id);
+  if(label) label.classList.toggle('checked', cb.checked);
+}
+
+// ══════════════════════════════════════════════
+// 10. CHECKLIST ANTICRÉTICO
+// ══════════════════════════════════════════════
+function toolChecklistAntictretico(){
+  const items = [
+    {txt:'Verificar folio real del inmueble en Derechos Reales',tag:'obligatorio'},
+    {txt:'Confirmar que el inmueble no tiene gravámenes ni hipotecas',tag:'obligatorio'},
+    {txt:'Verificar que el propietario es quien figura en el folio real',tag:'obligatorio'},
+    {txt:'Confirmar que no está en proceso de remate o embargo',tag:'obligatorio'},
+    {txt:'El contrato debe elevarse a escritura pública ante notario',tag:'obligatorio'},
+    {txt:'Inscribir el contrato en Derechos Reales antes de entregar el capital',tag:'obligatorio'},
+    {txt:'No firmar con documento privado — sin registro el capital queda desprotegido',tag:'obligatorio'},
+    {txt:'Verificar que el inmueble no tiene otro anticrético vigente',tag:'obligatorio'},
+    {txt:'Confirmar quién paga el impuesto (IT) de la operación',tag:'importante'},
+    {txt:'Establecer por escrito la condición de devolución del capital',tag:'importante'},
+    {txt:'Fotografiar el estado del inmueble al momento de entrega',tag:'importante'},
+    {txt:'Acordar por escrito quién cubre gastos de mantenimiento',tag:''},
+  ];
+  let html = `<div class="tool-section" id="tool-checklist-anti">
+    <div class="tool-header">
+      <div class="tool-icon">🏛️</div>
+      <div><div class="tool-title">Checklist de anticrético <span class="tool-badge badge-guia">Guía</span></div>
+      <div class="tool-subtitle">Verifica cada punto antes de que el anticretista entregue el capital. Una omisión puede costar meses de conflicto legal.</div></div>
+    </div>
+    <ul class="checklist">`;
+  items.forEach((it,i)=>{
+    const id=`ca-${i}`;
+    const tagHtml = it.tag ? `<span class="checklist-tag tag-${it.tag}">${it.tag}</span>` : '';
+    html += `<li><input type="checkbox" id="${id}" onchange="toggleCheck('${id}')"><label class="checklist-text" id="label-${id}" for="${id}">${it.txt}${tagHtml}</label></li>`;
+  });
+  html += `</ul>
+    <div class="guide-alert" style="margin-top:12px;">
+      <strong>Límite profesional</strong>
+      Esta lista te ayuda a verificar, pero no reemplaza la revisión de un abogado. Si hay dudas sobre gravámenes o situación legal, recomienda consultar con un profesional antes de firmar.
+    </div>
+  </div>`;
+  return html;
+}
+
+// ══════════════════════════════════════════════
+// 11. GUÍA DE CAPTACIÓN
+// ══════════════════════════════════════════════
+function toolGuiaCaptacion(){
+  return `<div class="tool-section" id="tool-guia-captacion">
+    <div class="tool-header">
+      <div class="tool-icon">🎯</div>
+      <div><div class="tool-title">Guía de captación y defensa del precio <span class="tool-badge badge-guia">Guía</span></div>
+      <div class="tool-subtitle">Cómo llegar a la reunión preparado, justificar el precio de salida y defender tu comisión sin perder la captación.</div></div>
+    </div>
+    <div class="guide-steps">
+      <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-content"><h4>Investigar antes de ir</h4><p>Busca en UltraCasas e InfoCasas propiedades similares en la misma zona. Anota 2-3 con precio y características. Esos son tus argumentos de mercado.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><h4>La reunión: escuchar antes de hablar</h4><p>Pregunta: "¿Cuánto espera obtener por la propiedad?" Deja que hable. Luego presenta tu precio sugerido con datos concretos, no con opiniones.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><h4>Si el propietario pide más de lo que el mercado soporta</h4><p>No discutas. Muéstrale los comparables: "El mercado en esta zona está pagando entre X y Y. Si salimos a Z, el inmueble se va a quemar en portales y los compradores van a pensar que algo tiene." Propón salir al precio real y revisar en 30 días.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><h4>Si te piden que bajes tu comisión</h4><p>No bajes sin ofrecer menos servicio a cambio. Respuesta: "Mi comisión incluye publicación en portales, filtro de compradores, acompañamiento legal y negociación. Si quieres reducirla, podemos quitar alguno de esos servicios — ¿cuál preferirías sacar?"</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-content"><h4>Captar en exclusiva cuando sea posible</h4><p>Explica: "Si trabajo en exclusiva, me comprometo con toda mi energía en este inmueble. Si trabajo con otras agencias, el inmueble aparece duplicado en portales, con precios diferentes, y el comprador desconfía." Ofrece un plazo de 60-90 días como prueba.</p></div></div>
+    </div>
+    <div class="guide-alert" style="margin-top:16px;"><strong>Recuerda</strong>Captar sobrevalorado es peor que no captar. Un inmueble que lleva meses en portales sin venderse tiene el precio mal. El tiempo perdido vale más que la captación.</div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// 12. GUÍA LEGAL
+// ══════════════════════════════════════════════
+function toolGuiaLegal(){
+  return `<div class="tool-section" id="tool-guia-legal">
+    <div class="tool-header">
+      <div class="tool-icon">⚖️</div>
+      <div><div class="tool-title">Guía legal-administrativa <span class="tool-badge badge-guia">Guía</span></div>
+      <div class="tool-subtitle">Los pasos del proceso legal de una venta en Bolivia. Orientación para guiar al cliente — no reemplaza a un abogado.</div></div>
+    </div>
+    <div class="guide-steps">
+      <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-content"><h4>Folio real (Información Rápida de Derechos Reales)</h4><p>Verifica que el vendedor es el propietario real, que no hay hipotecas, gravámenes ni embargos. Se obtiene en la oficina de Derechos Reales del departamento. Costo: aproximadamente Bs. 15-30.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><h4>Minuta de compraventa</h4><p>Documento preparado por un abogado que establece las condiciones de la venta: precio, forma de pago, plazos. Ambas partes deben firmarlo ante notario.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><h4>Impuestos de la operación</h4><p>Impuesto a la Transferencia (IT): 3% del valor de venta, lo paga el vendedor. Si el vendedor es empresa, puede aplicar RC-IVA. Consultar con contador si hay dudas sobre el régimen.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><h4>Escritura pública ante notario</h4><p>La minuta se eleva a escritura pública en notaría. El notario verifica identidades y da fe del acto. Costo varía según el valor del inmueble.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-content"><h4>Registro en Derechos Reales</h4><p>La escritura se inscribe en Derechos Reales para que el comprador quede como nuevo propietario en el folio real. Sin este paso, la transferencia no es oponible a terceros.</p></div></div>
+    </div>
+    <div class="guide-alert"><strong>L&#237;mite profesional</strong>Esta gu&#237;a es orientativa. Para una transacci&#243;n espec&#237;fica, siempre recomienda al cliente trabajar con un abogado o notario de su confianza. Tu rol es guiar, no asesorar legalmente.</div>
+    <div class="btn-group" style="margin-top:16px;">
+      <button class="btn btn-gold btn-sm" onclick="generarPDFGuiaLegal()">&#128196; Resumen legal para el cliente PDF</button>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// 13. MANEJADOR DE OBJECIONES
+// ══════════════════════════════════════════════
+function toolManejadorObjeciones(){
+  const objeciones = [
+    { situacion:'El cliente dice "está caro"', respuestas:[
+      'Entiendo tu punto. ¿Puedes contarme con qué propiedad lo estás comparando? Así puedo explicarte mejor qué incluye este precio.',
+      'El precio refleja [características específicas]. Si ajustamos alguna condición — forma de pago, plazo de entrega — podemos conversar con el propietario.',
+      'Las propiedades similares en esta zona están entre X y Y. Esta está en ese rango porque [razón concreta]. ¿Qué precio tenías en mente?'
+    ]},
+    { situacion:'El cliente dice "lo voy a pensar"', respuestas:[
+      '¿Hay algo específico que te genera duda? A veces pensar con información incompleta lleva a más preguntas. ¿Qué es lo que más te preocupa?',
+      'Está muy bien tomarse el tiempo. ¿Puedo preguntarte qué sería lo que te convencería de avanzar?',
+      'Entendido. ¿Para cuándo crees que tendrás una respuesta? Así coordino y te mantengo informado de cualquier novedad.'
+    ]},
+    { situacion:'El cliente dice "tengo otro inmueble en vista"', respuestas:[
+      '¿Me podrías contar qué le gustó de ese otro? Así puedo ayudarte a comparar y ver cuál se ajusta mejor a lo que buscas.',
+      'Está perfecto comparar opciones. ¿Cuál es la diferencia principal entre los dos? A veces ayuda verlo en papel.',
+      'Si el otro inmueble no termina de convencerte, este sigue disponible. ¿Cuándo crees que tomarás la decisión?'
+    ]},
+    { situacion:'El cliente dice "no tengo apuro"', respuestas:[
+      'No hay problema. Solo quiero que sepas que esta propiedad está generando interés — no para presionarte, sino para que tengas esa información.',
+      '¿Hay alguna condición que, si se diera, te haría decidir más rápido? Por ejemplo, si el propietario acepta una forma de pago diferente.',
+    ]},
+    { situacion:'El propietario pide bajar tu comisión', respuestas:[
+      'Mi comisión incluye publicación en portales, filtro de compradores, acompañamiento legal y negociación activa. Si quieres reducirla, podemos sacar alguno de esos servicios — ¿cuál?',
+      'Entiendo la preocupación por los costos. Considera que mi comisión solo se paga cuando la venta se concreta — no hay costo si no hay resultado.',
+      'Un agente que acepta bajar su comisión fácilmente también va a ceder fácilmente en la negociación con el comprador. Yo defiendo el precio de tu propiedad igual que defiendo el mío.'
+    ]},
+  ];
+
+  let html = `<div class="tool-section" id="tool-objeciones">
+    <div class="tool-header">
+      <div class="tool-icon gold">💬</div>
+      <div><div class="tool-title">Manejador de objeciones <span class="tool-badge badge-guia">Guía</span></div>
+      <div class="tool-subtitle">Respuestas listas para las situaciones que más paralizan. Elige la que mejor se adapte y cópiala.</div></div>
+    </div>
+    <div class="scripts-grid">`;
+
+  objeciones.forEach((ob,oi)=>{
+    html += `<div class="script-card">
+      <div class="script-situation">${ob.situacion}</div>`;
+    ob.respuestas.forEach((r,ri)=>{
+      const id=`ob-${oi}-${ri}`;
+      html += `<div style="margin-bottom:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.84rem;color:var(--text);line-height:1.6;">
+        "${r}"
+        <div style="margin-top:8px;display:flex;gap:8px;">
+          <button class="btn btn-outline btn-sm" onclick="copiar('${r.replace(/'/g,"\\'")}')">📋 Copiar</button>
+          <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp('${r.replace(/'/g,"\\'")}')">💬 WhatsApp</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  html += `</div></div>`;
+  return html;
+}
+
+// ══════════════════════════════════════════════
+// 14. COMPARADOR DE INMUEBLES
+// ══════════════════════════════════════════════
+function toolComparadorInmuebles(){
+  return `<div class="tool-section" id="tool-comparador">
+    <div class="tool-header">
+      <div class="tool-icon">⚖️</div>
+      <div><div class="tool-title">Comparador de inmuebles <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Carga hasta 3 propiedades para mostrarle al cliente una comparación clara y ayudarlo a decidir.</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px;">
+      ${[1,2,3].map(n=>`
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--navy);text-transform:uppercase;margin-bottom:10px;">Propiedad ${n}</div>
+        <input type="text" placeholder="Nombre / dirección" id="comp-nombre-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+        <input type="number" placeholder="Precio (USD)" id="comp-precio-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+        <input type="number" placeholder="m²" id="comp-m2-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+        <input type="number" placeholder="Dormitorios" id="comp-dorm-${n}" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+      </div>`).join('')}
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="generarComparacion()">Comparar</button>
+    </div>
+    <div id="comp-resultado" hidden>
+      <div class="result-box navy-accent" style="margin-top:16px;">
+        <div class="result-label">Comparación</div>
+        <div id="comp-tabla" style="overflow-x:auto;"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-outline btn-sm" onclick="copiar(document.getElementById('comp-texto-plano').textContent)">&#128203; Copiar texto</button>
+        <button class="btn btn-gold btn-sm" onclick="generarPDFComparador()">&#128196; Comparativa PDF</button>
+      </div>
+      <div id="comp-texto-plano" hidden></div>
+    </div>
+  </div>`;
+}
+
+function generarComparacion(){
+  const props = [1,2,3].map(n=>({
+    nombre: document.getElementById(`comp-nombre-${n}`).value.trim(),
+    precio: parseFloat(document.getElementById(`comp-precio-${n}`).value)||0,
+    m2: parseFloat(document.getElementById(`comp-m2-${n}`).value)||0,
+    dorm: parseFloat(document.getElementById(`comp-dorm-${n}`).value)||0,
+  })).filter(p=>p.nombre||p.precio);
+  if(props.length<2){ toast('Completa al menos 2 propiedades'); return; }
+
+  let tabla = `<table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+    <thead><tr style="background:var(--navy);color:#fff;">
+      <th style="padding:8px 12px;text-align:left;">Característica</th>
+      ${props.map(p=>`<th style="padding:8px 12px;text-align:center;">${p.nombre||'—'}</th>`).join('')}
+    </tr></thead><tbody>`;
+
+  const rows = [
+    {label:'Precio (USD)', fn:p=>p.precio?'$ '+p.precio.toLocaleString('es-BO'):'—'},
+    {label:'Superficie (m²)', fn:p=>p.m2?p.m2+' m²':'—'},
+    {label:'Precio por m²', fn:p=>(p.precio&&p.m2)?'$ '+(p.precio/p.m2).toFixed(0)+'/m²':'—'},
+    {label:'Dormitorios', fn:p=>p.dorm||'—'},
+  ];
+
+  rows.forEach((r,i)=>{
+    const bg = i%2===0?'var(--surface-2)':'var(--surface)';
+    tabla += `<tr style="background:${bg};">
+      <td style="padding:8px 12px;font-weight:600;color:var(--navy);">${r.label}</td>
+      ${props.map(p=>`<td style="padding:8px 12px;text-align:center;">${r.fn(p)}</td>`).join('')}
+    </tr>`;
+  });
+
+  tabla += `</tbody></table>`;
+  $('comp-tabla').innerHTML = tabla;
+
+  // Texto plano para copiar
+  let txt = 'COMPARACIÓN DE INMUEBLES\n\n';
+  props.forEach(p=>{ txt += `${p.nombre||'Propiedad'}: $${p.precio.toLocaleString('es-BO')} | ${p.m2?p.m2+'m²':''} | ${p.dorm?p.dorm+' dorm.':''}\n`; });
+  $('comp-texto-plano').textContent = txt;
+  $('comp-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 15. MENSAJE POST-VENTA
+// ══════════════════════════════════════════════
+function toolMensajePostventa(){
+  return `<div class="tool-section" id="tool-postventa">
+    <div class="tool-header">
+      <div class="tool-icon gold">🤝</div>
+      <div><div class="tool-title">Mensaje post-venta y referidos <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Los referidos convierten 50 veces mejor que leads fríos. Este mensaje cultiva esa relación — la etapa que casi nadie trabaja.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Nombre del cliente</label><input id="pv-nombre" type="text" placeholder="María Quispe"/></div>
+      <div class="form-group"><label>¿Qué operación concretaron?</label>
+        <select id="pv-tipo"><option>compra de su departamento</option><option>venta de su propiedad</option><option>alquiler</option><option>anticrético</option></select>
+      </div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>¿Cuánto tiempo pasó desde el cierre?</label>
+        <select id="pv-tiempo"><option>1 semana</option><option>1 mes</option><option>3 meses</option><option>6 meses</option></select>
+      </div>
+      <div class="form-group"><label>Tipo de mensaje</label>
+        <select id="pv-msg"><option value="seguimiento">Preguntar cómo están</option><option value="referido">Pedir referidos</option><option value="aniversario">Aniversario de la operación</option></select>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="generarPostventa()">Generar mensaje</button>
+    </div>
+    <div id="pv-resultado" hidden>
+      <div class="result-box">
+        <div class="result-label">Tu mensaje</div>
+        <div class="result-text" id="pv-texto"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="copiar(document.getElementById('pv-texto').textContent)">📋 Copiar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(document.getElementById('pv-texto').textContent)">💬 WhatsApp</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function generarPostventa(){
+  const nombre = $('pv-nombre').value.trim()||'el cliente';
+  const tipo = $('pv-tipo').value;
+  const tiempo = $('pv-tiempo').value;
+  const msg = $('pv-msg').value;
+  let texto = '';
+  if(msg==='seguimiento'){
+    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Han pasado ${tiempo} desde que concretamos la ${tipo} y quería saber cómo están. Espero que todo haya ido excelente. Cualquier consulta que tengas sobre la propiedad, con gusto te ayudo.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+  } else if(msg==='referido'){
+    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conocen a alguien que esté buscando comprar, vender o alquilar en ${AGENTE.ciudad}, me alegra mucho si me recomiendan. El boca a boca es lo más valioso en este negocio.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+  } else {
+    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Hoy se cumple un año desde que concretamos la ${tipo}, y quería saludarles y desearles muchos años de felicidad. Ha sido un gusto acompañarles en ese proceso.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+  }
+  $('pv-texto').textContent = texto;
+  $('pv-resultado').hidden = false;
+}
+
+// ══════════════════════════════════════════════
+// 16. BANCO DE SCRIPTS
+// ══════════════════════════════════════════════
+function toolBancoScripts(){
+  const scripts = [
+    {cat:'Primera llamada a un propietario', txt:`Hola, buenos días, le habla ${AGENTE.nombre}, soy agente inmobiliario en ${AGENTE.ciudad}. Vi su propiedad publicada y me gustaría reunirme con usted para presentarle cómo puedo ayudarle a venderla al mejor precio. ¿Tendría 20 minutos esta semana?`},
+    {cat:'Cuando el comprador pide descuento', txt:`Entiendo que quieres el mejor precio posible. Déjame ver qué puedo hacer — pero para conversarlo bien necesito saber: si el propietario acepta bajar el precio, ¿estás listo para avanzar esta semana?`},
+    {cat:'Cuando el vendedor quiere subir el precio', txt:`Le entiendo perfectamente. Sin embargo, el mercado en esta zona está pagando entre X y Y. Si salimos más alto, el inmueble va a estar meses en portales sin consultas, y eso lo perjudica a usted. ¿Probamos al precio de mercado por 60 días y ajustamos si hace falta?`},
+    {cat:'Respuesta a "ya tengo agente"', txt:`No hay problema, lo respeto. Solo le digo que si en algún momento la operación no avanza como espera, con gusto le muestro cómo trabajo. Aquí está mi número por si me necesita.`},
+    {cat:'Cierre directo', txt:`Hemos visto todo, el precio está bien y el inmueble se ajusta a lo que buscas. ¿Qué necesitas para dar el siguiente paso hoy?`},
+    {cat:'Cuando el cliente no contesta', txt:`Hola [nombre], soy ${AGENTE.nombre}. Te escribo brevemente — si ya tomaste una decisión sobre la propiedad, sin problema. Solo dime una palabra y no te molesto más. Si todavía estás evaluando, con gusto te ayudo a resolver dudas. ¡Saludos!`},
+  ];
+
+  let html = `<div class="tool-section" id="tool-banco-scripts">
+    <div class="tool-header">
+      <div class="tool-icon">💬</div>
+      <div><div class="tool-title">Banco de scripts <span class="tool-badge badge-guia">Guía</span></div>
+      <div class="tool-subtitle">Frases probadas para las situaciones más frecuentes. Copia, adapta y envía.</div></div>
+    </div>
+    <div class="scripts-grid">`;
+
+  scripts.forEach((s,i)=>{
+    html += `<div class="script-card">
+      <div class="script-situation">${s.cat}</div>
+      <div class="script-text">"${s.txt}"</div>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="copiar(\`${s.txt.replace(/`/g,'\\`')}\`)">📋 Copiar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(\`${s.txt.replace(/`/g,'\\`')}\`)">💬 WhatsApp</button>
+      </div>
+    </div>`;
+  });
+
+  html += `</div></div>`;
+  return html;
+}
+
+// ══════════════════════════════════════════════
+
+// ══════════════════════════════════════════════
+// 18. MIS PLANTILLAS
+// ══════════════════════════════════════════════
+function toolMisPlantillas(){
+  setTimeout(renderPlantillasLista, 0);
+  return `<div class="tool-section" id="tool-mis-plantillas">
+    <div class="tool-header">
+      <div class="tool-icon">📋</div>
+      <div>
+        <div class="tool-title">Mis plantillas <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-subtitle">Guardá los mensajes que más usás. Se sincronizan entre tu celular y tu computadora.</div>
+      </div>
+    </div>
+    <div style="display:grid;gap:10px;margin-bottom:20px;">
+      <div class="form-group"><label>Título de la plantilla</label><input id="plt-titulo" type="text" placeholder="Ej: Seguimiento día 3, Respuesta a precio alto..."/></div>
+      <div class="form-group"><label>Mensaje</label><textarea id="plt-contenido" rows="3" placeholder="Escribí o pegá aquí el mensaje que querés guardar..."></textarea></div>
+      <button class="btn btn-primary" style="align-self:flex-start;" onclick="guardarNuevaPlantilla()">💾 Guardar plantilla</button>
+    </div>
+    <div id="plt-lista-container">
+      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tenés plantillas guardadas.</div>
+    </div>
+  </div>`;
+}
+
+function getPlantillas(){ return JSON.parse(localStorage.getItem('mk_plantillas')||'[]'); }
+function setPlantillas(arr){ localStorage.setItem('mk_plantillas', JSON.stringify(arr)); sbSavePlantillas(arr); }
+
+function guardarNuevaPlantilla(){
+  const titulo = ($('plt-titulo').value||'').trim();
+  const contenido = ($('plt-contenido').value||'').trim();
+  if(!titulo||!contenido){ toast('Completá el título y el mensaje'); return; }
+  const arr = getPlantillas();
+  arr.unshift({id: Date.now(), titulo, contenido});
+  setPlantillas(arr);
+  $('plt-titulo').value=''; $('plt-contenido').value='';
+  renderPlantillasLista();
+  toast('Plantilla guardada ✓');
+}
+
+function eliminarPlantilla(id){
+  setPlantillas(getPlantillas().filter(p => p.id !== id));
+  renderPlantillasLista();
+  toast('Plantilla eliminada');
+}
+
+function renderPlantillasLista(){
+  const cont = $('plt-lista-container');
+  if(!cont) return;
+  const arr = getPlantillas();
+  if(!arr.length){
+    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tenés plantillas guardadas.</div>';
+    return;
+  }
+  cont.innerHTML = '<div style="display:grid;gap:10px;">' + arr.map(p => {
+    const safe = p.contenido.replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');
+    return `<div class="script-card">
+      <div class="script-situation">${escHtml(p.titulo)}</div>
+      <div style="font-size:0.87rem;color:var(--text);margin-top:6px;white-space:pre-wrap;">${escHtml(p.contenido)}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="copiar(this.dataset.t)" data-t="${p.contenido.replace(/"/g,'&quot;')}">📋 Copiar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(this.dataset.t)" data-t="${p.contenido.replace(/"/g,'&quot;')}">💬 WhatsApp</button>
+        <button class="btn btn-outline btn-sm" style="color:#e74c3c;border-color:#e74c3c;" onclick="eliminarPlantilla(${p.id})">🗑 Eliminar</button>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+// ══════════════════════════════════════════════
+// 19. TABLERO DE PENDIENTES
+// ══════════════════════════════════════════════
+function toolTableroPendientes(){
+  setTimeout(renderPendientesLista, 0);
+  const hoy = new Date().toLocaleDateString('es-BO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const hoyFmt = hoy.charAt(0).toUpperCase() + hoy.slice(1);
+  return `<div class="tool-section" id="tool-tablero-pendientes">
+    <div class="tool-header">
+      <div class="tool-icon">📅</div>
+      <div>
+        <div class="tool-title">Pendientes del día <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-subtitle">${hoyFmt} — Tus tareas de hoy, sincronizadas entre todos tus dispositivos.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <input id="pend-nueva" type="text" style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.9rem;background:var(--surface-2);color:var(--text);" placeholder="Ej: Llamar a María sobre el dpto. en Sopocachi..." onkeydown="if(event.key==='Enter')agregarPendiente()"/>
+      <button class="btn btn-primary" onclick="agregarPendiente()">+ Agregar</button>
+    </div>
+    <div id="pend-lista-container">
+      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agregá la primera!</div>
+    </div>
+    <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+      <div id="pend-contador" style="font-size:0.8rem;color:var(--text-muted);"></div>
+      <button class="btn btn-outline btn-sm" onclick="limpiarPendientesHechos()">🗑 Limpiar completadas</button>
+    </div>
+  </div>`;
+}
+
+function getPendientes(){ return JSON.parse(localStorage.getItem('mk_pendientes')||'[]'); }
+function setPendientes(arr){ localStorage.setItem('mk_pendientes', JSON.stringify(arr)); sbSavePendientes(arr); }
+
+function agregarPendiente(){
+  const input = $('pend-nueva');
+  const texto = (input.value||'').trim();
+  if(!texto){ toast('Escribí una tarea primero'); return; }
+  const arr = getPendientes();
+  arr.push({id: Date.now(), texto, hecho: false});
+  setPendientes(arr);
+  input.value='';
+  renderPendientesLista();
+}
+
+function togglePendiente(id){
+  const arr = getPendientes().map(p => p.id===id ? Object.assign({},p,{hecho:!p.hecho}) : p);
+  setPendientes(arr);
+  renderPendientesLista();
+}
+
+function eliminarPendiente(id){
+  setPendientes(getPendientes().filter(p => p.id !== id));
+  renderPendientesLista();
+}
+
+function limpiarPendientesHechos(){
+  const antes = getPendientes().length;
+  const arr = getPendientes().filter(p => !p.hecho);
+  if(antes === arr.length){ toast('No hay completadas'); return; }
+  setPendientes(arr);
+  renderPendientesLista();
+  toast('Completadas eliminadas');
+}
+
+function renderPendientesLista(){
+  const cont = $('pend-lista-container');
+  const counter = $('pend-contador');
+  if(!cont) return;
+  const arr = getPendientes();
+  if(!arr.length){
+    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agregá la primera!</div>';
+    if(counter) counter.textContent='';
+    return;
+  }
+  const hechas = arr.filter(p=>p.hecho).length;
+  cont.innerHTML = '<div style="display:grid;gap:8px;">' + arr.map(p =>
+    `<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:${p.hecho?'var(--surface-2)':'var(--surface)'};border:1px solid var(--border);border-radius:var(--radius-sm);${p.hecho?'opacity:0.65;':''}">
+      <input type="checkbox" ${p.hecho?'checked':''} onchange="togglePendiente(${p.id})" style="margin-top:3px;width:16px;height:16px;accent-color:var(--navy);flex-shrink:0;cursor:pointer;">
+      <span style="flex:1;font-size:0.9rem;${p.hecho?'text-decoration:line-through;color:var(--text-muted);':''}">${escHtml(p.texto)}</span>
+      <button onclick="eliminarPendiente(${p.id})" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:1rem;padding:0 2px;flex-shrink:0;" title="Eliminar">✕</button>
+    </div>`
+  ).join('') + '</div>';
+  if(counter) counter.textContent = hechas + ' de ' + arr.length + ' completadas';
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+async function sbSavePlantillas(arr){
+  const id = localStorage.getItem('mk_id'); if(!id) return;
+  try{ await fetch(SB_URL+'/rest/v1/rpc/save_plantillas',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_plantillas:arr})}); }catch(e){}
+}
+async function sbSavePendientes(arr){
+  const id = localStorage.getItem('mk_id'); if(!id) return;
+  try{ await fetch(SB_URL+'/rest/v1/rpc/save_pendientes',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_pendientes:arr})}); }catch(e){}
+}
+
+// 17. DESCARGABLES (placeholder hasta tener los archivos reales)
+// ══════════════════════════════════════════════
+function toolDescargable(id, icon, nombre, formato, desc, btnLabel, familia){
+  const badgeClass = familia==='ordena'?'badge-ordena':'badge-hace';
+  const badgeLabel = familia==='ordena'?'Ordena':'Hace';
+  return `<div class="tool-section" id="tool-${id}">
+    <div class="tool-header">
+      <div class="tool-icon">${icon}</div>
+      <div><div class="tool-title">${nombre} <span class="tool-badge ${badgeClass}">${badgeLabel}</span></div>
+      <div class="tool-subtitle">${desc}</div></div>
+    </div>
+    <div class="download-card">
+      <div class="download-icon">${icon}</div>
+      <div class="download-info">
+        <h4>${nombre}</h4>
+        <p>${formato} — Descarga y llena en tu computadora. Tus datos nunca salen de tu equipo.</p>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="toast('Plantilla disponible próximamente')">📥 ${btnLabel}</button>
+    </div>
+    <div style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">Las plantillas descargables estarán disponibles al momento del lanzamiento.</div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// PERFIL DEL AGENTE
+const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
+
+function abrirPerfil(){
+  $('perfil-nombre').value = AGENTE.nombre;
+  $('perfil-ciudad').value = AGENTE.ciudad;
+  $('perfil-whatsapp').value = AGENTE.whatsapp;
+  $('perfil-email').value = AGENTE.email;
+  $('perfil-email').value = AGENTE.email;
+  const foto = localStorage.getItem('mk_foto');
+  const ring = $('photo-ring-preview');
+  if(foto){ ring.innerHTML = '<img src="'+foto+'" alt="foto"/>'; } else { ring.innerHTML = '&#128100;'; }
+  $('perfil-msg').textContent = '';
+  $('perfil-modal').classList.add('open');
+}
+
+function cerrarPerfil(){ $('perfil-modal').classList.remove('open'); }
+
+function cargarFoto(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const base64 = e.target.result;
+    localStorage.setItem('mk_foto', base64);
+    $('photo-ring-preview').innerHTML = '<img src="'+base64+'" alt="foto"/>';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function guardarPerfil(){
+  const nombre = $('perfil-nombre').value.trim();
+  const ciudad = $('perfil-ciudad').value.trim();
+  const whatsapp = $('perfil-whatsapp').value.trim();
+  const email = $('perfil-email').value.trim();
+  const msg = $('perfil-msg');
+  if(!nombre){ msg.style.color='#c0392b'; msg.textContent='El nombre no puede estar vacio.'; return; }
+  const id = localStorage.getItem('mk_id');
+  try {
+    await fetch(SB_URL+'/rest/v1/rpc/client_update_profile', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({p_id:id, p_ciudad:ciudad, p_whatsapp:whatsapp, p_email:email})
+    });
+  } catch(e){ console.warn('Supabase update skipped'); }
+  localStorage.setItem('mk_nombre', nombre);
+  localStorage.setItem('mk_ciudad', ciudad);
+  localStorage.setItem('mk_whatsapp', whatsapp);
+  localStorage.setItem('mk_email', email);
+  AGENTE.nombre = nombre;
+  AGENTE.ciudad = ciudad;
+  AGENTE.whatsapp = whatsapp;
+  AGENTE.email = email;
+  $('agent-badge').textContent = nombre;
+  msg.style.color = '#2F9E6E';
+  msg.textContent = 'Perfil actualizado.';
+  setTimeout(cerrarPerfil, 1200);
+}
+
+function logoutKit(){
+  localStorage.clear();
+  window.location.href = '/login';
+}
+
+function toggleMobileMenu(){
+  $('mobile-overlay').classList.toggle('open');
+  $('mobile-sidebar').classList.toggle('open');
+}
+
+function buildMobileSidebar(){
+  const container = $('mobile-sidebar-phases');
+  if(!container) return;
+  FASES.forEach((f,fi)=>{
+    const ph = document.createElement('div');
+    ph.innerHTML = '<button style="width:100%;text-align:left;padding:10px 20px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);border-bottom:1px solid var(--border);" onclick="showPhase('+fi+');toggleMobileMenu();">'+(f.num?'Etapa '+f.num+' - ':'')+f.nombre+'</button>';
+    container.appendChild(ph);
+  });
+}
+
+function imprimirPropuesta(){ window.print(); }
+
+
+// ══════════════════════════════════════════════
+// FOTOS DE PROPIEDAD
+// ══════════════════════════════════════════════
+var _fotosPropiedad = [];
+
+function _normalizePhoto(dataUrl, callback){
+  var img = new Image();
+  img.onload = function(){
+    var tw = 480, th = 320;
+    var scale = Math.min(tw / img.width, th / img.height);
+    var dw = Math.round(img.width * scale);
+    var dh = Math.round(img.height * scale);
+    var dx = Math.round((tw - dw) / 2);
+    var dy = Math.round((th - dh) / 2);
+    var cv = document.createElement('canvas');
+    cv.width = tw; cv.height = th;
+    var ctx = cv.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, tw, th);
+    ctx.drawImage(img, dx, dy, dw, dh);
+    callback(cv.toDataURL('image/jpeg', 0.88));
+  };
+  img.src = dataUrl;
+}
+
+function cargarFotosPropiedad(input){
+  var files = Array.from(input.files).slice(0, 5);
+  _fotosPropiedad = new Array(files.length);
+  var preview = $('ficha-fotos-preview');
+  if(preview) preview.innerHTML = '';
+  files.forEach(function(file, i){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      _normalizePhoto(e.target.result, function(croppedUrl){
+        _fotosPropiedad[i] = croppedUrl;
+        if(preview){
+          var img = document.createElement('img');
+          img.src = croppedUrl;
+          img.style.cssText = 'width:72px;height:54px;object-fit:fill;border-radius:6px;border:2px solid var(--gold);';
+          preview.appendChild(img);
+        }
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ═══════════════════════
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// GENERADOR DE PDF v3 (html2canvas)
+// ═══════════════════════
+
+function _loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = function(){ setTimeout(resolve, 80); };
+    s.onerror = function(){ reject(new Error('No se pudo cargar: ' + src)); };
+    document.head.appendChild(s);
+  });
+}
+
+async function _loadLibs(){
+  if(!window.jspdf || !window.jspdf.jsPDF){
+    await _loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
+  }
+  if(!window.html2canvas){
+    await _loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+  }
+}
+
+function descargarBlob(blob, filename){
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename; a.style.display = 'none';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 300);
+}
+
+function _findBestCut(canvas, naturalCutY, minY){
+  var ctx = canvas.getContext('2d');
+  var bestY = naturalCutY;
+  var bestScore = -1;
+  for(var y = naturalCutY; y >= minY; y -= 2){
+    var data = ctx.getImageData(0, y, canvas.width, 1).data;
+    var white = 0;
+    for(var i = 0; i < data.length; i += 4){
+      if(data[i] > 238 && data[i+1] > 238 && data[i+2] > 238) white++;
+    }
+    var score = white / (canvas.width);
+    if(score > bestScore){ bestScore = score; bestY = y; }
+    if(score > 0.97) break;
+  }
+  return bestY;
+}
+
+async function renderPDF(htmlContent, filename){
+  var jsPDF = window.jspdf.jsPDF;
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;background:#fff;z-index:-1;';
+  wrap.innerHTML = htmlContent;
+  document.body.appendChild(wrap);
+  try {
+    var canvas = await html2canvas(wrap, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      width: 794,
+      windowWidth: 794
+    });
+    var pdf = new jsPDF({ orientation:'portrait', unit:'px', format:'a4', compress:true });
+    var pageW = pdf.internal.pageSize.getWidth();
+    var pageH = pdf.internal.pageSize.getHeight();
+    var scale = pageW / (canvas.width / 2);
+    var pageHpx = Math.round(pageH / scale * 2);
+    var currentY = 0;
+    var firstPage = true;
+    while(currentY < canvas.height){
+      var naturalCut = currentY + pageHpx;
+      var cutY;
+      if(naturalCut >= canvas.height){
+        cutY = canvas.height;
+      } else {
+        var searchMin = currentY + Math.round(pageHpx * 0.78);
+        cutY = _findBestCut(canvas, naturalCut, searchMin);
+      }
+      var sliceH = cutY - currentY;
+      var sliceCanvas = document.createElement('canvas');
+      sliceCanvas.width = canvas.width;
+      sliceCanvas.height = sliceH;
+      var ctx = sliceCanvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, sliceH);
+      ctx.drawImage(canvas, 0, currentY, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+      if(!firstPage) pdf.addPage();
+      firstPage = false;
+      var displayH = (sliceH / 2) * scale;
+      pdf.addImage(sliceCanvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, pageW, displayH);
+      currentY = cutY;
+    }
+    descargarBlob(pdf.output('blob'), filename);
+    toast('PDF descargado.');
+  } finally {
+    document.body.removeChild(wrap);
+  }
+}
+
+function _agentHeaderHTML(){
+  var foto = localStorage.getItem('mk_foto') || '';
+  var fotoHtml = foto
+    ? '<img src="'+foto+'" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid #EFAE3C;flex-shrink:0;" />'
+    : '<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid #EFAE3C;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">&#128100;</div>';
+  var contacto = [];
+  if(AGENTE.ciudad) contacto.push('<span>&#128205; '+esc(AGENTE.ciudad)+'</span>');
+  if(AGENTE.whatsapp) contacto.push('<span>&#128242; '+esc(AGENTE.whatsapp)+'</span>');
+  if(AGENTE.email) contacto.push('<span>&#9993;&#65039; '+esc(AGENTE.email)+'</span>');
+  var fecha = new Date().toLocaleDateString('es-BO', {day:'2-digit', month:'long', year:'numeric'});
+  return '<div style="background:linear-gradient(135deg,#1B335E 0%,#243f72 100%);color:#fff;padding:28px 36px;display:flex;align-items:center;gap:20px;">'
+    + fotoHtml
+    + '<div style="flex:1;">'
+    +   '<div style="font-family:Georgia,serif;font-size:1.3rem;font-weight:700;letter-spacing:0.5px;margin-bottom:6px;">'+esc(AGENTE.nombre || 'Agente')+'</div>'
+    +   '<div style="font-size:0.82rem;color:rgba(255,255,255,0.75);display:flex;flex-wrap:wrap;gap:12px;">'+contacto.join('')+'</div>'
+    + '</div>'
+    + '<div style="text-align:right;font-size:0.78rem;color:rgba(255,255,255,0.55);">'+fecha+'</div>'
+    + '</div>'
+    + '<div style="height:4px;background:linear-gradient(90deg,#EFAE3C,#f5c842,#EFAE3C);"></div>';
+}
+
+function buildPropuestaHTML(texto){
+  var parrafos = texto.split(/\n+/).filter(function(l){ return l.trim(); });
+  var parrafosHtml = parrafos.map(function(p){
+    var t = p.trim();
+    if(/^\d+\.\s/.test(t) || (t.length < 60 && t.endsWith(':'))){
+      return '<h3 style="font-family:Georgia,serif;font-size:1rem;color:#1B335E;margin:18px 0 6px;font-weight:700;border-left:3px solid #EFAE3C;padding-left:10px;">'+esc(t)+'</h3>';
+    }
+    return '<p style="margin:0 0 10px;line-height:1.7;color:#2d3748;font-size:0.92rem;">'+esc(t)+'</p>';
+  }).join('');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    + _agentHeaderHTML()
+    + '<div style="padding:32px 36px;">'
+    +   '<h1 style="font-family:Georgia,serif;font-size:1.6rem;color:#1B335E;margin:0 0 6px;font-weight:700;">Propuesta de Captaci&#243;n</h1>'
+    +   '<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:24px;"></div>'
+    +   '<div style="background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:20px 24px;margin-bottom:24px;">'
+    +     parrafosHtml
+    +   '</div>'
+    +   '<div style="margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +     '<div style="font-size:0.75rem;color:#94a3b8;">Documento confidencial &middot; Generado para uso profesional</div>'
+    +     '<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +   '</div>'
+    + '</div>'
+    + '</body></html>';
+}
+
+function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos){
+  var chips = [
+    op && '<span style="background:#1B335E;color:#fff;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;">'+esc(op)+'</span>',
+    tipo && '<span style="background:rgba(27,51,94,0.1);color:#1B335E;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">'+esc(tipo)+'</span>',
+    zona && '<span style="background:rgba(239,174,60,0.15);color:#b8860b;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">&#128205; '+esc(zona)+'</span>'
+  ].filter(Boolean).join(' ');
+
+  var statsArr = [];
+  if(dorm) statsArr.push({ icon:'&#127951;', val:dorm, lbl:'Dormitorios' });
+  if(banos) statsArr.push({ icon:'&#128698;', val:banos, lbl:'Ba&#241;os' });
+  if(m2) statsArr.push({ icon:'&#128208;', val:m2+' m&#178;', lbl:'Superficie' });
+
+  var statsHtml = statsArr.map(function(s){
+    return '<div style="text-align:center;background:#f8f9fc;border-radius:10px;padding:14px 20px;flex:1;min-width:80px;">'
+      + '<div style="font-size:1.4rem;">'+s.icon+'</div>'
+      + '<div style="font-size:1.1rem;font-weight:700;color:#1B335E;">'+esc(String(s.val))+'</div>'
+      + '<div style="font-size:0.72rem;color:#718096;">'+s.lbl+'</div>'
+      + '</div>';
+  }).join('');
+
+  var featList = features ? features.split(/\n|,/).map(function(f){ return f.trim(); }).filter(Boolean) : [];
+  var featHtml = featList.length
+    ? '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;">'
+      + featList.map(function(f){ return '<span style="background:#eef1f6;color:#1B335E;padding:5px 12px;border-radius:999px;font-size:0.78rem;">&#10003; '+esc(f)+'</span>'; }).join('')
+      + '</div>'
+    : '';
+
+  var fotosArr = (fotos || []).filter(Boolean).slice(0,5);
+  var fotosHtml = '';
+  if(fotosArr.length){
+    var imgs = fotosArr.map(function(src){
+      return '<img src="'+src+'" style="width:calc(50% - 4px);border-radius:8px;display:block;" />';
+    }).join('');
+    fotosHtml = '<div style="margin-top:24px;">'
+      + '<h3 style="font-family:Georgia,serif;font-size:1rem;color:#1B335E;margin:0 0 12px;font-weight:700;">Fotograf&#237;as</h3>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+imgs+'</div>'
+      + '</div>';
+  }
+
+  var precioHtml = precio
+    ? '<div style="background:linear-gradient(135deg,#EFAE3C,#f5c842);border-radius:10px;padding:16px 24px;margin:20px 0;display:flex;align-items:center;justify-content:space-between;">'
+      + '<span style="font-size:0.85rem;font-weight:600;color:#7a5900;">Precio</span>'
+      + '<span style="font-size:1.4rem;font-weight:800;color:#1B335E;">'+esc(precio)+'</span>'
+      + '</div>'
+    : '';
+
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    + _agentHeaderHTML()
+    + '<div style="padding:28px 36px;">'
+    +   '<div style="margin-bottom:16px;">'
+    +     '<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 8px;font-weight:700;">Ficha de Propiedad</h1>'
+    +     '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+chips+'</div>'
+    +   '</div>'
+    +   precioHtml
+    +   (statsHtml ? '<div style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap;">'+statsHtml+'</div>' : '')
+    +   featHtml
+    +   fotosHtml
+    +   '<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +     '<div style="font-size:0.75rem;color:#94a3b8;">Documento generado para uso profesional</div>'
+    +     '<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +   '</div>'
+    + '</div>'
+    + '</body></html>';
+}
+
+async function generarPDFPropuesta(){
+  var texto = $('prop-texto') ? $('prop-texto').textContent.trim() : '';
+  if(!texto){ toast('Genera la propuesta primero.'); return; }
+  toast('Preparando PDF...');
+  try{
+    await _loadLibs();
+    var html = buildPropuestaHTML(texto);
+    await renderPDF(html, 'Propuesta_Captacion.pdf');
+  } catch(e){
+    toast('Error al generar el PDF: ' + (e.message || 'error'));
+    console.error(e);
+  }
+}
+
+async function generarPDFFicha(){
+  var op = $('ficha-op') ? $('ficha-op').value : '';
+  var tipo = $('ficha-tipo') ? $('ficha-tipo').value : '';
+  var zona = $('ficha-zona') ? $('ficha-zona').value : '';
+  var precio = $('ficha-precio') ? $('ficha-precio').value : '';
+  var dorm = $('ficha-dorm') ? $('ficha-dorm').value : '';
+  var banos = $('ficha-banos') ? $('ficha-banos').value : '';
+  var m2 = $('ficha-m2') ? $('ficha-m2').value : '';
+  var features = $('ficha-features') ? $('ficha-features').value : '';
+  var texto = $('ficha-texto') ? $('ficha-texto').textContent.trim() : '';
+  if(!texto){ toast('Genera la ficha primero.'); return; }
+  toast('Preparando PDF...');
+  try{
+    await _loadLibs();
+    var html = buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, _fotosPropiedad);
+    await renderPDF(html, 'Ficha_Propiedad.pdf');
+  } catch(e){
+    toast('Error al generar el PDF: ' + (e.message || 'error'));
+    console.error(e);
+  }
+}
+
+
+
+// ══════════════════════════════════════════════
+// HERRAMIENTA: ACUERDO DE TRABAJO
+// ══════════════════════════════════════════════
+function toolAcuerdoTrabajo(){
+  return `<div class="tool-section" id="tool-acuerdo">
+    <div class="tool-header">
+      <div class="tool-icon">📝</div>
+      <div><div class="tool-title">Acuerdo de trabajo <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Completa los datos y genera un acuerdo en PDF con tu marca. No es un contrato legal vinculante — es un compromiso de palabra puesto en papel.</div></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Nombre del propietario</label><input id="ac-propietario" type="text" placeholder="Juan Mamani"/></div>
+      <div class="form-group"><label>CI del propietario</label><input id="ac-ci" type="text" placeholder="1234567 LP"/></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Telefono / WhatsApp</label><input id="ac-tel" type="text" placeholder="+591 77777777"/></div>
+      <div class="form-group"><label>Tipo de operacion</label>
+        <select id="ac-tipo"><option>Venta</option><option>Alquiler</option><option>Antictretico</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>Direccion / descripcion del inmueble</label><input id="ac-direccion" type="text" placeholder="Av. Ballivian 450, Sopocachi — departamento 3B"/></div>
+    <div class="form-row cols-3">
+      <div class="form-group"><label>Precio acordado (USD)</label><input id="ac-precio" type="text" placeholder="85000"/></div>
+      <div class="form-group"><label>Comision del agente (%)</label><input id="ac-com" type="number" placeholder="3" step="0.5"/></div>
+      <div class="form-group"><label>Duracion del acuerdo</label><input id="ac-duracion" type="text" placeholder="3 meses"/></div>
+    </div>
+    <div class="form-group"><label>Observaciones adicionales (opcional)</label>
+      <textarea id="ac-obs" rows="2" placeholder="Exclusividad, condiciones especiales, etc."></textarea>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="generarPDFAcuerdo()">&#128196; Generar acuerdo PDF</button>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// HERRAMIENTA: PRESENTACION PERSONAL
+// ══════════════════════════════════════════════
+function toolPresentacionPersonal(){
+  return `<div class="tool-section" id="tool-presentacion">
+    <div class="tool-header">
+      <div class="tool-icon">&#128100;</div>
+      <div><div class="tool-title">Presentacion personal <span class="tool-badge badge-hace">Hace</span></div>
+      <div class="tool-subtitle">Genera una pagina de presentacion profesional con tus datos del perfil lista para compartir con propietarios y compradores.</div></div>
+    </div>
+    <div class="form-group"><label>Especialidad principal</label>
+      <select id="pres-esp">
+        <option>Venta y alquiler de inmuebles residenciales</option>
+        <option>Inmuebles comerciales y oficinas</option>
+        <option>Terrenos y proyectos</option>
+        <option>Antictreticos y alquileres</option>
+        <option>Compra, venta y alquiler de todo tipo</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Años de experiencia</label>
+      <input id="pres-anos" type="text" placeholder="5 años" />
+    </div>
+    <div class="form-group"><label>Zona de trabajo principal</label>
+      <input id="pres-zona" type="text" placeholder="Sopocachi, Miraflores, San Miguel — La Paz" />
+    </div>
+    <div class="form-group"><label>Propuesta de valor (en tus palabras)</label>
+      <textarea id="pres-valor" rows="2" placeholder="Te ayudo a vender tu propiedad al mejor precio, con acompañamiento desde la captacion hasta la firma."></textarea>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="generarPDFPresentacion()">&#128196; Generar presentacion PDF</button>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// GENERADORES PDF — NUEVAS HERRAMIENTAS
+// ══════════════════════════════════════════════
+
+function buildComisionHTML(precio, pct, comUSD, comBs, neto, tc){
+  var rows = [
+    ['Precio de venta', '$ '+precio.toLocaleString('es-BO')],
+    ['Comision acordada', pct+'%'],
+    ['Comision en USD', '<strong style="color:#1B335E;font-size:1.1rem;">$ '+comUSD.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0})+'</strong>'],
+    ['Comision en Bolivianos', '<strong style="color:#1B335E;font-size:1.1rem;">Bs. '+comBs.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0})+'</strong>'],
+    ['Neto al propietario', '$ '+neto.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0})],
+    ['Tipo de cambio usado', 'Bs. '+tc+' por USD'],
+  ];
+  var rowsHtml = rows.map(function(r,i){
+    var bg = i%2===0?'#f8f9fc':'#fff';
+    return '<tr style="background:'+bg+'"><td style="padding:11px 16px;color:#4a5568;font-size:0.88rem;">'+r[0]+'</td><td style="padding:11px 16px;text-align:right;font-size:0.88rem;">'+r[1]+'</td></tr>';
+  }).join('');
+  var fecha = new Date().toLocaleDateString('es-BO',{day:'2-digit',month:'long',year:'numeric'});
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    +_agentHeaderHTML()
+    +'<div style="padding:32px 36px;">'
+    +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Propuesta de Honorarios Profesionales</h1>'
+    +'<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:24px;"></div>'
+    +'<table style="width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0;">'
+    +'<thead><tr style="background:#1B335E;color:#fff;"><th style="padding:11px 16px;text-align:left;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;">CONCEPTO</th><th style="padding:11px 16px;text-align:right;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;">VALOR</th></tr></thead>'
+    +'<tbody>'+rowsHtml+'</tbody>'
+    +'</table>'
+    +'<div style="margin-top:24px;background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:16px 20px;">'
+    +'<p style="margin:0;font-size:0.85rem;color:#4a5568;line-height:1.6;">La comision se abona unicamente al concretarse la operacion. Incluye publicacion en portales, filtraje de compradores, coordinacion de visitas, acompanamiento en negociacion y asistencia hasta la firma.</p>'
+    +'</div>'
+    +'<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +'<div style="font-size:0.75rem;color:#94a3b8;">Documento informativo &middot; '+fecha+'</div>'
+    +'<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +'</div>'
+    +'</div></body></html>';
+}
+
+function buildAntictreticoHTML(capital, anos, comPct, tc, alquiler, capBs, comUSD, rendimiento){
+  var rows = [
+    ['Capital del antictretico','$ '+capital.toLocaleString('es-BO')],
+    ['En bolivianos (TC Bs. '+tc+')','Bs. '+capBs.toLocaleString('es-BO',{maximumFractionDigits:0})],
+    ['Duracion del contrato',anos+' ano'+(anos!=1?'s':'')],
+    ['Comision del agente ('+comPct+'%)','<strong style="color:#1B335E;">$ '+comUSD.toLocaleString('es-BO',{maximumFractionDigits:0})+'</strong>'],
+    ['Alquiler mensual equiv.',alquiler?'$ '+alquiler.toLocaleString('es-BO')+'/mes':'No indicado'],
+    ['Rendimiento implicito para propietario',rendimiento!=='—'?rendimiento+'% anual':'—'],
+  ];
+  var rowsHtml = rows.map(function(r,i){
+    var bg = i%2===0?'#f8f9fc':'#fff';
+    return '<tr style="background:'+bg+'"><td style="padding:11px 16px;color:#4a5568;font-size:0.88rem;">'+r[0]+'</td><td style="padding:11px 16px;text-align:right;font-size:0.88rem;">'+r[1]+'</td></tr>';
+  }).join('');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    +_agentHeaderHTML()
+    +'<div style="padding:32px 36px;">'
+    +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Resumen de Operacion de Antictretico</h1>'
+    +'<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:24px;"></div>'
+    +'<table style="width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0;">'
+    +'<thead><tr style="background:#1B335E;color:#fff;"><th style="padding:11px 16px;text-align:left;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;">CONCEPTO</th><th style="padding:11px 16px;text-align:right;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;">DETALLE</th></tr></thead>'
+    +'<tbody>'+rowsHtml+'</tbody>'
+    +'</table>'
+    +'<div style="margin-top:20px;background:#fff8e1;border:1px solid #EFAE3C;border-radius:8px;padding:16px 20px;">'
+    +'<div style="font-weight:700;color:#7a5900;margin-bottom:6px;font-size:0.88rem;">&#9888;&#65039; Obligatorio por ley</div>'
+    +'<p style="margin:0;font-size:0.83rem;color:#7a5900;line-height:1.6;">El contrato de antictretico debe elevarse a escritura publica e inscribirse en Derechos Reales. Sin este registro, el capital del anticretista queda desprotegido ante cualquier reclamo de terceros o remate del inmueble.</p>'
+    +'</div>'
+    +'<div style="margin-top:24px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +'<div style="font-size:0.75rem;color:#94a3b8;">Documento orientativo &middot; No reemplaza asesoria legal</div>'
+    +'<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +'</div>'
+    +'</div></body></html>';
+}
+
+function buildComparadorHTML(props){
+  var cols = props.map(function(p){ return '<th style="padding:11px 14px;text-align:center;font-size:0.82rem;">'+esc(p.nombre||'Propiedad')+'</th>'; }).join('');
+  var rows = [
+    {label:'Precio (USD)', fn:function(p){ return p.precio?'<strong>$ '+p.precio.toLocaleString('es-BO')+'</strong>':'—'; }},
+    {label:'Superficie', fn:function(p){ return p.m2?p.m2+' m&sup2;':'—'; }},
+    {label:'Precio por m&sup2;', fn:function(p){ return (p.precio&&p.m2)?'$ '+(p.precio/p.m2).toFixed(0)+'/m&sup2;':'—'; }},
+    {label:'Dormitorios', fn:function(p){ return p.dorm||'—'; }},
+  ];
+  // highlight best value per row
+  var rowsHtml = rows.map(function(r,i){
+    var bg = i%2===0?'#f8f9fc':'#fff';
+    var vals = props.map(r.fn);
+    return '<tr style="background:'+bg+'"><td style="padding:10px 14px;font-weight:600;color:#1B335E;font-size:0.85rem;">'+r.label+'</td>'+vals.map(function(v){ return '<td style="padding:10px 14px;text-align:center;font-size:0.85rem;">'+v+'</td>'; }).join('')+'</tr>';
+  }).join('');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    +_agentHeaderHTML()
+    +'<div style="padding:32px 36px;">'
+    +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Comparativa de Propiedades</h1>'
+    +'<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:24px;"></div>'
+    +'<table style="width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0;">'
+    +'<thead><tr style="background:#1B335E;color:#fff;"><th style="padding:11px 14px;text-align:left;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;">CARACTERISTICA</th>'+cols+'</tr></thead>'
+    +'<tbody>'+rowsHtml+'</tbody>'
+    +'</table>'
+    +'<div style="margin-top:24px;background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:14px 18px;">'
+    +'<p style="margin:0;font-size:0.82rem;color:#4a5568;line-height:1.6;">Comparativa preparada especialmente para ti. Cualquier consulta sobre estas propiedades, estoy disponible por WhatsApp.</p>'
+    +'</div>'
+    +'<div style="margin-top:28px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;">'
+    +'<div style="font-size:0.75rem;color:#94a3b8;">Documento generado para uso del cliente</div>'
+    +'<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;margin-top:8px;"></div>'
+    +'</div>'
+    +'</div></body></html>';
+}
+
+function buildGuiaLegalHTML(){
+  var pasos = [
+    {n:1,titulo:'Folio Real (Informacion Rapida de Derechos Reales)',texto:'Verificacion de que el vendedor es el propietario real y que el inmueble no tiene hipotecas, gravamenes ni embargos. Se obtiene en la oficina de Derechos Reales del departamento. Costo aproximado: Bs. 15-30.'},
+    {n:2,titulo:'Minuta de compraventa',texto:'Documento preparado por un abogado que establece las condiciones de la venta: precio, forma de pago y plazos. Ambas partes firman ante notario.'},
+    {n:3,titulo:'Impuestos de la operacion',texto:'Impuesto a la Transferencia (IT): 3% del valor de venta, lo paga el vendedor. Si el vendedor es empresa, puede aplicar RC-IVA. Consultar con contador ante cualquier duda sobre el regimen.'},
+    {n:4,titulo:'Escritura publica ante notario',texto:'La minuta se eleva a escritura publica. El notario verifica identidades y da fe del acto. El costo varia segun el valor del inmueble.'},
+    {n:5,titulo:'Registro en Derechos Reales',texto:'La escritura se inscribe en Derechos Reales para que el comprador quede como nuevo propietario en el folio real. Sin este paso, la transferencia no es oponible a terceros.'},
+  ];
+  var pasosHtml = pasos.map(function(p){
+    return '<div style="display:flex;gap:16px;margin-bottom:18px;align-items:flex-start;">'
+      +'<div style="min-width:32px;height:32px;border-radius:50%;background:#1B335E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0;">'+p.n+'</div>'
+      +'<div><div style="font-weight:700;color:#1B335E;font-size:0.92rem;margin-bottom:4px;">'+p.titulo+'</div>'
+      +'<div style="font-size:0.84rem;color:#4a5568;line-height:1.6;">'+p.texto+'</div></div>'
+      +'</div>';
+  }).join('');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    +_agentHeaderHTML()
+    +'<div style="padding:32px 36px;">'
+    +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Guia del Proceso Legal</h1>'
+    +'<div style="font-size:0.85rem;color:#718096;margin-bottom:20px;">Tu operacion inmobiliaria en Bolivia &mdash; paso a paso</div>'
+    +'<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:28px;"></div>'
+    +pasosHtml
+    +'<div style="margin-top:12px;background:#fff8e1;border:1px solid #EFAE3C;border-radius:8px;padding:14px 18px;">'
+    +'<p style="margin:0;font-size:0.82rem;color:#7a5900;line-height:1.6;"><strong>Nota importante:</strong> Esta guia es orientativa. Para tu operacion especifica, te recomendamos trabajar con un abogado o notario de confianza. Tu agente puede orientarte — no reemplaza asesoria legal profesional.</p>'
+    +'</div>'
+    +'<div style="margin-top:28px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +'<div style="font-size:0.75rem;color:#94a3b8;">Documento orientativo preparado por tu agente</div>'
+    +'<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +'</div>'
+    +'</div></body></html>';
+}
+
+function buildAcuerdoHTML(propietario, ci, tel, tipo, direccion, precio, comPct, duracion, obs){
+  var comMonto = precio ? '$ '+(parseFloat(precio)*(parseFloat(comPct||3)/100)).toFixed(0)+' USD aprox.' : 'segun precio acordado';
+  var fecha = new Date().toLocaleDateString('es-BO',{day:'2-digit',month:'long',year:'numeric'});
+  var partes = [
+    ['Agente',esc(AGENTE.nombre||'Agente')+(AGENTE.ciudad?' &mdash; '+esc(AGENTE.ciudad):'')+(AGENTE.whatsapp?' &mdash; '+esc(AGENTE.whatsapp):'')],
+    ['Propietario',esc(propietario)+(ci?' &mdash; CI: '+esc(ci):'')+(tel?' &mdash; '+esc(tel):'')],
+    ['Inmueble',esc(direccion)],
+    ['Tipo de operacion',esc(tipo)],
+    ['Precio de salida acordado',precio?'$ '+parseFloat(precio).toLocaleString('es-BO')+' USD':'Por definir'],
+    ['Comision del agente',comPct+'% &mdash; '+comMonto],
+    ['Duracion del acuerdo',esc(duracion||'A definir')],
+    ['Fecha',fecha],
+  ];
+  if(obs) partes.push(['Observaciones',esc(obs)]);
+  var partesHtml = partes.map(function(p,i){
+    var bg = i%2===0?'#f8f9fc':'#fff';
+    return '<tr style="background:'+bg+'"><td style="padding:10px 16px;font-weight:600;color:#1B335E;font-size:0.85rem;width:38%;">'+p[0]+'</td><td style="padding:10px 16px;font-size:0.85rem;color:#2d3748;">'+p[1]+'</td></tr>';
+  }).join('');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    +_agentHeaderHTML()
+    +'<div style="padding:32px 36px;">'
+    +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Acuerdo de Trabajo</h1>'
+    +'<div style="font-size:0.83rem;color:#718096;margin-bottom:20px;">Compromiso de representacion inmobiliaria &mdash; no es un contrato legal vinculante</div>'
+    +'<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:24px;"></div>'
+    +'<table style="width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0;">'
+    +'<tbody>'+partesHtml+'</tbody>'
+    +'</table>'
+    +'<div style="margin-top:28px;padding:20px 24px;border:1px solid #e2e8f0;border-radius:8px;">'
+    +'<p style="margin:0 0 12px;font-size:0.85rem;color:#2d3748;line-height:1.7;">Por medio del presente, las partes acuerdan que el agente prestara servicios de intermediacion inmobiliaria para la operacion detallada arriba, comprometiendose a publicar, gestionar consultas, coordinar visitas y acompañar el proceso hasta la firma. La comision sera abonada unicamente al concretarse la operacion.</p>'
+    +'<p style="margin:0;font-size:0.82rem;color:#718096;line-height:1.6;font-style:italic;">Este documento expresa un acuerdo de buena fe entre las partes. No reemplaza una minuta ni instrumento legal formal. Para operaciones que requieran respaldo legal, se recomienda elevar el acuerdo a documento privado con firma de testigos o instrumento publico.</p>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px;">'
+    +'<div style="border-top:2px solid #1B335E;padding-top:8px;"><div style="font-size:0.78rem;color:#718096;">Firma del agente</div><div style="font-size:0.82rem;color:#1B335E;font-weight:600;margin-top:4px;">'+esc(AGENTE.nombre||'Agente')+'</div></div>'
+    +'<div style="border-top:2px solid #1B335E;padding-top:8px;"><div style="font-size:0.78rem;color:#718096;">Firma del propietario</div><div style="font-size:0.82rem;color:#1B335E;font-weight:600;margin-top:4px;">'+esc(propietario)+'</div></div>'
+    +'</div>'
+    +'<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8;">'+fecha+'</div>'
+    +'</div></body></html>';
+}
+
+function buildPresentacionHTML(especialidad, anos, zona, valor){
+  var foto = localStorage.getItem('mk_foto')||'';
+  var fotoHtml = foto
+    ?'<img src="'+foto+'" style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid #EFAE3C;display:block;margin:0 auto 16px;"/>'
+    :'<div style="width:110px;height:110px;border-radius:50%;background:#eef1f6;border:4px solid #EFAE3C;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 16px;">&#128100;</div>';
+  var contacto = [];
+  if(AGENTE.ciudad) contacto.push('&#128205; '+esc(AGENTE.ciudad));
+  if(AGENTE.whatsapp) contacto.push('&#128242; '+esc(AGENTE.whatsapp));
+  if(AGENTE.email) contacto.push('&#9993;&#65039; '+esc(AGENTE.email));
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+    +'<div style="background:linear-gradient(135deg,#1B335E,#243f72);min-height:220px;display:flex;align-items:center;justify-content:center;padding:40px 36px;text-align:center;">'
+    +fotoHtml.replace('margin:0 auto 16px;','margin:0 auto 16px;')
+    +'<div>'
+    +'<div style="font-family:Georgia,serif;font-size:1.8rem;font-weight:700;color:#fff;letter-spacing:0.5px;margin-bottom:6px;">'+esc(AGENTE.nombre||'Agente Inmobiliario')+'</div>'
+    +'<div style="height:3px;width:60px;background:#EFAE3C;border-radius:2px;margin:0 auto 12px;"></div>'
+    +'<div style="font-size:0.9rem;color:rgba(255,255,255,0.8);margin-bottom:10px;">'+esc(especialidad)+'</div>'
+    +(anos?'<div style="font-size:0.82rem;color:rgba(255,255,255,0.6);">'+esc(anos)+' de experiencia</div>':'')
+    +'</div>'
+    +'</div>'
+    +'<div style="padding:32px 36px;">'
+    +(zona?'<div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;padding:12px 16px;background:#f8f9fc;border-radius:8px;font-size:0.85rem;color:#4a5568;">&#128205; Zona de trabajo: <strong style="color:#1B335E;">'+esc(zona)+'</strong></div>':'')
+    +(valor?'<div style="background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:18px 22px;margin-bottom:24px;"><p style="margin:0;font-size:0.9rem;color:#2d3748;line-height:1.7;font-style:italic;">&ldquo;'+esc(valor)+'&rdquo;</p></div>':'')
+    +'<h3 style="font-family:Georgia,serif;color:#1B335E;font-size:1rem;margin:0 0 14px;">Servicios que ofrezco</h3>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">'
+    +'<span style="background:#eef1f6;color:#1B335E;padding:6px 14px;border-radius:999px;font-size:0.8rem;font-weight:600;">Venta de inmuebles</span>'
+    +'<span style="background:#eef1f6;color:#1B335E;padding:6px 14px;border-radius:999px;font-size:0.8rem;font-weight:600;">Alquiler</span>'
+    +'<span style="background:#eef1f6;color:#1B335E;padding:6px 14px;border-radius:999px;font-size:0.8rem;font-weight:600;">Antictretico</span>'
+    +'<span style="background:#eef1f6;color:#1B335E;padding:6px 14px;border-radius:999px;font-size:0.8rem;font-weight:600;">Captacion</span>'
+    +'<span style="background:#eef1f6;color:#1B335E;padding:6px 14px;border-radius:999px;font-size:0.8rem;font-weight:600;">Acompanamiento legal</span>'
+    +'</div>'
+    +(contacto.length?'<div style="background:linear-gradient(135deg,#1B335E,#243f72);border-radius:12px;padding:20px 24px;color:#fff;">'
+    +'<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;">Contactame</div>'
+    +'<div style="display:flex;flex-direction:column;gap:6px;">'+contacto.map(function(c){ return '<div style="font-size:0.88rem;">'+c+'</div>'; }).join('')+'</div>'
+    +'</div>':'')
+    +'</div></body></html>';
+}
+
+// ── Entry points ──
+
+async function generarPDFComision(){
+  var precio = parseFloat($('com-precio').value)||0;
+  var pct = parseFloat($('com-pct').value)||0;
+  var tc = parseFloat($('com-tc').value)||10.5;
+  if(!precio||!pct){ toast('Completa el precio y el porcentaje primero'); return; }
+  var comUSD = precio*(pct/100);
+  var comBs = comUSD*tc;
+  var neto = precio-comUSD;
+  toast('Preparando PDF...');
+  try{ await _loadLibs(); await renderPDF(buildComisionHTML(precio,pct,comUSD,comBs,neto,tc),'Propuesta_Honorarios.pdf'); }
+  catch(e){ toast('Error: '+(e.message||'error')); }
+}
+
+async function generarPDFAntictretico(){
+  var capital = parseFloat($('anti-capital').value)||0;
+  var anos = parseFloat($('anti-años').value)||2;
+  var com = parseFloat($('anti-com').value)||3;
+  var tc = parseFloat($('anti-tc').value)||10.5;
+  var alquiler = parseFloat($('anti-alquiler').value)||0;
+  if(!capital){ toast('Ingresa el capital del antictretico primero'); return; }
+  var capBs = capital*tc;
+  var comUSD = capital*(com/100);
+  var rendimiento = alquiler>0?((alquiler*12)/capital*100).toFixed(1)+'%':'—';
+  toast('Preparando PDF...');
+  try{ await _loadLibs(); await renderPDF(buildAntictreticoHTML(capital,anos,com,tc,alquiler,capBs,comUSD,rendimiento),'Resumen_Antictretico.pdf'); }
+  catch(e){ toast('Error: '+(e.message||'error')); }
+}
+
+async function generarPDFComparador(){
+  var props = [1,2,3].map(function(n){ return {
+    nombre: (document.getElementById('comp-nombre-'+n)||{}).value||'',
+    precio: parseFloat((document.getElementById('comp-precio-'+n)||{}).value)||0,
+    m2: parseFloat((document.getElementById('comp-m2-'+n)||{}).value)||0,
+    dorm: parseFloat((document.getElementById('comp-dorm-'+n)||{}).value)||0,
+  }; }).filter(function(p){ return p.nombre||p.precio; });
+  if(props.length<2){ toast('Compara al menos 2 propiedades primero'); return; }
+  toast('Preparando PDF...');
+  try{ await _loadLibs(); await renderPDF(buildComparadorHTML(props),'Comparativa_Inmuebles.pdf'); }
+  catch(e){ toast('Error: '+(e.message||'error')); }
+}
+
+async function generarPDFGuiaLegal(){
+  toast('Preparando PDF...');
+  try{ await _loadLibs(); await renderPDF(buildGuiaLegalHTML(),'Guia_Legal.pdf'); }
+  catch(e){ toast('Error: '+(e.message||'error')); }
+}
+
+async function generarPDFAcuerdo(){
+  var propietario = ($('ac-propietario')||{}).value||'';
+  var ci = ($('ac-ci')||{}).value||'';
+  var tel = ($('ac-tel')||{}).value||'';
+  var tipo = ($('ac-tipo')||{}).value||'Venta';
+  var direccion = ($('ac-direccion')||{}).value||'';
+  var precio = ($('ac-precio')||{}).value||'';
+  var com = ($('ac-com')||{}).value||'3';
+  var duracion = ($('ac-duracion')||{}).value||'3 meses';
+  var obs = ($('ac-obs')||{}).value||'';
+  if(!propietario||!direccion){ toast('Completa el nombre del propietario y la direccion del inmueble'); return; }
+  toast('Preparando PDF...');
+  try{ await _loadLibs(); await renderPDF(buildAcuerdoHTML(propietario,ci,tel,tipo,direccion,precio,com,duracion,obs),'Acuerdo_Trabajo.pdf'); }
+  catch(e){ toast('Error: '+(e.message||'error')); }
+}
+
+async function generarPDFPresentacion(){
+  var esp = ($('pres-esp')||{}).value||'Agente inmobiliario';
+  var anos = ($('pres-anos')||{}).value||'';
+  var zona = ($('pres-zona')||{}).value||'';
+  var valor = ($('pres-valor')||{}).value||'';
+  toast('Preparando PDF...');
+  try{ await _loadLibs(); await renderPDF(buildPresentacionHTML(esp,anos,zona,valor),'Presentacion_Personal.pdf'); }
+  catch(e){ toast('Error: '+(e.message||'error')); }
+}
+
+
+
+// ══════════════════════════════════════════════
+// HERRAMIENTA: SHEET EXTERNO (Google Sheets)
+// ══════════════════════════════════════════════
+function toolSheetExterno(icon, titulo, desc, url){
+  return `<div class="tool-section">
+    <div class="tool-header">
+      <div class="tool-icon">${icon}</div>
+      <div>
+        <div class="tool-title">${titulo} <span class="tool-badge" style="background:rgba(66,133,244,0.1);color:#1a73e8;font-size:0.7rem;padding:2px 8px;border-radius:999px;font-weight:700;">Google Sheets</span></div>
+        <div class="tool-subtitle">${desc}</div>
+      </div>
+    </div>
+    <div style="background:#f8f9fc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div style="font-size:0.83rem;color:#4a5568;line-height:1.5;">Abre la planilla en Google Sheets. Puedes hacer una copia personal para editarla con tus datos.<br/><span style="font-size:0.78rem;color:#94a3b8;">Solo lectura &mdash; para guardar tus datos usa <strong>Archivo &rarr; Hacer una copia</strong></span></div>
+      <a href="${url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1a73e8;color:#fff;padding:10px 18px;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;flex-shrink:0;font-family:Inter,sans-serif;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+        Abrir planilla
+      </a>
+    </div>
+  </div>`;
+}
+
+// INICIALIZAR
+// ══════════════════════════════════════════════
+buildMapa();
+buildSidebar();
+buildMobileSidebar();
+
+var _dp=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_dp=e;});window.addEventListener('appinstalled',function(){_dp=null;});function instalarApp(){if(_dp){_dp.prompt();_dp.userChoice.then(function(){_dp=null;});}else{var t=document.createElement('div');t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a1628;color:#fff;padding:16px 20px;border-radius:10px;font-size:13px;z-index:9999;text-align:center;max-width:300px;border:1px solid #EFAE3C;line-height:1.6;';t.innerHTML='<b>iPhone / Safari:</b><br>Toca el icono compartir y luego<br><i>Agregar a pantalla de inicio</i><br><br><b>Android (otro navegador):</b><br>Menu 3 puntos > Instalar app';document.body.appendChild(t);setTimeout(function(){t.remove();},6000);}}
+</script>
+</body>
+</html>
