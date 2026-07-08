@@ -22,6 +22,8 @@ icon512_b64 = encode_bin('icons/logo-512.png')
 
 manifest = '{"name":"Kit Inmobiliario Bolivia","short_name":"Merkaba Kit","start_url":"/kit-inmobiliario","display":"standalone","background_color":"#0a1628","theme_color":"#0a1628","icons":[{"src":"/icons/logo-192.png","sizes":"192x192","type":"image/png"},{"src":"/icons/logo-512.png","sizes":"512x512","type":"image/png"}]}'
 
+sw = "self.addEventListener('install',function(e){e.waitUntil(self.skipWaiting());});self.addEventListener('activate',function(e){e.waitUntil(self.clients.claim());});self.addEventListener('fetch',function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request);}));});"
+
 worker = '\n'.join([
     'const LOGIN="'   + login_b64   + '";',
     'const KIT="'     + kit_b64     + '";',
@@ -29,6 +31,7 @@ worker = '\n'.join([
     'const ICON192="' + icon192_b64 + '";',
     'const ICON512="' + icon512_b64 + '";',
     "const MANIFEST='" + manifest + "';",
+    "const SW='" + sw + "';",
     '',
     'function serve(b64){const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));const html=new TextDecoder("utf-8").decode(bytes);return new Response(html,{headers:{"Content-Type":"text/html; charset=UTF-8"}});}',
     'function serveIcon(b64){const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));return new Response(bytes,{headers:{"Content-Type":"image/png","Cache-Control":"public, max-age=86400"}});}',
@@ -40,6 +43,7 @@ worker = '\n'.join([
     '    if(path==="/kit-inmobiliario") return serve(KIT);',
     '    if(path==="/admin") return serve(ADMIN);',
     '    if(path==="/manifest.json") return new Response(MANIFEST,{headers:{"Content-Type":"application/manifest+json"}});',
+    '    if(path==="/sw.js") return new Response(SW,{headers:{"Content-Type":"application/javascript"}});',
     '    if(path==="/icons/logo-192.png") return serveIcon(ICON192);',
     '    if(path==="/icons/logo-512.png") return serveIcon(ICON512);',
     '    return new Response("Not found",{status:404});',
