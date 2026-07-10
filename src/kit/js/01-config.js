@@ -2,7 +2,7 @@
 
   // Chequeo de acceso — BORRADOR
   if(!localStorage.getItem("mk_auth")){
-    window.location.href = "../login/";
+    window.location.href = "/login";
   }
 // ══════════════════════════════════════════════
 // DATOS DEL AGENTE (viene del perfil en Supabase)
