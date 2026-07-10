@@ -200,6 +200,10 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .sidebar-tab{flex:1;padding:8px 4px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:"Inter",sans-serif;font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;transition:color .15s,border-color .15s;}
 .sidebar-tab:hover{color:var(--navy);}
 .sidebar-tab.active{color:var(--navy);border-bottom-color:var(--navy);}
+.collapse-arrow{margin-left:auto;font-size:0.7rem;color:var(--text-muted);transition:transform 0.2s;flex-shrink:0;display:inline-block;}
+.tool-header.collapsible{cursor:pointer;user-select:none;display:flex;align-items:center;}
+.tool-header.collapsible:hover .tool-title{color:var(--navy-dark);}
+.collapse-body{margin-top:16px;}
 
 
 
@@ -832,12 +836,12 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
     <div class="home-access">
       <p class="home-access-title">&#191;D&#243;nde quieres ir?</p>
       <div class="home-access-grid">
-        <button class="home-access-btn" onclick="setSidebarTab('etapas');showPhase(0)">
+        <button class="home-access-btn" onclick="showEtapasGrid()">
           <span class="home-access-icon">&#128202;</span>
           <div class="home-access-label">Por etapa de venta</div>
           <div class="home-access-sub">Sigue el proceso paso a paso</div>
         </button>
-        <button class="home-access-btn" onclick="setSidebarTab('tipos');showTipo(0)">
+        <button class="home-access-btn" onclick="showTiposGrid()">
           <span class="home-access-icon">&#128295;</span>
           <div class="home-access-label">Por tipo de herramienta</div>
           <div class="home-access-sub">Encuentra r&#225;pido lo que buscas</div>
@@ -1163,6 +1167,7 @@ function showPhase(idx){
 
 
   $('phase-content').innerHTML = renderFase(FASES[idx], idx);
+  initCollapsibles();
 
 
   // scroll top
@@ -1208,7 +1213,7 @@ function renderFase(fase, idx){
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
 
 
-      <button onclick="showMapa()" class="btn btn-outline btn-sm">← Volver al mapa</button>
+      <button onclick="goBack()" class="btn btn-outline btn-sm">← Volver</button>
 
 
       <div>
@@ -6929,11 +6934,74 @@ function showTipo(idx){
   var tipo = TIPOS[idx];
   var fakeFase = { id:tipo.id, num:'', nombre:tipo.icon+' '+tipo.nombre, desc:'', color:'navy', tools:tipo.tools };
   $('phase-content').innerHTML = renderFase(fakeFase, -1);
+  initCollapsibles();
   document.querySelector('.kit-main').scrollTop = 0;
   window.scrollTo(0,0);
   TIPOS.forEach(function(_,i){
     var b = $('sidebar-tipo-'+i);
     if(b) b.classList.toggle('active', i===idx);
+  });
+}
+
+// ══════════════════════════════════════════════
+// GRIDS DE SELECCION + COLAPSIBLES
+// ══════════════════════════════════════════════
+function showEtapasGrid(){
+  setSidebarTab('etapas');
+  $('phase-mapa').hidden = true;
+  $('phase-content').hidden = false;
+  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
+  html += '<div class="mapa-grid">';
+  FASES.forEach(function(f,i){
+    var num = f.id==='transversal' ? 'Siempre disponible' : 'Etapa '+f.num;
+    var cnt = f.tools.length+' herramienta'+(f.tools.length>1?'s':'');
+    html += '<div class="mapa-card'+(f.color==='gold'?' gold':'')+ '" onclick="showPhase('+i+')"><div class="mapa-num">'+num+'</div><div class="mapa-name">'+f.nombre+'</div><div class="mapa-desc">'+f.desc+'</div><div class="mapa-tools">'+cnt+' →</div></div>';
+  });
+  html += '</div>';
+  $('phase-content').innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function showTiposGrid(){
+  setSidebarTab('tipos');
+  $('phase-mapa').hidden = true;
+  $('phase-content').hidden = false;
+  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
+  html += '<div class="mapa-grid">';
+  TIPOS.forEach(function(t,i){
+    var cnt = t.tools.length+' herramienta'+(t.tools.length>1?'s':'');
+    html += '<div class="mapa-card" onclick="showTipo('+i+')"><div class="mapa-num">'+t.icon+'</div><div class="mapa-name">'+t.nombre+'</div><div class="mapa-tools">'+cnt+' →</div></div>';
+  });
+  html += '</div>';
+  $('phase-content').innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function goBack(){
+  if(_sidebarTab==='tipos') showTiposGrid();
+  else showEtapasGrid();
+}
+
+function initCollapsibles(){
+  document.querySelectorAll('#phase-content .tool-section').forEach(function(section){
+    var header = section.querySelector('.tool-header');
+    if(!header || header.dataset.collapsible) return;
+    header.dataset.collapsible = '1';
+    header.classList.add('collapsible');
+    var arrow = document.createElement('span');
+    arrow.className = 'collapse-arrow';
+    arrow.textContent = '▼';
+    header.appendChild(arrow);
+    var body = document.createElement('div');
+    body.className = 'collapse-body';
+    body.style.display = 'none';
+    Array.from(section.children).filter(function(c){ return c !== header; }).forEach(function(c){ body.appendChild(c); });
+    section.appendChild(body);
+    header.onclick = function(){
+      var open = body.style.display !== 'none';
+      body.style.display = open ? 'none' : 'block';
+      arrow.style.transform = open ? '' : 'rotate(180deg)';
+    };
   });
 }
 
