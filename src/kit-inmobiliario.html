@@ -187,6 +187,13 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .home-pend-item input[type=checkbox]{width:15px;height:15px;accent-color:var(--navy);flex-shrink:0;margin-top:2px;cursor:pointer;}
 .home-pend-item.hecho span{text-decoration:line-through;color:var(--text-muted);}
 .home-pend-ver{font-size:0.78rem;color:var(--navy);cursor:pointer;font-weight:600;margin-top:8px;display:inline-block;background:none;border:none;padding:0;}
+.home-pend-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.87rem;color:var(--text);}
+.home-pend-trash{background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:0.85rem;padding:2px 4px;margin-left:auto;flex-shrink:0;border-radius:4px;line-height:1;}
+.home-pend-trash:hover{color:#e74c3c;}
+.home-pend-add{display:flex;gap:8px;margin-bottom:12px;}
+.home-pend-add input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:"Inter",sans-serif;font-size:0.85rem;background:var(--surface-2);color:var(--text);}
+.home-pend-add input:focus{outline:1px solid var(--navy);}
+.home-pend-add button{padding:7px 12px;background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:0.82rem;font-weight:600;white-space:nowrap;}
 .home-access{margin-top:4px;}
 .home-access-title{font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
 .home-access-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -607,14 +614,6 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 
   <button class="hamburger-btn" onclick="toggleMobileMenu()" title="Menu">&#9776;</button>
 
-
-  <div style="width:32px;height:32px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-
-
-    <svg width="18" height="18" viewBox="0 0 100 100" fill="none"><polygon points="50,6 91,76 9,76" stroke="#EFAE3C" stroke-width="6" stroke-linejoin="round"/><polygon points="50,94 9,24 91,24" stroke="#EFAE3C" stroke-width="6" stroke-linejoin="round"/></svg>
-
-
-  </div>
 
 
   <div class="kit-header-title">Kit Inmobiliario <span>Bolivia</span></div>
@@ -7014,6 +7013,15 @@ buildMobileSidebar();
 // ══════════════════════════════════════════════
 // HOME PERSONALIZADO
 // ══════════════════════════════════════════════
+function agregarPendienteHome(){
+  var input = $('home-pend-nueva'); if(!input) return;
+  var texto = (input.value||'').trim(); if(!texto) return;
+  var arr = getPendientes();
+  arr.push({id:Date.now(), texto:texto, hecho:false});
+  setPendientes(arr);
+  initHome();
+}
+
 function initHome(){
   var hora = new Date().getHours();
   var saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
@@ -7028,13 +7036,21 @@ function initHome(){
   var foto = localStorage.getItem('mk_foto');
   if(foto) $('home-avatar').innerHTML = '<img src="' + foto + '" alt="foto"/>';
   var ps = $('home-pend-section');
-  if(ps && sinResolver.length > 0){
-    var items = sinResolver.slice(0,5).map(function(p){
-      return '<div class="home-pend-item"><input type="checkbox" onchange="togglePendiente('+p.id+');initHome();"><span>'+escHtml(p.texto)+'</span></div>';
-    }).join('');
-    var verMas = sinResolver.length > 5 ? '<button class="home-pend-ver" onclick="setSidebarTab(\'etapas\');showPhase(FASES.length-1)">→ Ver todos ('+sinResolver.length+')</button>' : '';
-    ps.innerHTML = '<div class="home-pend-title">Pendientes de hoy</div>'+items+verMas;
-  } else if(ps) { ps.innerHTML = ''; }
+  if(ps){
+    var allPend = getPendientes();
+    var addRow = '<div class="home-pend-add"><input id="home-pend-nueva" type="text" placeholder="Agregar tarea..." onkeydown="if(event.key===\'Enter\')agregarPendienteHome()"/><button onclick="agregarPendienteHome()">+ Agregar</button></div>';
+    if(allPend.length === 0){
+      ps.innerHTML = '<div class="home-pend-title">Pendientes de hoy</div>'+addRow+'<div style="font-size:0.82rem;color:var(--text-muted);padding:6px 0;">Sin tareas por ahora.</div>';
+    } else {
+      var rows = allPend.map(function(p){
+        var chk = '<input type="checkbox"'+(p.hecho?' checked':'')+' onchange="togglePendiente('+p.id+');initHome();" style="width:15px;height:15px;accent-color:var(--navy);flex-shrink:0;cursor:pointer;">';
+        var txt = '<span style="flex:1;'+(p.hecho?'text-decoration:line-through;color:var(--text-muted);':'')+'">'+escHtml(p.texto)+'</span>';
+        var del = '<button class="home-pend-trash" onclick="eliminarPendiente('+p.id+');initHome();" title="Eliminar">🗑️</button>';
+        return '<div class="home-pend-item">'+chk+txt+del+'</div>';
+      }).join('');
+      ps.innerHTML = '<div class="home-pend-title">Pendientes de hoy</div>'+addRow+rows;
+    }
+  }
   var frases = [
     'El seguimiento consistente es lo que separa a los agentes top del promedio.',
     'Cada “no” que recibes te acerca más al próximo “sí”.',
