@@ -945,13 +945,13 @@ const FASES = [
   { id:'publicacion', num:2, nombre:'Publicación y marketing', desc:'Ficha de propiedad, canales, portales', color:'navy', tools:['ficha-propiedad','cartera-propiedades-excel'] },
 
 
-  { id:'interesados', num:3, nombre:'Atención de interesados', desc:'Primera respuesta, filtrar leads, separar curiosos de compradores reales', color:'navy', tools:['respuesta-rapida','filtro-comprador'] },
+  { id:'interesados', num:3, nombre:'Atención de interesados', desc:'Primera respuesta, filtrar interesados, separar curiosos de compradores con intención real', color:'navy', tools:['respuesta-rapida','filtro-comprador'] },
 
 
   { id:'visita', num:4, nombre:'La visita', desc:'Checklist antes de mostrar, leer señales de cierre', color:'navy', tools:['checklist-visita'] },
 
 
-  { id:'seguimiento', num:5, nombre:'Seguimiento post-visita', desc:'El agente promedio hace 1.3 contactos — se necesitan 5+', color:'gold', tools:['generador-seguimiento','control-seguimientos-excel'] },
+  { id:'seguimiento', num:5, nombre:'Seguimiento post-visita', desc:'La mayoría de ventas se cierra después de 5 contactos o más. Aquí están las herramientas para no perder el hilo', color:'gold', tools:['generador-seguimiento','control-seguimientos-excel'] },
 
 
   { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles','comparador-inmuebles-excel'] },
@@ -960,7 +960,7 @@ const FASES = [
   { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico','calc-anticretico-excel'] },
 
 
-  { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que nadie trabaja — referidos convierten 50x mejor', color:'gold', tools:['mensaje-postventa'] },
+  { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que la mayoría ignora. Un cliente satisfecho puede traerte 3 más', color:'gold', tools:['mensaje-postventa'] },
 
 
   { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, banco de scripts', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes'] },
@@ -1377,7 +1377,7 @@ function toolGeneradorSeguimiento(){
       <div><div class="tool-title">Generador de seguimiento <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">El agente promedio hace 1.3 contactos — el 80% de las ventas requiere 5 o más. Genera el mensaje exacto para cada momento.</div></div>
+      <div class="tool-subtitle">La mayoría de ventas requiere varios contactos antes de cerrarse. Genera aquí el mensaje exacto según en qué momento estás con el cliente.</div></div>
 
 
     </div>
@@ -1770,7 +1770,7 @@ function toolCalculadoraTipoCambio(){
       <div><div class="tool-title">Doble tipo de cambio <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">El campo minado boliviano: en qué moneda pactar, a qué tasa, quién asume la brecha entre oficial y paralelo.</div></div>
+      <div class="tool-subtitle">Calcula cuánto recibe cada parte según el tipo de cambio oficial o el paralelo. Así evitas mal entendidos y sorpresas en el cierre.</div></div>
 
 
     </div>
@@ -1944,7 +1944,7 @@ function toolCalculadoraAntictretico(){
       <div><div class="tool-title">Calculadora de anticrético <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">Figura casi exclusiva de Bolivia. Calcula equivalencias, comisión y recordatorio de registro obligatorio en Derechos Reales.</div></div>
+      <div class="tool-subtitle">Calcula la comisión del anticrético, su equivalente en alquiler mensual y el monto en bolivianos. También te recuerda que hay que registrarlo en Derechos Reales.</div></div>
 
 
     </div>
@@ -1971,7 +1971,7 @@ function toolCalculadoraAntictretico(){
       <div class="form-group"><label>Tipo de cambio paralelo</label><input id="anti-tc" type="number" placeholder="10.5" step="0.1"/></div>
 
 
-      <div class="form-group"><label>Alquiler mensual equiv. (USD)</label><input id="anti-alquiler" type="number" placeholder="300"/></div>
+      <div class="form-group"><label>Alquiler mensual equivalente (USD)</label><input id="anti-alquiler" type="number" placeholder="300"/></div>
 
 
     </div>
@@ -2130,7 +2130,7 @@ function toolFichaPropiedad(){
       <div><div class="tool-title">Generador de ficha de propiedad <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">Completa los datos y genera una publicación profesional lista para Facebook, UltraCasas o InfoCasas — con tu marca.</div></div>
+      <div class="tool-subtitle">Completa los datos de la propiedad y genera una publicación lista para pegar en Facebook, UltraCasas o InfoCasas.</div></div>
 
 
     </div>
@@ -2394,7 +2394,7 @@ function toolPropuestaPropietario(){
       <div><div class="tool-title">Propuesta al propietario <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">Genera un argumento sólido para presentar al propietario — justifica el precio de salida y tu comisión.</div></div>
+      <div class="tool-subtitle">Genera un texto claro para presentarle al propietario: por qué ese precio de venta y por qué tu comisión vale la pena.</div></div>
 
 
     </div>
@@ -2631,7 +2631,7 @@ function toolRespuestaRapida(){
       <div><div class="tool-title">Respuesta rápida a consultas <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">Responder en 5 minutos = 21x más probabilidad de calificar el lead. Genera tu primera respuesta lista para pegar.</div></div>
+      <div class="tool-subtitle">El que responde rápido tiene más chances de cerrar. Genera tu primera respuesta en segundos y pégala directo en WhatsApp.</div></div>
 
 
     </div>
@@ -2826,7 +2826,7 @@ function toolFiltroComprador(){
       <div><div class="tool-title">Filtro: ¿comprador real o mirón? <span class="tool-badge badge-guia">Guía</span></div>
 
 
-      <div class="tool-subtitle">Usa estas preguntas antes de coordinar la visita para no perder tiempo en personas sin capacidad o intención real de compra.</div></div>
+      <div class="tool-subtitle">Antes de mostrar la propiedad, usa estas preguntas para saber si el interesado realmente puede y quiere comprar. Así no pierdes tiempo.</div></div>
 
 
     </div>
@@ -3042,7 +3042,7 @@ function toolChecklistVisita(){
       <div><div class="tool-title">Checklist de visita <span class="tool-badge badge-guia">Guía</span></div>
 
 
-      <div class="tool-subtitle">No improvises la visita. Sigue este checklist para leer al comprador y no perder señales de cierre.</div></div>
+      <div class="tool-subtitle">No improvises la visita. Sigue este checklist para llegar preparado y no perderte los momentos clave donde el comprador muestra interés real.</div></div>
 
 
     </div>`;
@@ -3171,7 +3171,7 @@ function toolChecklistAntictretico(){
       <div><div class="tool-title">Checklist de anticrético <span class="tool-badge badge-guia">Guía</span></div>
 
 
-      <div class="tool-subtitle">Verifica cada punto antes de que el anticretista entregue el capital. Una omisión puede costar meses de conflicto legal.</div></div>
+      <div class="tool-subtitle">Revisa cada punto antes de entregar el dinero del anticrético. Saltarse un paso puede generar problemas legales que duran meses.</div></div>
 
 
     </div>
@@ -3204,7 +3204,7 @@ function toolChecklistAntictretico(){
       <strong>Límite profesional</strong>
 
 
-      Esta lista te ayuda a verificar, pero no reemplaza la revisión de un abogado. Si hay dudas sobre gravámenes o situación legal, recomienda consultar con un profesional antes de firmar.
+      Esta guía es un resumen general. Para cada operación, recomienda a tu cliente trabajar con un abogado. Tu trabajo es orientar, no dar asesoría legal antes de firmar.
 
 
     </div>
@@ -3246,7 +3246,7 @@ function toolGuiaCaptacion(){
       <div><div class="tool-title">Guía de captación y defensa del precio <span class="tool-badge badge-guia">Guía</span></div>
 
 
-      <div class="tool-subtitle">Cómo llegar a la reunión preparado, justificar el precio de salida y defender tu comisión sin perder la captación.</div></div>
+      <div class="tool-subtitle">Cómo prepararte para la reunión con el propietario, proponer un precio justo y defender tu comisión sin perder el trabajo.</div></div>
 
 
     </div>
@@ -3255,13 +3255,13 @@ function toolGuiaCaptacion(){
     <div class="guide-steps">
 
 
-      <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-content"><h4>Investigar antes de ir</h4><p>Busca en UltraCasas e InfoCasas propiedades similares en la misma zona. Anota 2-3 con precio y características. Esos son tus argumentos de mercado.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-content"><h4>Investigar antes de ir</h4><p>Busca en UltraCasas e InfoCasas propiedades similares en la misma zona. Anota 2-3 con precio y características. Esos son tus datos concretos de respaldo.</p></div></div>
 
 
       <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><h4>La reunión: escuchar antes de hablar</h4><p>Pregunta: "¿Cuánto espera obtener por la propiedad?" Deja que hable. Luego presenta tu precio sugerido con datos concretos, no con opiniones.</p></div></div>
 
 
-      <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><h4>Si el propietario pide más de lo que el mercado soporta</h4><p>No discutas. Muéstrale los comparables: "El mercado en esta zona está pagando entre X y Y. Si salimos a Z, el inmueble se va a quemar en portales y los compradores van a pensar que algo tiene." Propón salir al precio real y revisar en 30 días.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><div class="guide-step-content"><h4>Si el propietario pide más de lo que el mercado soporta</h4><p>No discutas. Muéstrale los comparables: "El mercado en esta zona está pagando entre X y Y. Si salimos a Z, la propiedad va a quedarse meses sin venderse y los compradores van a pensar que algo está mal." Propón salir al precio real y revisar en 30 días.</p></div></div>
 
 
       <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><h4>Si te piden que bajes tu comisión</h4><p>No bajes sin ofrecer menos servicio a cambio. Respuesta: "Mi comisión incluye publicación en portales, filtro de compradores, acompañamiento legal y negociación. Si quieres reducirla, podemos quitar alguno de esos servicios — ¿cuál preferirías sacar?"</p></div></div>
@@ -3306,7 +3306,7 @@ function toolGuiaLegal(){
       <div class="tool-icon">⚖️</div>
 
 
-      <div><div class="tool-title">Guía legal-administrativa <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Guía del proceso legal <span class="tool-badge badge-guia">Guía</span></div>
 
 
       <div class="tool-subtitle">Los pasos del proceso legal de una venta en Bolivia. Orientación para guiar al cliente — no reemplaza a un abogado.</div></div>
@@ -3330,7 +3330,7 @@ function toolGuiaLegal(){
       <div class="guide-step"><div class="guide-step-num">4</div><div class="guide-step-content"><h4>Escritura pública ante notario</h4><p>La minuta se eleva a escritura pública en notaría. El notario verifica identidades y da fe del acto. Costo varía según el valor del inmueble.</p></div></div>
 
 
-      <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-content"><h4>Registro en Derechos Reales</h4><p>La escritura se inscribe en Derechos Reales para que el comprador quede como nuevo propietario en el folio real. Sin este paso, la transferencia no es oponible a terceros.</p></div></div>
+      <div class="guide-step"><div class="guide-step-num">5</div><div class="guide-step-content"><h4>Registro en Derechos Reales</h4><p>La escritura se inscribe en Derechos Reales para que el comprador quede como nuevo propietario en el folio real. Sin este paso, el comprador no queda registrado como nuevo dueño ante la ley.</p></div></div>
 
 
     </div>
@@ -3462,7 +3462,7 @@ function toolManejadorObjeciones(){
       <div><div class="tool-title">Manejador de objeciones <span class="tool-badge badge-guia">Guía</span></div>
 
 
-      <div class="tool-subtitle">Respuestas listas para las situaciones que más paralizan. Elige la que mejor se adapte y cópiala.</div></div>
+      <div class="tool-subtitle">Respuestas listas para cuando el cliente dice que está caro, que lo va a pensar o que tiene otra opción. Elige la que mejor se adapte y cópiala.</div></div>
 
 
     </div>
@@ -3558,7 +3558,7 @@ function toolComparadorInmuebles(){
       <div><div class="tool-title">Comparador de inmuebles <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">Carga hasta 3 propiedades para mostrarle al cliente una comparación clara y ayudarlo a decidir.</div></div>
+      <div class="tool-subtitle">Ingresa hasta 3 propiedades y genera una comparación visual para mostrarle al cliente. Ayuda a que decida más rápido.</div></div>
 
 
     </div>
@@ -3786,10 +3786,10 @@ function toolMensajePostventa(){
       <div class="tool-icon gold">🤝</div>
 
 
-      <div><div class="tool-title">Mensaje post-venta y referidos <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Mensaje de seguimiento post-venta <span class="tool-badge badge-hace">Hace</span></div>
 
 
-      <div class="tool-subtitle">Los referidos convierten 50 veces mejor que leads fríos. Este mensaje cultiva esa relación — la etapa que casi nadie trabaja.</div></div>
+      <div class="tool-subtitle">Un cliente feliz puede traerte más clientes. Este mensaje mantiene la relación después del cierre y abre la puerta a que te recomienden.</div></div>
 
 
     </div>
@@ -4005,7 +4005,7 @@ function toolBancoScripts(){
       <div><div class="tool-title">Banco de scripts <span class="tool-badge badge-guia">Guía</span></div>
 
 
-      <div class="tool-subtitle">Frases probadas para las situaciones más frecuentes. Copia, adapta y envía.</div></div>
+      <div class="tool-subtitle">Mensajes listos para las situaciones más comunes. Copia el que necesites, ajústate si hace falta y envía.</div></div>
 
 
     </div>
@@ -4098,7 +4098,7 @@ function toolMisPlantillas(){
         <div class="tool-title">Mis plantillas <span class="tool-badge badge-ordena">Ordena</span></div>
 
 
-        <div class="tool-subtitle">Guardá los mensajes que más usás. Se sincronizan entre tu celular y tu computadora.</div>
+        <div class="tool-subtitle">Guarda los mensajes que más usas. Se sincronizan entre tu celular y tu computadora.</div>
 
 
       </div>
@@ -4305,7 +4305,7 @@ function toolTableroPendientes(){
         <div class="tool-title">Pendientes del día <span class="tool-badge badge-ordena">Ordena</span></div>
 
 
-        <div class="tool-subtitle">${hoyFmt} — Tus tareas de hoy, sincronizadas entre todos tus dispositivos.</div>
+        <div class="tool-subtitle">${hoyFmt} — Tus tareas de hoy. Se guardan y puedes verlas desde cualquier dispositivo.</div>
 
 
       </div>
@@ -6293,7 +6293,7 @@ function buildGuiaLegalHTML(){
     {n:4,titulo:'Escritura publica ante notario',texto:'La minuta se eleva a escritura publica. El notario verifica identidades y da fe del acto. El costo varia segun el valor del inmueble.'},
 
 
-    {n:5,titulo:'Registro en Derechos Reales',texto:'La escritura se inscribe en Derechos Reales para que el comprador quede como nuevo propietario en el folio real. Sin este paso, la transferencia no es oponible a terceros.'},
+    {n:5,titulo:'Registro en Derechos Reales',texto:'La escritura se inscribe en Derechos Reales para que el comprador quede como nuevo propietario en el folio real. Sin este paso, el comprador no queda registrado como nuevo dueño ante la ley.'},
 
 
   ];
