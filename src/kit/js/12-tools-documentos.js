@@ -96,7 +96,7 @@ function buildComisionHTML(precio, pct, comUSD, comBs, neto, tc){
     return '<tr style="background:'+bg+'"><td style="padding:11px 16px;color:#4a5568;font-size:0.88rem;">'+r[0]+'</td><td style="padding:11px 16px;text-align:right;font-size:0.88rem;">'+r[1]+'</td></tr>';
   }).join('');
   var fecha = new Date().toLocaleDateString('es-BO',{day:'2-digit',month:'long',year:'numeric'});
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     +_agentHeaderHTML()
     +'<div style="padding:32px 36px;">'
     +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Propuesta de Honorarios Profesionales</h1>'
@@ -128,7 +128,7 @@ function buildAntictreticoHTML(capital, anos, comPct, tc, alquiler, capBs, comUS
     var bg = i%2===0?'#f8f9fc':'#fff';
     return '<tr style="background:'+bg+'"><td style="padding:11px 16px;color:#4a5568;font-size:0.88rem;">'+r[0]+'</td><td style="padding:11px 16px;text-align:right;font-size:0.88rem;">'+r[1]+'</td></tr>';
   }).join('');
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     +_agentHeaderHTML()
     +'<div style="padding:32px 36px;">'
     +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Resumen de Operacion de Antictretico</h1>'
@@ -162,7 +162,7 @@ function buildComparadorHTML(props){
     var vals = props.map(r.fn);
     return '<tr style="background:'+bg+'"><td style="padding:10px 14px;font-weight:600;color:#1B335E;font-size:0.85rem;">'+r.label+'</td>'+vals.map(function(v){ return '<td style="padding:10px 14px;text-align:center;font-size:0.85rem;">'+v+'</td>'; }).join('')+'</tr>';
   }).join('');
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     +_agentHeaderHTML()
     +'<div style="padding:32px 36px;">'
     +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Comparativa de Propiedades</h1>'
@@ -196,7 +196,7 @@ function buildGuiaLegalHTML(){
       +'<div style="font-size:0.84rem;color:#4a5568;line-height:1.6;">'+p.texto+'</div></div>'
       +'</div>';
   }).join('');
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     +_agentHeaderHTML()
     +'<div style="padding:32px 36px;">'
     +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Guia del Proceso Legal</h1>'
@@ -231,7 +231,7 @@ function buildAcuerdoHTML(propietario, ci, tel, tipo, direccion, precio, comPct,
     var bg = i%2===0?'#f8f9fc':'#fff';
     return '<tr style="background:'+bg+'"><td style="padding:10px 16px;font-weight:600;color:#1B335E;font-size:0.85rem;width:38%;">'+p[0]+'</td><td style="padding:10px 16px;font-size:0.85rem;color:#2d3748;">'+p[1]+'</td></tr>';
   }).join('');
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     +_agentHeaderHTML()
     +'<div style="padding:32px 36px;">'
     +'<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 4px;font-weight:700;">Acuerdo de Trabajo</h1>'
@@ -261,7 +261,7 @@ function buildPresentacionHTML(especialidad, anos, zona, valor){
   if(AGENTE.ciudad) contacto.push('&#128205; '+esc(AGENTE.ciudad));
   if(AGENTE.whatsapp) contacto.push('&#128242; '+esc(AGENTE.whatsapp));
   if(AGENTE.email) contacto.push('&#9993;&#65039; '+esc(AGENTE.email));
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     +'<div style="background:linear-gradient(135deg,#1B335E,#243f72);min-height:220px;display:flex;align-items:center;justify-content:center;padding:40px 36px;text-align:center;">'
     +fotoHtml.replace('margin:0 auto 16px;','margin:0 auto 16px;')
     +'<div>'

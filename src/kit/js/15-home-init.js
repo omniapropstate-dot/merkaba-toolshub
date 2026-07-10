@@ -29,7 +29,7 @@ function initHome(){
     } else {
       var rows = allPend.map(function(p){
         var chk = '<input type="checkbox"'+(p.hecho?' checked':'')+' onchange="togglePendiente('+p.id+');initHome();" style="width:15px;height:15px;accent-color:var(--navy);flex-shrink:0;cursor:pointer;">';
-        var txt = '<span style="flex:1;'+(p.hecho?'text-decoration:line-through;color:var(--text-muted);':'')+'">'+escHtml(p.texto)+'</span>';
+        var txt = '<span style="flex:1;'+(p.hecho?'text-decoration:line-through;color:var(--text-muted);':'')+'">'+esc(p.texto)+'</span>';
         var del = '<button class="home-pend-trash" onclick="eliminarPendiente('+p.id+');initHome();" title="Eliminar">🗑️</button>';
         return '<div class="home-pend-item">'+chk+txt+del+'</div>';
       }).join('');

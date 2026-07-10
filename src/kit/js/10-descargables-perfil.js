@@ -87,21 +87,6 @@ function logoutKit(){
   window.location.href = '/login';
 }
 
-var _installPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e){
-  e.preventDefault();
-  _installPrompt = e;
-});
-
-function instalarApp(){
-  if(_installPrompt){
-    _installPrompt.prompt();
-    _installPrompt.userChoice.then(function(){ _installPrompt = null; });
-  } else {
-    toast('Para instalar: menú del navegador → "Agregar a pantalla de inicio"');
-  }
-}
-
 function toggleMobileMenu(){
   $('mobile-overlay').classList.toggle('open');
   $('mobile-sidebar').classList.toggle('open');

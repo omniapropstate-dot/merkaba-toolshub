@@ -89,8 +89,8 @@ function renderPlantillasLista(){
   cont.innerHTML = '<div style="display:grid;gap:10px;">' + arr.map(p => {
     const safe = p.contenido.replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');
     return `<div class="script-card">
-      <div class="script-situation">${escHtml(p.titulo)}</div>
-      <div style="font-size:0.87rem;color:var(--text);margin-top:6px;white-space:pre-wrap;">${escHtml(p.contenido)}</div>
+      <div class="script-situation">${esc(p.titulo)}</div>
+      <div style="font-size:0.87rem;color:var(--text);margin-top:6px;white-space:pre-wrap;">${esc(p.contenido)}</div>
       <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn btn-outline btn-sm" onclick="copiar(this.dataset.t)" data-t="${p.contenido.replace(/"/g,'&quot;')}">📋 Copiar</button>
         <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(this.dataset.t)" data-t="${p.contenido.replace(/"/g,'&quot;')}">💬 WhatsApp</button>
@@ -177,7 +177,7 @@ function renderPendientesLista(){
   cont.innerHTML = '<div style="display:grid;gap:8px;">' + arr.map(p =>
     `<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:${p.hecho?'var(--surface-2)':'var(--surface)'};border:1px solid var(--border);border-radius:var(--radius-sm);${p.hecho?'opacity:0.65;':''}">
       <input type="checkbox" ${p.hecho?'checked':''} onchange="togglePendiente(${p.id})" style="margin-top:3px;width:16px;height:16px;accent-color:var(--navy);flex-shrink:0;cursor:pointer;">
-      <span style="flex:1;font-size:0.9rem;${p.hecho?'text-decoration:line-through;color:var(--text-muted);':''}">${escHtml(p.texto)}</span>
+      <span style="flex:1;font-size:0.9rem;${p.hecho?'text-decoration:line-through;color:var(--text-muted);':''}">${esc(p.texto)}</span>
       <button onclick="eliminarPendiente(${p.id})" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:1rem;padding:0 2px;flex-shrink:0;" title="Eliminar">✕</button>
     </div>`
   ).join('') + '</div>';
@@ -185,7 +185,6 @@ function renderPendientesLista(){
 }
 
 // ── HELPERS ────────────────────────────────────────────────────────────────────
-function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 async function sbSavePlantillas(arr){
   const id = localStorage.getItem('mk_id'); if(!id) return;

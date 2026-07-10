@@ -1,3 +1,6 @@
+// ══════════════════════════════════════════════
+// MAPA DEL PROCESO
+// ══════════════════════════════════════════════
 function buildMapa(){
   const grid = $('mapa-grid');
   FASES.forEach((f,i)=>{

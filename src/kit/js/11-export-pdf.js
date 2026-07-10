@@ -1,4 +1,4 @@
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const DOC_INICIO = '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">';
 
 // GENERADOR DE PDF v3 (html2canvas)
 // ═══════════════════════
@@ -130,7 +130,7 @@ function buildPropuestaHTML(texto){
     }
     return '<p style="margin:0 0 10px;line-height:1.7;color:#2d3748;font-size:0.92rem;">'+esc(t)+'</p>';
   }).join('');
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     + _agentHeaderHTML()
     + '<div style="padding:32px 36px;">'
     +   '<h1 style="font-family:Georgia,serif;font-size:1.6rem;color:#1B335E;margin:0 0 6px;font-weight:700;">Propuesta de Captaci&#243;n</h1>'
@@ -192,7 +192,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
       + '</div>'
     : '';
 
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body style="margin:0;padding:0;font-family:Segoe UI,Arial,sans-serif;background:#fff;">'
+  return DOC_INICIO
     + _agentHeaderHTML()
     + '<div style="padding:28px 36px;">'
     +   '<div style="margin-bottom:16px;">'
