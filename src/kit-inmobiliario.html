@@ -205,6 +205,20 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .home-ql-name{font-size:0.67rem;color:var(--text-muted);line-height:1.3;}
 .home-ql-card.bib{border-color:var(--gold);}
 .home-ql-card.bib .home-ql-count{color:var(--gold);}
+.home-ql-card.gold{border-color:var(--gold);}
+.home-ql-card.gold .home-ql-count{color:var(--gold);}
+.home-acc{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:0;}
+.home-acc-hdr{width:100%;text-align:left;background:var(--surface-2);border:none;padding:12px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-radius:var(--radius);font-size:0.87rem;font-weight:600;color:var(--text);font-family:'Inter',sans-serif;}
+.home-acc-hdr:hover{background:var(--navy-soft);}
+.home-acc-body{padding:12px;}
+.home-acc-arr{font-size:0.65rem;color:var(--text-muted);transition:transform 0.2s;display:inline-block;}
+.home-search-wrap{margin-bottom:16px;}
+.home-search-input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.88rem;background:var(--surface-2);color:var(--text);outline:none;}
+.home-search-input:focus{border-color:var(--navy);box-shadow:0 0 0 2px rgba(23,55,94,0.1);}
+.search-result-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);cursor:pointer;border:1px solid var(--border);margin-bottom:6px;background:var(--surface-2);}
+.search-result-item:hover{border-color:var(--navy);background:var(--navy-soft);}
+.search-result-name{font-size:0.87rem;font-weight:600;color:var(--text);}
+.search-result-tipo{font-size:0.73rem;color:var(--text-muted);}
 .sidebar-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:4px;}
 .sidebar-tab{flex:1;padding:8px 4px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:"Inter",sans-serif;font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;transition:color .15s,border-color .15s;}
 .sidebar-tab:hover{color:var(--navy);}
@@ -833,6 +847,8 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
     </div>
 
     <div id="home-pend-section"></div>
+
+    <div id="home-search"></div>
 
     <div id="home-ql"></div>
 
@@ -4859,9 +4875,6 @@ function buildMobileContent(tab, btnEl){
 
 
 
-function imprimirPropuesta(){ window.print(); }
-
-
 
 
 
@@ -5882,52 +5895,16 @@ function toolAcuerdoTrabajo(){
 function toolBiblioteca(){
 
 
-  if(!window.bibToggle){
-    window.bibToggle = function(i){
-      var el = document.getElementById('bib-body-'+i);
-      var arr = document.getElementById('bib-arr-'+i);
-      if(!el) return;
-      var open = el.style.display !== 'none';
-      el.style.display = open ? 'none' : 'block';
-      if(arr) arr.style.transform = open ? '' : 'rotate(180deg)';
-    };
-  }
-
-  var cats = [{icon:'🏠',cat:'Captación y Ventas',books:[{t:'Dossier de Ventas para Agentes',id:'1wd3EMFjHfX01bay5DHChI6OgC6BhRQ-M'},{t:'WhatsApp Marketing para Agentes',id:'1SKagTTiPGLQAzCCYCVV7xhcjWBehvFlv'},{t:'Guía para el Profesional Inmobiliario',id:'1NZTd5gzevhMjqhb8X8gvQLgTT7aaycgF'},{t:'Teletrabajo para Inmobiliarias',id:'1kMHsrWJKZCnFY_55mGEinzfSbB_WAFT0'},{t:'Ventas Inmobiliarias: 3 Reglas de Oro',id:'1xKPe_Bkm5B_GxyLk2QobLYgFSWvUmOzp'},{t:'Cómo Vender Propiedades Desde Casa',id:'1ykZlCRi9U7vN-eRocRBXAV4BJW8vWcYR'},{t:'Propuesta de Valor y Manejo de Objeciones',id:'1jRig0bXap5X0DhHkWOb7pVH47nZHAs7A'}]},{icon:'📢',cat:'Marketing y Promoción',books:[{t:'5 Formas de Promocionar Inmuebles',id:'1t8TAHqzBbLlG-ryp5slgIbEPgexASqcA'},{t:'Beneficios de Tener un Blog Inmobiliario',id:'1jgjrQeTSu5KyJorQGJ9OnLclOznz7i-9'},{t:'Plan de Marketing para una Agencia Inmobiliaria',id:'1cgjuM1Sd-rKzUlDu2Kj01OyJ66X011jU'},{t:'Neuromarketing Inmobiliario para Vender Mejor',id:'1voA6iShVkX5ZAYGIHm9hdMbxlrA2Tt-M'},{t:'Plan de Marketing para Promotoras Inmobiliarias',id:'1WJ7bRcbyS3CTqzVSYQXsq4yGysZTNQz4'},{t:'Relaciones Públicas Inmobiliarias',id:'1YTjiZYq3cHbIN7ZT0ChrBLXsxJSNr4wH'},{t:'Email Marketing Inmobiliario',id:'1XD0o-aYIfVYZV0_o0klE2S5Ok2DHCyXi'},{t:'Inbound Marketing Inmobiliario',id:'1lly1D3VErTqt27W-sHGR8FKqIldM8azp'},{t:'Investigación y Aplicación del Marketing Inmobiliario',id:'1YG6iICxebbfqGEhtY-ES0tauMpuDGbmc'},{t:'Marketing Inmobiliario en Internet',id:'1WBWOezjuYZXpro9Z_HfIBYVK8s_hwiw4'},{t:'Plan de Marketing Inmobiliario',id:'1Mg10oEM9XiMcStUHVcbSbgyOlEE1aJNT'}]},{icon:'📈',cat:'Inversión Inmobiliaria',books:[{t:'Estrategias para Comprar, Construir y Vender Inmuebles',id:'1DB1d4zVihc506MzTyYVUVHzvn87Sq68o'},{t:'El ABC de la Inversión en Bienes Raíces — Ken McElroy',id:'15FG3_xstJEJPmg8g6oh5CLrGsBlRG1oa'},{t:'Innovación en Desarrollo Inmobiliario — Carlos Muñoz',id:'1pObGNyEol_yeS0JKdEivwimtIAh07qR4'},{t:'Los Secretos de la Inversión Inmobiliaria — Felipe Yaluff',id:'12IFLd8CeQZepsjbb8UqEgbhLa7TwFs6D'},{t:'Mi Primera Inversión Inmobiliaria',id:'171g7Wq8HOsBXcL-9pQqvp-SgXIN8rLeg'},{t:'Plan de Negocio de Gestión Inmobiliaria — Caso Chile',id:'1Yiv0rSdAgm4SS38XB6oJsGEEpCKEpaan'},{t:'Inversión en Bienes Raíces Comerciales',id:'1QNQ262zHmX3PHeqc-NboUnW3w-3Pi6mL'},{t:'Cómo Crear Riqueza con Bienes Raíces — Grant Cardone',id:'1IjDY9-ElzeF8YifTHKe0b_SsW2khwOJN'},{t:'Administración de Bienes Raíces',id:'1orlaZSUNaiNok7pzVs01NmKmGIdIFlzd'},{t:'Administración Inmobiliaria y Plan de Negocio',id:'10IjmQwwhV60LrDTPiUQw6bXr6P6ep9DC'}]},{icon:'📖',cat:'Lecturas Complementarias',books:[{t:'Mercado Inmobiliario y Crisis Económicas',id:'1iFj4lif_FU9ZAOxuz-M8Wb3100U-grX2'},{t:'Análisis Competitivo del Sector Inmobiliario',id:'18x7kV7AreTa_I0u7O_EdJDPDqNpDwOiN'},{t:'Regulación del Corretaje de Propiedades — Chile',id:'1LscFC7rdMffop263oSy1oDP5fkyPHt91'},{t:'Factores de Compra de Vivienda — Chile',id:'1wwDC1kto_4qorFgLTkmHmYSkSrB6f9pa'},{t:'Reforma Tributaria — Lectura Complementaria',id:'1Op8zoisBvAAt5F1E8kUbRK-wWssqZkiJ'}]}];
-
-  var catsHtml = cats.map(function(c,ci){
-    var rows = c.books.map(function(b){
-      return '<div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);">'
-        +'<span style="font-size:0.87rem;color:var(--text);flex:1;">'+b.t+'</span>'
-        +'<a href="https://drive.google.com/file/d/'+b.id+'/view" target="_blank" rel="noopener" '
-        +'style="font-size:0.78rem;font-weight:600;color:var(--navy);white-space:nowrap;text-decoration:none;'
-        +'padding:4px 10px;border:1px solid var(--navy);border-radius:4px;flex-shrink:0;">Abrir PDF</a>'
-        +'</div>';
-    }).join('');
-    return '<div style="margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius-sm);">'
-      +'<button onclick="bibToggle('+ci+')" style="width:100%;text-align:left;background:var(--surface-2);'
-      +'border:none;padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;border-radius:var(--radius-sm);">'
-      +'<span style="font-size:1rem;">'+c.icon+'</span>'
-      +'<span style="font-size:0.91rem;font-weight:600;color:var(--navy);flex:1;">'+c.cat+'</span>'
-      +'<span style="font-size:0.75rem;color:var(--text-muted);">'+c.books.length+' libros</span>'
-      +'<span id="bib-arr-'+ci+'" style="font-size:0.65rem;color:var(--text-muted);transition:transform 0.2s;display:inline-block;margin-left:6px;">▼</span>'
-      +'</button>'
-      +'<div id="bib-body-'+ci+'" style="display:none;padding:0 16px 8px;">'+rows+'</div>'
-      +'</div>';
-  }).join('');
-
   return '<div class="tool-section" id="tool-biblioteca">'
     +'<div class="tool-header"><div>'
     +'<div class="tool-title">📚 Biblioteca</div>'
-    +'<div class="tool-subtitle">Libros y guías en PDF organizados por tema. Haz clic en una categoría para ver los títulos disponibles.</div>'
+    +'<div class="tool-subtitle">Libros y guías en PDF para agentes inmobiliarios.</div>'
     +'</div></div>'
-    +'<div style="margin-bottom:14px;">'
-    +'<a href="https://drive.google.com/file/d/12RhF4fE05pSMb4FNBxTDJPCILWVtwnwr/view" target="_blank" rel="noopener" '
-    +'style="font-size:0.82rem;color:var(--navy);font-weight:600;text-decoration:none;">→ Guía de uso de la biblioteca</a>'
-    +'</div>'
-    +catsHtml
+    +'<a href="https://drive.google.com/drive/folders/1pAF74TtE_bpi2qybJ4az9k_gQaROsvt2" target="_blank" rel="noopener" '
+    +'class="btn btn-primary" style="display:inline-block;text-decoration:none;margin-top:4px;">Abrir biblioteca en Google Drive →</a>'
     +'</div>';
 }
+
 
 
 // ══════════════════════════════════════════════
@@ -7037,13 +7014,7 @@ function showTiposGrid(){
 }
 
 function showBiblioteca(){
-  setSidebarTab('etapas');
-  $('phase-mapa').hidden = true;
-  $('phase-content').hidden = false;
-  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
-  html += renderTool('biblioteca');
-  $('phase-content').innerHTML = html;
-  document.querySelector('.kit-main').scrollTop = 0;
+  window.open('https://drive.google.com/drive/folders/1pAF74TtE_bpi2qybJ4az9k_gQaROsvt2', '_blank');
 }
 
 function goBack(){
@@ -7072,6 +7043,80 @@ function initCollapsibles(){
       arrow.style.transform = open ? '' : 'rotate(180deg)';
     };
   });
+}
+
+// ══════════════════════════════════════════════
+// BUSCADOR
+// ══════════════════════════════════════════════
+var SEARCH_INDEX = [
+  {id:'calc-comision',             nombre:'Calculadora de comisión',          tipo:'Calculadoras', icon:'🧮'},
+  {id:'calc-tipo-cambio',          nombre:'Calculadora tipo de cambio',       tipo:'Calculadoras', icon:'🧮'},
+  {id:'calc-antictretico',         nombre:'Calculadora anticrético',          tipo:'Calculadoras', icon:'🧮'},
+  {id:'propuesta-propietario',     nombre:'Propuesta al propietario',         tipo:'Generadores', icon:'✏️'},
+  {id:'respuesta-rapida',          nombre:'Respuesta rápida al lead',         tipo:'Generadores', icon:'✏️'},
+  {id:'generador-seguimiento',     nombre:'Generador de seguimiento',         tipo:'Generadores', icon:'✏️'},
+  {id:'mensaje-postventa',         nombre:'Mensaje post-venta',               tipo:'Generadores', icon:'✏️'},
+  {id:'checklist-visita',          nombre:'Checklist de visita',              tipo:'Checklists',  icon:'✅'},
+  {id:'checklist-antictretico',    nombre:'Checklist anticrético',            tipo:'Checklists',  icon:'✅'},
+  {id:'guia-captacion',            nombre:'Guía de captación',                tipo:'Guías',       icon:'📖'},
+  {id:'guia-legal',                nombre:'Guía del proceso legal',            tipo:'Guías',       icon:'📖'},
+  {id:'manejador-objeciones',      nombre:'Manejador de objeciones',          tipo:'Guías',       icon:'📖'},
+  {id:'banco-scripts',             nombre:'Banco de scripts',                 tipo:'Guías',       icon:'📖'},
+  {id:'ficha-propiedad',           nombre:'Ficha de propiedad',               tipo:'Formularios', icon:'📄'},
+  {id:'filtro-comprador',          nombre:'Filtro de comprador',              tipo:'Formularios', icon:'📄'},
+  {id:'comparador-inmuebles',      nombre:'Comparador de inmuebles',          tipo:'Formularios', icon:'📄'},
+  {id:'acuerdo-trabajo',           nombre:'Acuerdo de trabajo',               tipo:'Formularios', icon:'📄'},
+  {id:'presentacion-personal-word',nombre:'Presentación personal',            tipo:'Formularios', icon:'📄'},
+  {id:'cartera-propiedades-excel', nombre:'Control de cartera de propiedades',tipo:'Excel',       icon:'📊'},
+  {id:'control-seguimientos-excel',nombre:'Control de seguimientos',          tipo:'Excel',       icon:'📊'},
+  {id:'comparador-inmuebles-excel',nombre:'Comparador de inmuebles (Excel)',  tipo:'Excel',       icon:'📊'},
+  {id:'calc-anticretico-excel',    nombre:'Calculadora anticrético (Excel)',  tipo:'Excel',       icon:'📊'},
+  {id:'registro-comisiones-excel', nombre:'Registro de comisiones',           tipo:'Excel',       icon:'📊'},
+  {id:'mis-plantillas',            nombre:'Mis plantillas',                   tipo:'Organizadores',icon:'🗂️'},
+  {id:'tablero-pendientes',        nombre:'Tablero de pendientes',            tipo:'Organizadores',icon:'🗂️'},
+];
+
+function homeAccToggle(id){
+  var body = $(id); var arr = $(id+'-arr');
+  if(!body) return;
+  var open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  if(arr) arr.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+function onSearchInput(q){
+  var res = $('home-search-results');
+  if(!res) return;
+  q = (q||'').trim().toLowerCase();
+  if(q.length < 2){ res.hidden = true; res.innerHTML = ''; return; }
+  var hits = SEARCH_INDEX.filter(function(t){
+    return t.nombre.toLowerCase().indexOf(q) >= 0 || t.tipo.toLowerCase().indexOf(q) >= 0;
+  });
+  if(hits.length === 0){
+    res.innerHTML = '<div style="font-size:0.82rem;color:var(--text-muted);padding:8px 0;">Sin resultados.</div>';
+  } else {
+    res.innerHTML = hits.map(function(t){
+      return '<div class="search-result-item" onclick="showSingleTool(\''+t.id+'\')">'
+        +'<span style="font-size:1.1rem;">'+t.icon+'</span>'
+        +'<div><div class="search-result-name">'+t.nombre+'</div>'
+        +'<div class="search-result-tipo">'+t.tipo+'</div></div>'
+        +'</div>';
+    }).join('');
+  }
+  res.hidden = false;
+}
+
+function showSingleTool(id){
+  var inp = $('home-search-input'); if(inp) inp.value = '';
+  var res = $('home-search-results'); if(res){ res.hidden=true; res.innerHTML=''; }
+  setSidebarTab('etapas');
+  $('phase-mapa').hidden = true;
+  $('phase-content').hidden = false;
+  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
+  html += renderTool(id);
+  $('phase-content').innerHTML = html;
+  initCollapsibles();
+  document.querySelector('.kit-main').scrollTop = 0;
 }
 
 buildSidebar();
@@ -7140,24 +7185,57 @@ function initHome(){
   ];
   var doy = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
   $('home-phrase').textContent = '“' + frases[doy % frases.length] + '”';
-  // acceso rapido
+  // buscador
+  var hs = $('home-search');
+  if(hs){
+    hs.innerHTML = '<div class="home-search-wrap">'
+      +'<input type="search" id="home-search-input" class="home-search-input" placeholder="🔍 Buscar herramienta..." oninput="onSearchInput(this.value)">'
+      +'<div id="home-search-results" hidden></div>'
+      +'</div>';
+  }
+
+  // navegacion
   var ql = $('home-ql');
   if(ql){
-    var cards = TIPOS.map(function(t,i){
-      return '<button class="home-ql-card" onclick="showTipo('+i+')" title="'+t.nombre+'">'
+    var tipoCards = TIPOS.map(function(t,i){
+      return '<button class="home-ql-card" onclick="showTipo('+i+')">'                                  
         +'<span class="home-ql-icon">'+t.icon+'</span>'
         +'<span class="home-ql-count">'+t.tools.length+'</span>'
         +'<span class="home-ql-name">'+t.nombre+'</span>'
         +'</button>';
-    });
-    cards.push('<button class="home-ql-card bib" onclick="showBiblioteca()" title="Biblioteca">'
+    }).join('');
+    tipoCards += '<button class="home-ql-card bib" onclick="showBiblioteca()">'
       +'<span class="home-ql-icon">📚</span>'
       +'<span class="home-ql-count">33</span>'
       +'<span class="home-ql-name">Biblioteca</span>'
-      +'</button>');
-    ql.innerHTML = '<p class="home-ql-title">Acceso rápido</p><div class="home-ql-grid">'+cards.join('')+'</div>';
+      +'</button>';
+    var etapaCards = FASES.filter(function(f){ return f.id!=='transversal'; }).map(function(f){
+      var fi = FASES.indexOf(f);
+      return '<button class="home-ql-card'+(f.color==='gold'?' gold':'')+'" onclick="showPhase('+fi+')">'                                                           
+        +'<span class="home-ql-count" style="font-size:1rem;">'+f.num+'</span>'
+        +'<span class="home-ql-name" style="font-weight:600;color:var(--text);">'+f.nombre+'</span>'
+        +'<span class="home-ql-name">'+f.tools.length+' herr.</span>'
+        +'</button>';
+    }).join('');
+    ql.innerHTML =
+      '<p class="home-ql-title">¿Cómo querés ver las herramientas?</p>'
+      +'<div class="home-acc">'
+      +'<button class="home-acc-hdr" onclick="homeAccToggle(\'acc-tipo\')">'                 
+      +'<span>🔧 Por tipo de herramienta</span>'
+      +'<span id="acc-tipo-arr" class="home-acc-arr">▼</span>'
+      +'</button>'
+      +'<div id="acc-tipo" class="home-acc-body" style="display:none;">'
+      +'<div class="home-ql-grid">'+tipoCards+'</div>'
+      +'</div></div>'
+      +'<div class="home-acc" style="margin-top:10px;">'
+      +'<button class="home-acc-hdr" onclick="homeAccToggle(\'acc-etapa\')">'                
+      +'<span>🗂️ Por etapa de venta</span>'
+      +'<span id="acc-etapa-arr" class="home-acc-arr">▼</span>'
+      +'</button>'
+      +'<div id="acc-etapa" class="home-acc-body" style="display:none;">'
+      +'<div class="home-ql-grid">'+etapaCards+'</div>'
+      +'</div></div>';
   }
-
 }
 initHome();
 
