@@ -1,22 +1,44 @@
 """
 build.py - Construye worker.js desde los archivos fuente.
+El kit se ensambla desde los partials en src/kit/ (head, styles, body,
+modulos JS en orden alfabetico, tail).
 Uso: python build.py
 """
-import base64, os
+import base64, glob, os
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
-def encode_text(path):
+def read_text(path):
     with open(os.path.join(ROOT, path), 'r', encoding='utf-8') as f:
-        return base64.b64encode(f.read().encode('utf-8')).decode('ascii')
+        return f.read()
 
 def encode_bin(path):
     with open(os.path.join(ROOT, path), 'rb') as f:
         return base64.b64encode(f.read()).decode('ascii')
 
-login_b64   = encode_text('src/login.html')
-kit_b64     = encode_text('src/kit-inmobiliario.html')
-admin_b64   = encode_text('src/admin.html')
+def b64(text):
+    return base64.b64encode(text.encode('utf-8')).decode('ascii')
+
+def assemble_kit():
+    js_files = sorted(glob.glob(os.path.join(ROOT, 'src', 'kit', 'js', '*.js')))
+    parts = [read_text('src/kit/head.html'), '<style>\n', read_text('src/kit/styles.css'),
+             '</style>\n', read_text('src/kit/body.html'), '<script>\n']
+    for path in js_files:
+        with open(path, 'r', encoding='utf-8') as f:
+            parts.append(f.read())
+    parts += ['</script>\n', read_text('src/kit/tail.html')]
+    return ''.join(parts)
+
+kit_html = assemble_kit()
+
+# copia navegable del kit ensamblado (no se commitea)
+os.makedirs(os.path.join(ROOT, 'dist'), exist_ok=True)
+with open(os.path.join(ROOT, 'dist', 'kit-inmobiliario.html'), 'w', encoding='utf-8') as f:
+    f.write(kit_html)
+
+login_b64   = b64(read_text('src/login.html'))
+kit_b64     = b64(kit_html)
+admin_b64   = b64(read_text('src/admin.html'))
 icon192_b64 = encode_bin('icons/logo-192.png')
 icon512_b64 = encode_bin('icons/logo-512.png')
 

@@ -1,0 +1,269 @@
+
+
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#0a1628"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Merkaba Kit"></head>
+
+
+<body>
+
+
+
+
+
+<header class="kit-header">
+
+
+  <button class="hamburger-btn" onclick="toggleMobileMenu()" title="Menu">&#9776;</button>
+
+
+
+  <div class="kit-header-title">Kit Inmobiliario <span>Bolivia</span></div>
+
+
+  <div class="spacer"></div>
+
+
+  <div class="agent-badge" id="agent-badge" onclick="abrirPerfil()" title="Mi perfil">Agente</div>
+
+
+  <button class="logout-kit-btn" onclick="logoutKit()">Salir</button>
+
+
+</header>
+
+
+
+
+
+<!-- MOBILE OVERLAY -->
+
+
+<div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+
+
+<div class="mobile-sidebar" id="mobile-sidebar">
+
+
+  <div class="mobile-sidebar-top">
+
+
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.9rem;color:var(--navy);">Herramientas</div>
+
+
+    <button class="mobile-close-btn" onclick="toggleMobileMenu()">&#10005;</button>
+
+
+  </div>
+
+
+  <div id="mobile-sidebar-phases"></div><div style="padding:10px 20px;border-top:1px solid var(--border);"><button id="install-wrap" onclick="instalarApp();toggleMobileMenu();" style="width:100%;text-align:left;padding:10px 0;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);">&#128242; Instalar App en mi celular</button></div>
+
+
+</div>
+
+
+
+
+
+<!-- PERFIL MODAL -->
+
+
+<div class="modal-bg" id="perfil-modal">
+
+
+  <div class="modal-box">
+
+
+    <h2>Mi perfil</h2>
+
+
+    <p class="modal-sub">Tu informacion aparece en todos los textos y documentos generados.</p>
+
+
+    <div class="photo-wrap">
+
+
+      <div class="photo-ring" id="photo-ring-preview">&#128100;</div>
+
+
+      <div>
+
+
+        <div style="font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:4px;">Foto de perfil</div>
+
+
+        <input type="file" id="foto-input" accept="image/*" style="font-size:0.78rem;" onchange="cargarFoto(this)"/>
+
+
+        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">Se guarda solo en tu dispositivo.</div>
+
+
+      </div>
+
+
+    </div>
+
+
+    <div class="form-group" style="margin-bottom:12px;">
+
+
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">Nombre</label>
+
+
+      <input type="text" id="perfil-nombre" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+
+
+    </div>
+
+
+    <div class="form-group" style="margin-bottom:12px;">
+
+
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">Ciudad</label>
+
+
+      <input type="text" id="perfil-ciudad" placeholder="Ej: La Paz, Cochabamba..." style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+
+
+    </div>
+
+
+    <div class="form-group" style="margin-bottom:20px;">
+
+
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">WhatsApp</label>
+
+
+      <input type="text" id="perfil-whatsapp" placeholder="Ej: +591 71234567" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+
+
+    </div>
+
+
+    <div class="form-group" style="margin-bottom:20px;">
+
+
+      <label style="font-size:0.82rem;font-weight:600;color:var(--text-muted);">Email</label>
+
+
+      <input type="email" id="perfil-email" placeholder="tu@correo.com" style="padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.9rem;font-family:Inter,sans-serif;background:var(--surface-2);width:100%;"/>
+
+
+    </div>
+
+
+    <div style="display:flex;gap:10px;">
+
+
+      <button class="btn btn-primary" style="flex:1;" onclick="guardarPerfil()">Guardar cambios</button>
+
+
+      <button class="btn btn-outline" onclick="cerrarPerfil()">Cancelar</button>
+
+
+    </div>
+
+
+    <div id="perfil-msg" style="font-size:0.82rem;margin-top:10px;min-height:1em;"></div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+<div class="kit-body">
+
+
+
+
+
+<!-- SIDEBAR -->
+
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-phase">
+    <button class="phase-btn" id="sidebar-home-btn" onclick="showMapa()">
+      <span class="phase-num">&#9733;</span> Inicio
+    </button>
+  </div>
+  <div class="sidebar-tabs">
+    <button class="sidebar-tab active" id="tab-etapas" onclick="setSidebarTab('etapas')">Por etapa</button>
+    <button class="sidebar-tab" id="tab-tipos" onclick="setSidebarTab('tipos')">Por tipo</button>
+  </div>
+  <div id="sidebar-phases"></div>
+
+
+</nav>
+
+
+
+
+
+<!-- MAIN -->
+
+
+<main class="kit-main" id="kit-main">
+
+
+
+
+
+  <!-- MAPA DEL PROCESO -->
+
+
+  <div id="phase-mapa">
+
+
+    <!-- HERO PERSONALIZADO -->
+    <div class="home-hero" id="home-hero">
+      <div class="home-hero-top">
+        <div class="home-avatar" id="home-avatar">&#128100;</div>
+        <div>
+          <div class="home-greeting" id="home-greeting">Bienvenido</div>
+          <div class="home-meta" id="home-meta"></div>
+        </div>
+      </div>
+      <div class="home-phrase" id="home-phrase"></div>
+    </div>
+
+    <div id="home-pend-section"></div>
+
+    <div id="home-search"></div>
+
+    <div id="home-ql"></div>
+
+
+  </div>
+
+
+
+
+
+  <!-- FASES (se muestran/ocultan) -->
+
+
+  <div id="phase-content" hidden></div>
+
+
+
+
+
+</main>
+
+
+</div>
+
+
+
+
+
+<div class="toast" id="toast" hidden></div>
+
+
+
+
+
