@@ -210,8 +210,9 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
 
 <script>
   if(localStorage.getItem("mk_auth")==="1"){ window.location.replace("/kit-inmobiliario"); }
-  // BORRADOR — contraseña temporal hasta conectar Supabase
-  const CONTRASENA = 'merkaba2025';
+
+  const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
 
   function mostrarCampo(){
     document.getElementById('btn-mostrar').style.display = 'none';
@@ -219,16 +220,42 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
     document.getElementById('pw-input').focus();
   }
 
-  function verificar(){
+  async function verificar(){
     const val = document.getElementById('pw-input').value.trim();
-    if(!val){ document.getElementById('error-msg').textContent = 'Ingresa tu contraseña.'; return; }
-    if(val === CONTRASENA){
-      localStorage.setItem('mk_auth', '1');
-      window.location.href = '/kit-inmobiliario';
-    } else {
-      document.getElementById('error-msg').textContent = 'Contraseña incorrecta. Verifica con tu asesor.';
-      document.getElementById('pw-input').value = '';
-      document.getElementById('pw-input').focus();
+    const errEl = document.getElementById('error-msg');
+    const btn = document.querySelector('.btn-submit');
+    if(!val){ errEl.textContent = 'Ingresa tu contraseña.'; return; }
+    btn.textContent = 'Verificando...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/rpc/verify_password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY },
+        body: JSON.stringify({ pwd: val })
+      });
+      const data = await res.json();
+      if(data && data.ok){
+        localStorage.setItem('mk_auth', '1');
+        localStorage.setItem('mk_id', data.id);
+        localStorage.setItem('mk_nombre', data.nombre || '');
+        localStorage.setItem('mk_ciudad', data.ciudad || '');
+        localStorage.setItem('mk_whatsapp', data.whatsapp || '');
+        localStorage.setItem('mk_email', data.email || '');
+        if(data.foto){ localStorage.setItem('mk_foto', data.foto); }
+        localStorage.setItem('mk_plantillas', JSON.stringify(data.plantillas || []));
+        localStorage.setItem('mk_pendientes', JSON.stringify(data.pendientes || []));
+        window.location.href = '/kit-inmobiliario';
+      } else {
+        errEl.textContent = 'Contraseña incorrecta. Verifica con tu asesor.';
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+        btn.textContent = 'Entrar al kit →';
+        btn.disabled = false;
+      }
+    } catch(e){
+      errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+      btn.textContent = 'Entrar al kit →';
+      btn.disabled = false;
     }
   }
 
