@@ -170,6 +170,16 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 
 
 .mapa-tools{font-size:0.72rem;color:var(--gold);font-weight:600;margin-top:6px;}
+.home-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:28px;display:flex;flex-direction:column;gap:14px;}
+.home-hero-top{display:flex;align-items:center;gap:16px;}
+.home-avatar{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;overflow:hidden;}
+.home-avatar img{width:100%;height:100%;object-fit:cover;}
+.home-greeting{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);line-height:1.2;}
+.home-meta{font-size:0.82rem;color:var(--text-muted);margin-top:4px;}
+.home-meta .dot{color:var(--gold);margin:0 5px;}
+.home-pending{color:var(--gold);font-weight:600;}
+.home-phrase{font-size:0.83rem;color:var(--text-muted);font-style:italic;border-left:2px solid var(--gold);padding-left:12px;line-height:1.5;}
+@media(max-width:600px){.home-greeting{font-size:1rem;}.home-avatar{width:44px;height:44px;}}
 
 
 
@@ -793,15 +803,21 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
   <div id="phase-mapa">
 
 
-    <div style="margin-bottom:24px;">
+    <!-- HERO PERSONALIZADO -->
+    <div class="home-hero" id="home-hero">
+      <div class="home-hero-top">
+        <div class="home-avatar" id="home-avatar">&#128100;</div>
+        <div>
+          <div class="home-greeting" id="home-greeting">Bienvenido</div>
+          <div class="home-meta" id="home-meta"></div>
+        </div>
+      </div>
+      <div class="home-phrase" id="home-phrase"></div>
+    </div>
 
-
-      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:6px;">Tu proceso de venta</h1>
-
-
-      <p style="color:var(--text-muted);font-size:0.9rem;">Haz clic en la etapa donde estás para ir directo a las herramientas que necesitas.</p>
-
-
+    <div style="margin-bottom:16px;">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px;">Tu proceso de venta</h2>
+      <p style="color:var(--text-muted);font-size:0.85rem;">Haz clic en la etapa donde est&#225;s para ir directo a las herramientas que necesitas.</p>
     </div>
 
 
@@ -6856,6 +6872,45 @@ buildSidebar();
 
 
 buildMobileSidebar();
+
+
+// ══════════════════════════════════════════════
+// HOME PERSONALIZADO
+// ══════════════════════════════════════════════
+function initHome(){
+  var hora = new Date().getHours();
+  var saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
+  $('home-greeting').textContent = saludo + ', ' + (AGENTE.nombre || 'Agente');
+  var ciudad = AGENTE.ciudad || '';
+  var pendientes = JSON.parse(localStorage.getItem('mk_pendientes') || '[]');
+  var sinResolver = pendientes.filter(function(p){ return !p.done; }).length;
+  var metaParts = [];
+  if(ciudad) metaParts.push(ciudad);
+  if(sinResolver > 0) metaParts.push('<span class="home-pending">● ' + sinResolver + ' pendiente' + (sinResolver > 1 ? 's' : '') + ' para hoy</span>');
+  $('home-meta').innerHTML = metaParts.join('<span class="dot">·</span>');
+  var foto = localStorage.getItem('mk_foto');
+  if(foto) $('home-avatar').innerHTML = '<img src="' + foto + '" alt="foto"/>';
+  var frases = [
+    'El seguimiento consistente es lo que separa a los agentes top del promedio.',
+    'Cada “no” que recibes te acerca más al próximo “sí”.',
+    'Tu red de referidos es tu activo más valioso — inviértele tiempo hoy.',
+    'Un agente organizado cierra más que un agente ocupado.',
+    'La confianza se gana antes de mostrar la primera propiedad.',
+    'El mercado boliviano tiene oportunidades para quienes las buscan activamente.',
+    'Un seguimiento más puede ser la diferencia entre cerrar o perder la operación.',
+    'Los clientes no compran propiedades, compran soluciones para sus vidas.',
+    'Conocer el precio correcto desde el inicio te ahorra semanas de trabajo.',
+    'La mejor captación es la que viene recomendada por un cliente satisfecho.',
+    'Prepárate antes de cada visita — los detalles cierran operaciones.',
+    'El agente que escucha más que habla es el que entiende qué vender.',
+    'Una buena ficha de propiedad trabaja por ti las 24 horas.',
+    'No vendas m², vende el proyecto de vida que hay detrás.',
+    'El éxito en inmobiliaria es 20% conocimiento y 80% consistencia.'
+  ];
+  var doy = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  $('home-phrase').textContent = '“' + frases[doy % frases.length] + '”';
+}
+initHome();
 
 
 
