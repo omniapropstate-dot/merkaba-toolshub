@@ -194,17 +194,17 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .home-pend-add input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:"Inter",sans-serif;font-size:0.85rem;background:var(--surface-2);color:var(--text);}
 .home-pend-add input:focus{outline:1px solid var(--navy);}
 .home-pend-add button{padding:7px 12px;background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:0.82rem;font-weight:600;white-space:nowrap;}
-.home-access{margin-top:4px;}
-.home-access-title{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:12px;}
-.home-stats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
-.home-stat{font-size:0.73rem;color:var(--text-muted);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;white-space:nowrap;}
-.home-access-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-@media(max-width:480px){.home-access-grid{grid-template-columns:1fr;}}
-.home-access-btn{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:4px;}
-.home-access-btn:hover{border-color:var(--navy);background:var(--navy-soft);}
-.home-access-icon{font-size:1.4rem;line-height:1;}
-.home-access-label{font-family:"Space Grotesk",sans-serif;font-size:0.9rem;font-weight:700;color:var(--text);margin-top:6px;}
-.home-access-sub{font-size:0.75rem;color:var(--text-muted);}
+.home-ql{margin-top:20px;}
+.home-ql-title{font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+.home-ql-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+@media(max-width:480px){.home-ql-grid{grid-template-columns:repeat(2,1fr);}}
+.home-ql-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 8px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.home-ql-card:hover{border-color:var(--navy);background:var(--navy-soft);}
+.home-ql-icon{font-size:1.4rem;line-height:1;margin-bottom:2px;}
+.home-ql-count{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--navy);}
+.home-ql-name{font-size:0.67rem;color:var(--text-muted);line-height:1.3;}
+.home-ql-card.bib{border-color:var(--gold);}
+.home-ql-card.bib .home-ql-count{color:var(--gold);}
 .sidebar-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:4px;}
 .sidebar-tab{flex:1;padding:8px 4px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:"Inter",sans-serif;font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;transition:color .15s,border-color .15s;}
 .sidebar-tab:hover{color:var(--navy);}
@@ -834,22 +834,7 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 
     <div id="home-pend-section"></div>
 
-    <div class="home-access">
-      <div class="home-stats" id="home-stats"></div>
-      <p class="home-access-title">¿Cómo querés ver las herramientas?</p>
-      <div class="home-access-grid">
-        <button class="home-access-btn" onclick="showEtapasGrid()">
-          <span class="home-access-icon">🗂️</span>
-          <div class="home-access-label">Por etapa de venta</div>
-          <div class="home-access-sub">Primer contacto · Seguimiento · Visita · Cierre · Post-venta</div>
-        </button>
-        <button class="home-access-btn" onclick="showTiposGrid()">
-          <span class="home-access-icon">🔧</span>
-          <div class="home-access-label">Por tipo de herramienta</div>
-          <div class="home-access-sub">Calculadoras · Mensajes listos · Checklists · Guías</div>
-        </button>
-      </div>
-    </div>
+    <div id="home-ql"></div>
 
 
   </div>
@@ -7036,6 +7021,16 @@ function showTiposGrid(){
   window.scrollTo(0,0);
 }
 
+function showBiblioteca(){
+  setSidebarTab('etapas');
+  $('phase-mapa').hidden = true;
+  $('phase-content').hidden = false;
+  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
+  html += renderTool('biblioteca');
+  $('phase-content').innerHTML = html;
+  document.querySelector('.kit-main').scrollTop = 0;
+}
+
 function goBack(){
   if(_sidebarTab==='tipos') showTiposGrid();
   else showEtapasGrid();
@@ -7130,18 +7125,22 @@ function initHome(){
   ];
   var doy = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
   $('home-phrase').textContent = '“' + frases[doy % frases.length] + '”';
-  // stats bar
-  var hs = $('home-stats');
-  if(hs){
-    var allIds = [];
-    TIPOS.forEach(function(t){ t.tools.forEach(function(id){ if(allIds.indexOf(id)===-1) allIds.push(id); }); });
-    var totalHerr = allIds.length + 1;
-    var calcs = (TIPOS.filter(function(t){return t.id==='calculadoras';})[0]||{tools:[]}).tools.length;
-    var gens = (TIPOS.filter(function(t){return t.id==='generadores';})[0]||{tools:[]}).tools.length;
-    hs.innerHTML = '<span class="home-stat">📦 '+totalHerr+' herramientas</span>'
-      +'<span class="home-stat">🧮 '+calcs+' calculadoras</span>'
-      +'<span class="home-stat">✏️ '+gens+' generadores de texto</span>'
-      +'<span class="home-stat">📚 33 libros en PDF</span>';
+  // acceso rapido
+  var ql = $('home-ql');
+  if(ql){
+    var cards = TIPOS.map(function(t,i){
+      return '<button class="home-ql-card" onclick="showTipo('+i+')" title="'+t.nombre+'">'
+        +'<span class="home-ql-icon">'+t.icon+'</span>'
+        +'<span class="home-ql-count">'+t.tools.length+'</span>'
+        +'<span class="home-ql-name">'+t.nombre+'</span>'
+        +'</button>';
+    });
+    cards.push('<button class="home-ql-card bib" onclick="showBiblioteca()" title="Biblioteca">'
+      +'<span class="home-ql-icon">📚</span>'
+      +'<span class="home-ql-count">33</span>'
+      +'<span class="home-ql-name">Biblioteca</span>'
+      +'</button>');
+    ql.innerHTML = '<p class="home-ql-title">Acceso rápido</p><div class="home-ql-grid">'+cards.join('')+'</div>';
   }
 
 }
