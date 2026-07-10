@@ -1,125 +1,43 @@
 function toolDescargable(id, icon, nombre, formato, desc, btnLabel, familia){
-
-
   const badgeClass = familia==='ordena'?'badge-ordena':'badge-hace';
-
-
   const badgeLabel = familia==='ordena'?'Ordena':'Hace';
-
-
   return `<div class="tool-section" id="tool-${id}">
-
-
     <div class="tool-header">
-
-
       <div class="tool-icon">${icon}</div>
-
-
       <div><div class="tool-title">${nombre} <span class="tool-badge ${badgeClass}">${badgeLabel}</span></div>
-
-
       <div class="tool-subtitle">${desc}</div></div>
-
-
     </div>
-
-
     <div class="download-card">
-
-
       <div class="download-icon">${icon}</div>
-
-
       <div class="download-info">
-
-
         <h4>${nombre}</h4>
-
-
         <p>${formato} — Descarga y llena en tu computadora. Tus datos nunca salen de tu equipo.</p>
-
-
       </div>
-
-
       <button class="btn btn-primary btn-sm" onclick="toast('Plantilla disponible próximamente')">📥 ${btnLabel}</button>
-
-
     </div>
-
-
     <div style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">Las plantillas descargables estarán disponibles al momento del lanzamiento.</div>
-
-
   </div>`;
-
-
 }
-
-
-
-
 
 // ══════════════════════════════════════════════
-
-
 // PERFIL DEL AGENTE
-
-
 const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
-
-
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
 
-
-
-
-
 function abrirPerfil(){
-
-
   $('perfil-nombre').value = AGENTE.nombre;
-
-
   $('perfil-ciudad').value = AGENTE.ciudad;
-
-
   $('perfil-whatsapp').value = AGENTE.whatsapp;
-
-
   $('perfil-email').value = AGENTE.email;
-
-
   $('perfil-email').value = AGENTE.email;
-
-
   const foto = localStorage.getItem('mk_foto');
-
-
   const ring = $('photo-ring-preview');
-
-
   if(foto){ ring.innerHTML = '<img src="'+foto+'" alt="foto"/>'; } else { ring.innerHTML = '&#128100;'; }
-
-
   $('perfil-msg').textContent = '';
-
-
   $('perfil-modal').classList.add('open');
-
-
 }
 
-
-
-
-
 function cerrarPerfil(){ $('perfil-modal').classList.remove('open'); }
-
-
-
-
 
 function cargarFoto(input){
   const file = input.files[0];
@@ -136,106 +54,38 @@ function cargarFoto(input){
 }
 
 async function guardarPerfil(){
-
-
   const nombre = $('perfil-nombre').value.trim();
-
-
   const ciudad = $('perfil-ciudad').value.trim();
-
-
   const whatsapp = $('perfil-whatsapp').value.trim();
-
-
   const email = $('perfil-email').value.trim();
-
-
   const msg = $('perfil-msg');
-
-
   if(!nombre){ msg.style.color='#c0392b'; msg.textContent='El nombre no puede estar vacio.'; return; }
-
-
   const id = localStorage.getItem('mk_id');
-
-
   try {
-
-
     await fetch(SB_URL+'/rest/v1/rpc/client_update_profile', {
-
-
       method:'POST',
-
-
       headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
-
-
       body:JSON.stringify({p_id:id, p_nombre:nombre, p_ciudad:ciudad, p_whatsapp:whatsapp, p_email:email, p_foto:localStorage.getItem('mk_foto')||null})
-
-
     });
-
-
   } catch(e){ console.warn('Supabase update skipped'); }
-
-
   localStorage.setItem('mk_nombre', nombre);
-
-
   localStorage.setItem('mk_ciudad', ciudad);
-
-
   localStorage.setItem('mk_whatsapp', whatsapp);
-
-
   localStorage.setItem('mk_email', email);
-
-
   AGENTE.nombre = nombre;
-
-
   AGENTE.ciudad = ciudad;
-
-
   AGENTE.whatsapp = whatsapp;
-
-
   AGENTE.email = email;
-
-
   $('agent-badge').textContent = nombre;
-
-
   msg.style.color = '#2F9E6E';
-
-
   msg.textContent = 'Perfil actualizado.';
-
-
   setTimeout(cerrarPerfil, 1200);
-
-
 }
-
-
-
-
 
 function logoutKit(){
-
-
   localStorage.clear();
-
-
   window.location.href = '/login';
-
-
 }
-
-
-
-
 
 var _installPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e){
@@ -253,19 +103,9 @@ function instalarApp(){
 }
 
 function toggleMobileMenu(){
-
-
   $('mobile-overlay').classList.toggle('open');
-
-
   $('mobile-sidebar').classList.toggle('open');
-
-
 }
-
-
-
-
 
 function buildMobileSidebar(){
   var container = $('mobile-sidebar-phases');
@@ -301,155 +141,51 @@ function buildMobileContent(tab, btnEl){
 
 
 
-
-
-
-
-
-
-
-
 // ══════════════════════════════════════════════
-
-
 // FOTOS DE PROPIEDAD
-
-
 // ══════════════════════════════════════════════
-
-
 var _fotosPropiedad = [];
 
-
-
-
-
 function _normalizePhoto(dataUrl, callback){
-
-
   var img = new Image();
-
-
   img.onload = function(){
-
-
     var tw = 480, th = 320;
-
-
     var scale = Math.min(tw / img.width, th / img.height);
-
-
     var dw = Math.round(img.width * scale);
-
-
     var dh = Math.round(img.height * scale);
-
-
     var dx = Math.round((tw - dw) / 2);
-
-
     var dy = Math.round((th - dh) / 2);
-
-
     var cv = document.createElement('canvas');
-
-
     cv.width = tw; cv.height = th;
-
-
     var ctx = cv.getContext('2d');
-
-
     ctx.fillStyle = '#ffffff';
-
-
     ctx.fillRect(0, 0, tw, th);
-
-
     ctx.drawImage(img, dx, dy, dw, dh);
-
-
     callback(cv.toDataURL('image/jpeg', 0.88));
-
-
   };
-
-
   img.src = dataUrl;
-
-
 }
-
-
-
-
 
 function cargarFotosPropiedad(input){
-
-
   var files = Array.from(input.files).slice(0, 5);
-
-
   _fotosPropiedad = new Array(files.length);
-
-
   var preview = $('ficha-fotos-preview');
-
-
   if(preview) preview.innerHTML = '';
-
-
   files.forEach(function(file, i){
-
-
     var reader = new FileReader();
-
-
     reader.onload = function(e){
-
-
       _normalizePhoto(e.target.result, function(croppedUrl){
-
-
         _fotosPropiedad[i] = croppedUrl;
-
-
         if(preview){
-
-
           var img = document.createElement('img');
-
-
           img.src = croppedUrl;
-
-
           img.style.cssText = 'width:72px;height:54px;object-fit:fill;border-radius:6px;border:2px solid var(--gold);';
-
-
           preview.appendChild(img);
-
-
         }
-
-
       });
-
-
     };
-
-
     reader.readAsDataURL(file);
-
-
   });
-
-
 }
 
-
-
-
-
 // ═══════════════════════
-
-

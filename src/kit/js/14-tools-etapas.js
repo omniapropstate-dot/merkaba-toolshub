@@ -145,8 +145,6 @@ function generarAnuncio(){
   $('an-texto').textContent = texto;
   $('an-resultado').hidden = false;
 }
-
-
 // ──────────────────────────────────────────────────────────────────
 
 function toolGuiaVisita(){
@@ -210,8 +208,6 @@ function toolGuiaVisita(){
     ${html}
   </div>`;
 }
-
-
 // ──────────────────────────────────────────────────────────────────
 
 function toolDiagnosticoComprador(){
@@ -291,8 +287,6 @@ function resetDiagnostico(){
   $('dc-form').hidden = false;
   $('dc-resultado').hidden = true;
 }
-
-
 // ──────────────────────────────────────────────────────────────────
 
 function toolGeneradorReferidos(){
@@ -379,8 +373,6 @@ function generarReferido(){
   $('ref-texto').textContent = [saludo, '', intro, '', pedido, '', cierre].join('\n');
   $('ref-resultado').hidden = false;
 }
-
-
 // ──────────────────────────────────────────────────────────────────
 
 function toolReactivadorContactos(){
@@ -460,11 +452,7 @@ function generarReactivacion(){
 }
 
 buildSidebar();
-
-
 buildMobileSidebar();
-
-
 // ══════════════════════════════════════════════
 // HOME PERSONALIZADO
 // ══════════════════════════════════════════════

@@ -1,66 +1,24 @@
 function toolSheetExterno(icon, titulo, desc, url){
-
-
   return `<div class="tool-section">
-
-
     <div class="tool-header">
-
-
       <div class="tool-icon">${icon}</div>
-
-
       <div>
-
-
         <div class="tool-title">${titulo} <span class="tool-badge" style="background:rgba(66,133,244,0.1);color:#1a73e8;font-size:0.7rem;padding:2px 8px;border-radius:999px;font-weight:700;">Google Sheets</span></div>
-
-
         <div class="tool-subtitle">${desc}</div>
-
-
       </div>
-
-
     </div>
-
-
     <div style="background:#f8f9fc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-
-
       <div style="font-size:0.83rem;color:#4a5568;line-height:1.5;">Abre la planilla en Google Sheets. Puedes hacer una copia personal para editarla con tus datos.<br/><span style="font-size:0.78rem;color:#94a3b8;">Solo lectura &mdash; para guardar tus datos usa <strong>Archivo &rarr; Hacer una copia</strong></span></div>
-
-
       <a href="${url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1a73e8;color:#fff;padding:10px 18px;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;flex-shrink:0;font-family:Inter,sans-serif;">
-
-
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-
-
         Abrir planilla
-
-
       </a>
-
-
     </div>
-
-
   </div>`;
-
-
 }
 
-
-
-
-
 // INICIALIZAR
-
-
 // ══════════════════════════════════════════════
-
-
 // ══════════════════════════════════════════════
 // NAVEGACION POR TIPO
 // ══════════════════════════════════════════════
@@ -245,8 +203,6 @@ function showSingleTool(id){
   initCollapsibles();
   document.querySelector('.kit-main').scrollTop = 0;
 }
-
-
 // ══════════════════════════════════════════════════════════════════
 // HERRAMIENTAS NUEVAS
 // ══════════════════════════════════════════════════════════════════
