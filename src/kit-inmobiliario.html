@@ -195,7 +195,9 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .home-pend-add input:focus{outline:1px solid var(--navy);}
 .home-pend-add button{padding:7px 12px;background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:0.82rem;font-weight:600;white-space:nowrap;}
 .home-access{margin-top:4px;}
-.home-access-title{font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+.home-access-title{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:12px;}
+.home-stats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.home-stat{font-size:0.73rem;color:var(--text-muted);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;white-space:nowrap;}
 .home-access-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:480px){.home-access-grid{grid-template-columns:1fr;}}
 .home-access-btn{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:4px;}
@@ -833,17 +835,18 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
     <div id="home-pend-section"></div>
 
     <div class="home-access">
-      <p class="home-access-title">&#191;D&#243;nde quieres ir?</p>
+      <div class="home-stats" id="home-stats"></div>
+      <p class="home-access-title">¿Cómo querés ver las herramientas?</p>
       <div class="home-access-grid">
         <button class="home-access-btn" onclick="showEtapasGrid()">
-          <span class="home-access-icon">&#128202;</span>
+          <span class="home-access-icon">🗂️</span>
           <div class="home-access-label">Por etapa de venta</div>
-          <div class="home-access-sub">Sigue el proceso paso a paso</div>
+          <div class="home-access-sub">Primer contacto · Seguimiento · Visita · Cierre · Post-venta</div>
         </button>
         <button class="home-access-btn" onclick="showTiposGrid()">
-          <span class="home-access-icon">&#128295;</span>
+          <span class="home-access-icon">🔧</span>
           <div class="home-access-label">Por tipo de herramienta</div>
-          <div class="home-access-sub">Encuentra r&#225;pido lo que buscas</div>
+          <div class="home-access-sub">Calculadoras · Mensajes listos · Checklists · Guías</div>
         </button>
       </div>
     </div>
@@ -7127,6 +7130,20 @@ function initHome(){
   ];
   var doy = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
   $('home-phrase').textContent = '“' + frases[doy % frases.length] + '”';
+  // stats bar
+  var hs = $('home-stats');
+  if(hs){
+    var allIds = [];
+    TIPOS.forEach(function(t){ t.tools.forEach(function(id){ if(allIds.indexOf(id)===-1) allIds.push(id); }); });
+    var totalHerr = allIds.length + 1;
+    var calcs = (TIPOS.filter(function(t){return t.id==='calculadoras';})[0]||{tools:[]}).tools.length;
+    var gens = (TIPOS.filter(function(t){return t.id==='generadores';})[0]||{tools:[]}).tools.length;
+    hs.innerHTML = '<span class="home-stat">📦 '+totalHerr+' herramientas</span>'
+      +'<span class="home-stat">🧮 '+calcs+' calculadoras</span>'
+      +'<span class="home-stat">✏️ '+gens+' generadores de texto</span>'
+      +'<span class="home-stat">📚 33 libros en PDF</span>';
+  }
+
 }
 initHome();
 
