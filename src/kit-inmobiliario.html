@@ -180,6 +180,26 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .home-pending{color:var(--gold);font-weight:600;}
 .home-phrase{font-size:0.83rem;color:var(--text-muted);font-style:italic;border-left:2px solid var(--gold);padding-left:12px;line-height:1.5;}
 @media(max-width:600px){.home-greeting{font-size:1rem;}.home-avatar{width:44px;height:44px;}}
+.home-pend-section{margin-bottom:20px;}
+.home-pend-title{font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+.home-pend-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.87rem;color:var(--text);}
+.home-pend-item:last-child{border-bottom:none;}
+.home-pend-item input[type=checkbox]{width:15px;height:15px;accent-color:var(--navy);flex-shrink:0;margin-top:2px;cursor:pointer;}
+.home-pend-item.hecho span{text-decoration:line-through;color:var(--text-muted);}
+.home-pend-ver{font-size:0.78rem;color:var(--navy);cursor:pointer;font-weight:600;margin-top:8px;display:inline-block;background:none;border:none;padding:0;}
+.home-access{margin-top:4px;}
+.home-access-title{font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+.home-access-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:480px){.home-access-grid{grid-template-columns:1fr;}}
+.home-access-btn{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:4px;}
+.home-access-btn:hover{border-color:var(--navy);background:var(--navy-soft);}
+.home-access-icon{font-size:1.4rem;line-height:1;}
+.home-access-label{font-family:"Space Grotesk",sans-serif;font-size:0.9rem;font-weight:700;color:var(--text);margin-top:6px;}
+.home-access-sub{font-size:0.75rem;color:var(--text-muted);}
+.sidebar-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:4px;}
+.sidebar-tab{flex:1;padding:8px 4px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:"Inter",sans-serif;font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;transition:color .15s,border-color .15s;}
+.sidebar-tab:hover{color:var(--navy);}
+.sidebar-tab.active{color:var(--navy);border-bottom-color:var(--navy);}
 
 
 
@@ -762,23 +782,15 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 
 
 <nav class="sidebar" id="sidebar">
-
-
   <div class="sidebar-phase">
-
-
-    <button class="phase-btn active" onclick="showPhase(0)">
-
-
-      <span class="phase-num active">★</span> Mapa del proceso
-
-
+    <button class="phase-btn" id="sidebar-home-btn" onclick="showMapa()">
+      <span class="phase-num">&#9733;</span> Inicio
     </button>
-
-
   </div>
-
-
+  <div class="sidebar-tabs">
+    <button class="sidebar-tab active" id="tab-etapas" onclick="setSidebarTab('etapas')">Por etapa</button>
+    <button class="sidebar-tab" id="tab-tipos" onclick="setSidebarTab('tipos')">Por tipo</button>
+  </div>
   <div id="sidebar-phases"></div>
 
 
@@ -815,13 +827,23 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
       <div class="home-phrase" id="home-phrase"></div>
     </div>
 
-    <div style="margin-bottom:16px;">
-      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px;">Tu proceso de venta</h2>
-      <p style="color:var(--text-muted);font-size:0.85rem;">Haz clic en la etapa donde est&#225;s para ir directo a las herramientas que necesitas.</p>
+    <div id="home-pend-section"></div>
+
+    <div class="home-access">
+      <p class="home-access-title">&#191;D&#243;nde quieres ir?</p>
+      <div class="home-access-grid">
+        <button class="home-access-btn" onclick="setSidebarTab('etapas');showPhase(0)">
+          <span class="home-access-icon">&#128202;</span>
+          <div class="home-access-label">Por etapa de venta</div>
+          <div class="home-access-sub">Sigue el proceso paso a paso</div>
+        </button>
+        <button class="home-access-btn" onclick="setSidebarTab('tipos');showTipo(0)">
+          <span class="home-access-icon">&#128295;</span>
+          <div class="home-access-label">Por tipo de herramienta</div>
+          <div class="home-access-sub">Encuentra r&#225;pido lo que buscas</div>
+        </button>
+      </div>
     </div>
-
-
-    <div class="mapa-grid" id="mapa-grid"></div>
 
 
   </div>
@@ -941,6 +963,16 @@ const FASES = [
   { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, banco de scripts', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes'] },
 
 
+];
+
+const TIPOS = [
+  { id:'calculadoras', icon:'🧮', nombre:'Calculadoras', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
+  { id:'generadores', icon:'✏️', nombre:'Generadores de texto', tools:['propuesta-propietario','respuesta-rapida','generador-seguimiento','mensaje-postventa'] },
+  { id:'checklists', icon:'✅', nombre:'Checklists', tools:['checklist-visita','checklist-antictretico'] },
+  { id:'guias', icon:'📖', nombre:'Guías y referencias', tools:['guia-captacion','guia-legal','manejador-objeciones','banco-scripts'] },
+  { id:'formularios', icon:'📄', nombre:'Formularios', tools:['ficha-propiedad','filtro-comprador','comparador-inmuebles','acuerdo-trabajo','presentacion-personal-word'] },
+  { id:'excel', icon:'📊', nombre:'Excel / Sheets', tools:['cartera-propiedades-excel','control-seguimientos-excel','comparador-inmuebles-excel','calc-anticretico-excel','registro-comisiones-excel'] },
+  { id:'organizadores', icon:'🗂️', nombre:'Mis organizadores', tools:['mis-plantillas','tablero-pendientes'] },
 ];
 
 
@@ -1149,14 +1181,9 @@ function showPhase(idx){
 
 
 function showMapa(){
-
-
   $('phase-mapa').hidden = false;
-
-
   $('phase-content').hidden = true;
-
-
+  initHome();
 }
 
 
@@ -4787,29 +4814,35 @@ function toggleMobileMenu(){
 
 
 function buildMobileSidebar(){
-
-
-  const container = $('mobile-sidebar-phases');
-
-
+  var container = $('mobile-sidebar-phases');
   if(!container) return;
+  container.innerHTML = '';
+  var tabsEl = document.createElement('div');
+  tabsEl.style.cssText = 'display:flex;border-bottom:1px solid var(--border);';
+  tabsEl.innerHTML = '<button id="mob-tab-etapas" style="flex:1;padding:10px 4px;background:none;border:none;border-bottom:2px solid var(--navy);cursor:pointer;font-size:0.75rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.04em;" onclick="buildMobileContent(\'etapas\',this)">Por etapa</button>'
+    + '<button id="mob-tab-tipos" style="flex:1;padding:10px 4px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;" onclick="buildMobileContent(\'tipos\',this)">Por tipo</button>';
+  container.appendChild(tabsEl);
+  var listEl = document.createElement('div');
+  listEl.id = 'mob-list';
+  container.appendChild(listEl);
+  buildMobileContent('etapas', $('mob-tab-etapas'));
+}
 
-
-  FASES.forEach((f,fi)=>{
-
-
-    const ph = document.createElement('div');
-
-
-    ph.innerHTML = '<button style="width:100%;text-align:left;padding:10px 20px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);border-bottom:1px solid var(--border);" onclick="showPhase('+fi+');toggleMobileMenu();">'+(f.num?'Etapa '+f.num+' - ':'')+f.nombre+'</button>';
-
-
-    container.appendChild(ph);
-
-
+function buildMobileContent(tab, btnEl){
+  var listEl = $('mob-list'); if(!listEl) return;
+  listEl.innerHTML = '';
+  [$('mob-tab-etapas'),$('mob-tab-tipos')].forEach(function(b){
+    if(b){ b.style.borderBottomColor='transparent'; b.style.color='var(--text-muted)'; }
   });
-
-
+  if(btnEl){ btnEl.style.borderBottomColor='var(--navy)'; btnEl.style.color='var(--navy)'; }
+  var items = tab==='etapas' ? FASES : TIPOS;
+  items.forEach(function(item,i){
+    var btn = document.createElement('button');
+    btn.style.cssText = 'width:100%;text-align:left;padding:10px 20px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);border-bottom:1px solid var(--border);';
+    btn.textContent = tab==='etapas' ? (item.num?'Etapa '+item.num+' — ':'') + item.nombre : item.icon+' '+item.nombre;
+    btn.onclick = function(){ setSidebarTab(tab); if(tab==='etapas') showPhase(i); else showTipo(i); toggleMobileMenu(); };
+    listEl.appendChild(btn);
+  });
 }
 
 
@@ -6865,8 +6898,44 @@ function toolSheetExterno(icon, titulo, desc, url){
 // ══════════════════════════════════════════════
 
 
-buildMapa();
+// ══════════════════════════════════════════════
+// NAVEGACION POR TIPO
+// ══════════════════════════════════════════════
+var _sidebarTab = 'etapas';
 
+function setSidebarTab(tab){
+  _sidebarTab = tab;
+  var te = $('tab-etapas'), tt = $('tab-tipos');
+  if(te) te.classList.toggle('active', tab==='etapas');
+  if(tt) tt.classList.toggle('active', tab==='tipos');
+  $('sidebar-phases').innerHTML = '';
+  if(tab==='etapas') buildSidebar();
+  else buildSidebarTipos();
+}
+
+function buildSidebarTipos(){
+  var container = $('sidebar-phases');
+  TIPOS.forEach(function(t,ti){
+    var ph = document.createElement('div');
+    ph.className = 'sidebar-phase';
+    ph.innerHTML = '<button class="phase-btn" id="sidebar-tipo-'+ti+'" onclick="showTipo('+ti+')"><span class="phase-num" style="font-size:0.9rem;">'+t.icon+'</span>'+t.nombre+'</button>';
+    container.appendChild(ph);
+  });
+}
+
+function showTipo(idx){
+  $('phase-mapa').hidden = true;
+  $('phase-content').hidden = false;
+  var tipo = TIPOS[idx];
+  var fakeFase = { id:tipo.id, num:'', nombre:tipo.icon+' '+tipo.nombre, desc:'', color:'navy', tools:tipo.tools };
+  $('phase-content').innerHTML = renderFase(fakeFase, -1);
+  document.querySelector('.kit-main').scrollTop = 0;
+  window.scrollTo(0,0);
+  TIPOS.forEach(function(_,i){
+    var b = $('sidebar-tipo-'+i);
+    if(b) b.classList.toggle('active', i===idx);
+  });
+}
 
 buildSidebar();
 
@@ -6883,13 +6952,21 @@ function initHome(){
   $('home-greeting').textContent = saludo + ', ' + (AGENTE.nombre || 'Agente');
   var ciudad = AGENTE.ciudad || '';
   var pendientes = JSON.parse(localStorage.getItem('mk_pendientes') || '[]');
-  var sinResolver = pendientes.filter(function(p){ return !p.done; }).length;
+  var sinResolver = pendientes.filter(function(p){ return !p.hecho; });
   var metaParts = [];
   if(ciudad) metaParts.push(ciudad);
-  if(sinResolver > 0) metaParts.push('<span class="home-pending">● ' + sinResolver + ' pendiente' + (sinResolver > 1 ? 's' : '') + ' para hoy</span>');
+  if(sinResolver.length > 0) metaParts.push('<span class="home-pending">● ' + sinResolver.length + ' pendiente' + (sinResolver.length > 1 ? 's' : '') + ' para hoy</span>');
   $('home-meta').innerHTML = metaParts.join('<span class="dot">·</span>');
   var foto = localStorage.getItem('mk_foto');
   if(foto) $('home-avatar').innerHTML = '<img src="' + foto + '" alt="foto"/>';
+  var ps = $('home-pend-section');
+  if(ps && sinResolver.length > 0){
+    var items = sinResolver.slice(0,5).map(function(p){
+      return '<div class="home-pend-item"><input type="checkbox" onchange="togglePendiente('+p.id+');initHome();"><span>'+escHtml(p.texto)+'</span></div>';
+    }).join('');
+    var verMas = sinResolver.length > 5 ? '<button class="home-pend-ver" onclick="setSidebarTab(\'etapas\');showPhase(FASES.length-1)">→ Ver todos ('+sinResolver.length+')</button>' : '';
+    ps.innerHTML = '<div class="home-pend-title">Pendientes de hoy</div>'+items+verMas;
+  } else if(ps) { ps.innerHTML = ''; }
   var frases = [
     'El seguimiento consistente es lo que separa a los agentes top del promedio.',
     'Cada “no” que recibes te acerca más al próximo “sí”.',
