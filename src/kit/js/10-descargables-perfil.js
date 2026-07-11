@@ -39,16 +39,47 @@ function abrirPerfil(){
 
 function cerrarPerfil(){ $('perfil-modal').classList.remove('open'); }
 
+// Comprime la foto a 320x320 y la recorta en circulo directamente sobre
+// los pixeles. Antes se guardaba la foto tal cual la subia el celular
+// (varios MB en base64), y localStorage tiene un limite de ~5-6MB por
+// dominio: el setItem fallaba en silencio (sin try/catch) y la foto
+// nunca llegaba a guardarse ni en el navegador ni en Supabase.
+function _normalizeAvatarPhoto(dataUrl, callback){
+  var img = new Image();
+  img.onload = function(){
+    var size = 320;
+    var side = Math.min(img.width, img.height);
+    var sx = (img.width - side) / 2;
+    var sy = (img.height - side) / 2;
+    var cv = document.createElement('canvas');
+    cv.width = size; cv.height = size;
+    var ctx = cv.getContext('2d');
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+    callback(cv.toDataURL('image/png'));
+  };
+  img.src = dataUrl;
+}
+
 function cargarFoto(input){
   const file = input.files[0];
   if(!file) return;
   const reader = new FileReader();
-  reader.onload = async function(e){
-    const base64 = e.target.result;
-    localStorage.setItem('mk_foto', base64);
-    $('photo-ring-preview').innerHTML = '<img src="'+base64+'" alt="foto"/>';
-    const id = localStorage.getItem('mk_id'); if(!id) return;
-    try{ await fetch(SB_URL+'/rest/v1/rpc/client_update_profile',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_nombre:localStorage.getItem('mk_nombre')||''  ,p_ciudad:localStorage.getItem('mk_ciudad')||''  ,p_whatsapp:localStorage.getItem('mk_whatsapp')||''  ,p_email:localStorage.getItem('mk_email')||''  ,p_foto:base64})}); }catch(e){}
+  reader.onload = function(e){
+    _normalizeAvatarPhoto(e.target.result, async function(fotoCircular){
+      try{
+        localStorage.setItem('mk_foto', fotoCircular);
+      } catch(err){
+        toast('La foto es muy pesada, prueba con otra.');
+        return;
+      }
+      $('photo-ring-preview').innerHTML = '<img src="'+fotoCircular+'" alt="foto"/>';
+      const id = localStorage.getItem('mk_id'); if(!id) return;
+      try{ await fetch(SB_URL+'/rest/v1/rpc/client_update_profile',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_nombre:localStorage.getItem('mk_nombre')||''  ,p_ciudad:localStorage.getItem('mk_ciudad')||''  ,p_whatsapp:localStorage.getItem('mk_whatsapp')||''  ,p_email:localStorage.getItem('mk_email')||''  ,p_foto:fotoCircular})}); }catch(e){}
+    });
   };
   reader.readAsDataURL(file);
 }
