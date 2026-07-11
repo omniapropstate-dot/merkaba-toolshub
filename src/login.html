@@ -147,7 +147,7 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
         <h1>Kit del Agente<br>Inmobiliario <em>Boliviano</em></h1>
         <p class="sub">Herramientas, calculadoras y guías diseñadas para cerrar más operaciones en el mercado boliviano.</p>
         <div class="stats">
-          <div><div class="stat-n">30</div><div class="stat-l">Herramientas</div></div>
+          <div><div class="stat-n">31</div><div class="stat-l">Herramientas</div></div>
           <div><div class="stat-n">8</div><div class="stat-l">Etapas de venta</div></div>
           <div><div class="stat-n">33</div><div class="stat-l">Libros en PDF</div></div>
         </div>
@@ -232,6 +232,8 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
         if(data.foto){ localStorage.setItem('mk_foto', data.foto); }
         localStorage.setItem('mk_plantillas', JSON.stringify(data.plantillas || []));
         localStorage.setItem('mk_pendientes', JSON.stringify(data.pendientes || []));
+        localStorage.setItem('mk_seguimientos', JSON.stringify(data.seguimientos || []));
+        localStorage.setItem('mk_plan', data.plan || 'basico');
         window.location.href = '/kit-inmobiliario';
       } else {
         errEl.textContent = 'Contraseña incorrecta. Verifica con tu asesor.';

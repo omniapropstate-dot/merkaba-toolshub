@@ -102,6 +102,7 @@ function renderTool(id){
     case 'banco-scripts': return toolBancoScripts();
     case 'mis-plantillas': return toolMisPlantillas();
     case 'tablero-pendientes': return toolTableroPendientes();
+    case 'tablero-seguimientos': return toolTableroSeguimientos();
     case 'cartera-propiedades-excel': return toolSheetExterno('&#128202;','Control de cartera de propiedades','Ficha unificada por inmueble &mdash; zonas, precios, estado de cada propiedad.','https://docs.google.com/spreadsheets/d/1rJyieQfDYvjRKOHyPFdtHcCDZ9T-Bd7A/edit?usp=sharing');
     case 'control-seguimientos-excel': return toolSheetExterno('&#128203;','Control de seguimientos','Registro de todos tus clientes y en qu&#233; etapa est&#225; cada uno.','https://docs.google.com/spreadsheets/d/1BmsbDxB5S3cKt_5hCi7kr6Bga8fXcaBr/edit?usp=sharing');
     case 'registro-comisiones-excel': return toolSheetExterno('&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/14K14F8ly5eft-XRGhZjlX8VH2-ah9J07/edit?usp=sharing');

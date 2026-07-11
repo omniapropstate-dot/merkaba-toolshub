@@ -184,6 +184,139 @@ function renderPendientesLista(){
   if(counter) counter.textContent = hechas + ' de ' + arr.length + ' completadas';
 }
 
+// ══════════════════════════════════════════════
+// 20. TABLERO DE SEGUIMIENTOS
+// ══════════════════════════════════════════════
+function toolTableroSeguimientos(){
+  setTimeout(renderSeguimientosLista, 0);
+  return `<div class="tool-section" id="tool-tablero-seguimientos">
+    <div class="tool-header">
+      <div class="tool-icon gold">🎯</div>
+      <div>
+        <div class="tool-title">Seguimientos activos <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-subtitle">La mayoría de leads se pierde por falta de seguimiento, no por mala calidad. Cargá a quién le debés seguir y el kit te avisa cuándo te toca. Tu plan permite hasta ${LIMITE_SEGUIMIENTOS} seguimientos activos.</div>
+      </div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Nombre del cliente</label><input id="sg-nombre" type="text" placeholder="María Quispe"/></div>
+      <div class="form-group"><label>Propiedad (opcional)</label><input id="sg-propiedad" type="text" placeholder="Dpto. 3 amb. Sopocachi"/></div>
+    </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>Último contacto</label><input id="sg-fecha" type="date" value="${_hoyISO()}"/></div>
+      <div class="form-group"><label>Recordarme en</label>
+        <select id="sg-dias">
+          <option value="1">1 día</option>
+          <option value="2">2 días</option>
+          <option value="3" selected>3 días</option>
+          <option value="5">5 días</option>
+          <option value="7">7 días</option>
+          <option value="15">15 días</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label>Nota (opcional)</label>
+      <input id="sg-nota" type="text" placeholder="Ej: quedó en consultar con su pareja"/>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-gold" onclick="agregarSeguimiento()">+ Agregar seguimiento</button>
+    </div>
+    <div id="sg-lista-container" style="margin-top:20px;"></div>
+    <div id="sg-contador" style="margin-top:10px;font-size:0.8rem;color:var(--text-muted);"></div>
+  </div>`;
+}
+
+function getSeguimientos(){ return JSON.parse(localStorage.getItem('mk_seguimientos')||'[]'); }
+function setSeguimientos(arr){ localStorage.setItem('mk_seguimientos', JSON.stringify(arr)); sbSaveSeguimientos(arr); }
+
+function _hoyISO(){
+  var d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function _sumarDias(fechaISO, dias){
+  var d = new Date(fechaISO+'T00:00:00');
+  d.setDate(d.getDate()+parseInt(dias,10));
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function _diasEntre(fechaISO){
+  var hoy = new Date(_hoyISO()+'T00:00:00');
+  var f = new Date(fechaISO+'T00:00:00');
+  return Math.round((f-hoy)/86400000);
+}
+
+function agregarSeguimiento(){
+  var nombre = ($('sg-nombre').value||'').trim();
+  if(!nombre){ toast('Escribí el nombre del cliente'); return; }
+  var arr = getSeguimientos();
+  if(arr.length >= LIMITE_SEGUIMIENTOS){
+    toast('Llegaste al máximo de tu plan ('+LIMITE_SEGUIMIENTOS+'). Eliminá uno para agregar otro.');
+    return;
+  }
+  var propiedad = ($('sg-propiedad').value||'').trim();
+  var fecha = $('sg-fecha').value || _hoyISO();
+  var dias = $('sg-dias').value;
+  var nota = ($('sg-nota').value||'').trim();
+  arr.push({
+    id: Date.now(),
+    nombre: nombre,
+    propiedad: propiedad,
+    fechaContacto: fecha,
+    dias: dias,
+    proximoContacto: _sumarDias(fecha, dias),
+    nota: nota
+  });
+  setSeguimientos(arr);
+  $('sg-nombre').value=''; $('sg-propiedad').value=''; $('sg-nota').value='';
+  $('sg-fecha').value = _hoyISO();
+  renderSeguimientosLista();
+  toast('Seguimiento agregado ✓');
+}
+
+function marcarContactadoHoy(id){
+  var arr = getSeguimientos().map(function(s){
+    if(s.id !== id) return s;
+    var hoy = _hoyISO();
+    return Object.assign({}, s, {fechaContacto: hoy, proximoContacto: _sumarDias(hoy, s.dias)});
+  });
+  setSeguimientos(arr);
+  renderSeguimientosLista();
+  toast('Marcado como contactado hoy');
+}
+
+function eliminarSeguimiento(id){
+  setSeguimientos(getSeguimientos().filter(function(s){ return s.id !== id; }));
+  renderSeguimientosLista();
+  toast('Seguimiento eliminado');
+}
+
+function renderSeguimientosLista(){
+  var cont = $('sg-lista-container');
+  var contador = $('sg-contador');
+  if(!cont) return;
+  var arr = getSeguimientos().slice().sort(function(a,b){ return a.proximoContacto.localeCompare(b.proximoContacto); });
+  if(contador) contador.textContent = arr.length + ' de ' + LIMITE_SEGUIMIENTOS + ' seguimientos usados';
+  if(!arr.length){
+    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no cargaste ningún seguimiento.</div>';
+    return;
+  }
+  cont.innerHTML = '<div style="display:grid;gap:10px;">' + arr.map(function(s){
+    var diff = _diasEntre(s.proximoContacto);
+    var badge = diff < 0 ? '<span style="color:#e74c3c;font-weight:700;">🔴 Atrasado hace '+Math.abs(diff)+' día'+(Math.abs(diff)>1?'s':'')+'</span>'
+      : diff === 0 ? '<span style="color:var(--gold);font-weight:700;">🟡 Hoy</span>'
+      : '<span style="color:var(--text-muted);">🟢 En '+diff+' día'+(diff>1?'s':'')+'</span>';
+    return '<div class="script-card">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">'
+      + '<div class="script-situation">'+esc(s.nombre)+(s.propiedad ? ' — '+esc(s.propiedad) : '')+'</div>'
+      + badge
+      + '</div>'
+      + (s.nota ? '<div style="font-size:0.85rem;color:var(--text);margin-top:6px;">'+esc(s.nota)+'</div>' : '')
+      + '<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">'
+      + '<button class="btn btn-outline btn-sm" onclick="marcarContactadoHoy('+s.id+')">✓ Contactado hoy</button>'
+      + '<button class="btn btn-outline btn-sm" style="color:#e74c3c;border-color:#e74c3c;" onclick="eliminarSeguimiento('+s.id+')">🗑 Eliminar</button>'
+      + '</div></div>';
+  }).join('') + '</div>';
+}
+
 // ── HELPERS ────────────────────────────────────────────────────────────────────
 
 async function sbSavePlantillas(arr){
@@ -193,6 +326,10 @@ async function sbSavePlantillas(arr){
 async function sbSavePendientes(arr){
   const id = localStorage.getItem('mk_id'); if(!id) return;
   try{ await fetch(SB_URL+'/rest/v1/rpc/save_pendientes',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_pendientes:arr})}); }catch(e){}
+}
+async function sbSaveSeguimientos(arr){
+  const id = localStorage.getItem('mk_id'); if(!id) return;
+  try{ await fetch(SB_URL+'/rest/v1/rpc/save_seguimientos',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_seguimientos:arr})}); }catch(e){}
 }
 
 // 17. DESCARGABLES (placeholder hasta tener los archivos reales)

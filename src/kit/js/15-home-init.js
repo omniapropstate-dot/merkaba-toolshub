@@ -36,6 +36,25 @@ function initHome(){
       ps.innerHTML = '<div class="home-pend-title">Pendientes de hoy</div>'+addRow+rows;
     }
   }
+  var ss = $('home-seg-section');
+  if(ss){
+    var todosSeg = getSeguimientos();
+    var alerta = todosSeg.filter(function(s){ return _diasEntre(s.proximoContacto) <= 0; })
+      .sort(function(a,b){ return a.proximoContacto.localeCompare(b.proximoContacto); });
+    if(alerta.length === 0){
+      ss.innerHTML = '';
+    } else {
+      var filasSeg = alerta.slice(0,4).map(function(s){
+        var diff = _diasEntre(s.proximoContacto);
+        var txt = diff < 0 ? 'atrasado hace '+Math.abs(diff)+' día'+(Math.abs(diff)>1?'s':'') : 'te toca hoy';
+        return '<div class="home-seg-item"><span class="home-seg-dot"></span><span style="flex:1;">'+esc(s.nombre)+(s.propiedad?' — '+esc(s.propiedad):'')+' <span style="color:var(--text-muted);">('+txt+')</span></span></div>';
+      }).join('');
+      var verMasSeg = alerta.length > 4 ? '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">+'+(alerta.length-4)+' más</div>' : '';
+      ss.innerHTML = '<div class="home-seg-title">⚠️ '+alerta.length+' seguimiento'+(alerta.length>1?'s':'')+' que requiere'+(alerta.length>1?'n':'')+' atención</div>'
+        + filasSeg + verMasSeg
+        + '<button class="home-pend-ver" onclick="verSeguimientos()">Ver seguimientos →</button>';
+    }
+  }
   var frases = [
     'El seguimiento consistente es lo que separa a los agentes top del promedio.',
     'Cada “no” que recibes te acerca más al próximo “sí”.',
@@ -107,6 +126,12 @@ function initHome(){
       +'</div></div>';
   }
 }
+
+function verSeguimientos(){
+  var idx = FASES.findIndex(function(f){ return f.id==='seguimiento'; });
+  showPhase(idx);
+}
+
 initHome();
 
 
