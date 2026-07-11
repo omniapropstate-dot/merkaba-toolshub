@@ -154,6 +154,7 @@ var SEARCH_INDEX = [
   {id:'registro-comisiones-excel', nombre:'Registro de comisiones',           tipo:'Excel',       icon:'📊'},
   {id:'mis-plantillas',            nombre:'Mis plantillas',                   tipo:'Organizadores',icon:'🗂️'},
   {id:'tablero-pendientes',        nombre:'Tablero de pendientes',            tipo:'Organizadores',icon:'🗂️'},
+  {id:'tablero-seguimientos',      nombre:'Seguimientos activos',             tipo:'Organizadores',icon:'🗂️'},
   {id:'generador-anuncio',         nombre:'Generador de anuncio de propiedad',tipo:'Generadores',  icon:'✏️'},
   {id:'guia-visita',               nombre:'Guía de la visita',                tipo:'Guías',        icon:'📖'},
   {id:'diagnostico-comprador',     nombre:'Diagnóstico del comprador',        tipo:'Formularios',  icon:'📄'},
