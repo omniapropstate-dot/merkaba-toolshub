@@ -30,7 +30,7 @@ const HERRAMIENTAS_TIER2 = [
   'generador-referidos','reactivador-contactos',
   'registro-comisiones-excel','presentacion-personal-word'
 ];
-const SOPORTE_WHATSAPP = ''; // TODO: número de Merkaba con código de país, ej. '59171234567'
+const SOPORTE_WHATSAPP = '59169638816';
 
 // ══════════════════════════════════════════════
 // FASES Y HERRAMIENTAS
