@@ -86,8 +86,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .add-card h2{font-family:var(--ff-d);font-size:0.92rem;font-weight:700;letter-spacing:-0.01em;color:var(--t1);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 .add-icon{width:20px;height:20px;border-radius:6px;background:var(--gold-glow);border:1px solid var(--border-gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:0.85rem;font-weight:700;font-family:var(--ff-d);}
 .form-row{display:grid;gap:10px;margin-bottom:0;}
-.form-row.cols-5-btn{grid-template-columns:1.4fr 1fr 0.8fr 1fr 1fr auto;align-items:end;}
-@media(max-width:860px){.form-row.cols-5-btn{grid-template-columns:1fr 1fr;}.stats-row{grid-template-columns:1fr;}}
+.form-row.cols-6-btn{grid-template-columns:1.3fr 0.9fr 0.7fr 0.9fr 0.9fr 0.75fr auto;align-items:end;}
+@media(max-width:860px){.form-row.cols-6-btn{grid-template-columns:1fr 1fr;}.stats-row{grid-template-columns:1fr;}}
+select.fld-select{padding:8px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.86rem;font-family:var(--ff-b);color:var(--t1);background:rgba(255,255,255,0.04);width:100%;outline:none;}
+.plan-badge{font-size:0.7rem;padding:4px 10px;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-family:var(--ff-m);letter-spacing:0.04em;text-transform:uppercase;transition:all 0.2s var(--ease-out);}
+.plan-badge.basico{background:rgba(255,255,255,0.05);color:var(--t3);border:1px solid var(--border);}
+.plan-badge.completo{background:var(--gold-glow);color:var(--gold);border:1px solid var(--border-gold);}
 .form-group{display:flex;flex-direction:column;gap:5px;}
 .form-group label{font-family:var(--ff-m);font-size:0.67rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);}
 
@@ -178,7 +182,7 @@ tr:hover td{background:rgba(255,255,255,0.018);}
     <!-- Add client -->
     <div class="add-card">
       <h2><div class="add-icon">+</div> Agregar nuevo cliente</h2>
-      <div class="form-row cols-5-btn">
+      <div class="form-row cols-6-btn">
         <div class="form-group">
           <label>Nombre completo</label>
           <input type="text" id="nuevo-nombre" placeholder="Ej: Maria Quispe"/>
@@ -198,6 +202,13 @@ tr:hover td{background:rgba(255,255,255,0.018);}
         <div class="form-group">
           <label>Email</label>
           <input type="text" id="nuevo-email" placeholder="correo@..."/>
+        </div>
+        <div class="form-group">
+          <label>Plan</label>
+          <select class="fld-select" id="nuevo-plan">
+            <option value="basico">Basico</option>
+            <option value="completo">Completo</option>
+          </select>
         </div>
         <button class="btn btn-navy" id="btn-agregar" onclick="agregarCliente()">Agregar</button>
       </div>
@@ -257,10 +268,12 @@ function renderTabla(list){
   document.getElementById('stat-active').textContent=activos;
   document.getElementById('stat-inactive').textContent=list.length-activos;
   if(!list.length){ document.getElementById('tabla-wrap').innerHTML='<div class="empty-state">No hay clientes todavia.</div>'; return; }
-  let h='<table><thead><tr><th>Nombre</th><th>Contrasena</th><th>Ciudad</th><th>WhatsApp</th><th>Estado</th><th>Desde</th><th></th></tr></thead><tbody>';
+  let h='<table><thead><tr><th>Nombre</th><th>Contrasena</th><th>Ciudad</th><th>WhatsApp</th><th>Plan</th><th>Estado</th><th>Desde</th><th></th></tr></thead><tbody>';
   list.forEach(function(c){
     const f=new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
+    const plan=c.plan||'basico';
     h+='<tr><td class="nombre-cell">'+esc(c.nombre)+'</td><td class="pwd-cell">'+esc(c.password)+'</td><td style="font-size:0.82rem;">'+esc(c.ciudad||'—')+'</td><td style="font-family:var(--ff-m);font-size:0.8rem;">'+esc(c.whatsapp||'—')+'</td>'+
+       '<td><button class="plan-badge '+plan+'" data-id="'+c.id+'" onclick="cambiarPlan(this)">'+(plan==='completo'?'Completo':'Basico')+'</button></td>'+
        '<td><button class="btn-toggle '+(c.activo?'activo':'inactivo')+'" data-id="'+c.id+'" onclick="toggleActivo(this)">'+(c.activo?'Activo':'Inactivo')+'</button></td>'+
        '<td style="font-family:var(--ff-m);font-size:0.76rem;color:var(--t4);">'+f+'</td>'+
        '<td><button class="btn-danger" data-id="'+c.id+'" data-nombre="'+esc(c.nombre)+'" onclick="eliminarCliente(this)">Eliminar</button></td></tr>';
@@ -279,7 +292,8 @@ async function agregarCliente(){
   const ciudad=document.getElementById('nuevo-ciudad').value.trim();
   const whatsapp=document.getElementById('nuevo-whatsapp').value.trim();
   const email=document.getElementById('nuevo-email').value.trim();
-  const {data,error}=await sb.rpc('admin_add_cliente',{admin_pwd:APWD,p_nombre:nombre,p_password:pwd,p_ciudad:ciudad,p_whatsapp:whatsapp,p_email:email});
+  const plan=document.getElementById('nuevo-plan').value;
+  const {data,error}=await sb.rpc('admin_add_cliente',{admin_pwd:APWD,p_nombre:nombre,p_password:pwd,p_ciudad:ciudad,p_whatsapp:whatsapp,p_email:email,p_plan:plan});
   btn.disabled=false; btn.textContent='Agregar';
   if(error||!data||!data.ok){ msg.className='form-msg err'; msg.textContent='Error al agregar.'; return; }
   msg.className='form-msg ok'; msg.textContent='Cliente agregado.';
@@ -288,8 +302,19 @@ async function agregarCliente(){
   document.getElementById('nuevo-ciudad').value='';
   document.getElementById('nuevo-whatsapp').value='';
   document.getElementById('nuevo-email').value='';
+  document.getElementById('nuevo-plan').value='basico';
   setTimeout(function(){ msg.textContent=''; },3000);
   cargarClientes();
+}
+
+async function cambiarPlan(btn){
+  const actual=btn.classList.contains('completo')?'completo':'basico';
+  const nuevo=actual==='completo'?'basico':'completo';
+  if(!confirm('Cambiar el plan a "'+(nuevo==='completo'?'Completo':'Basico')+'"?')) return;
+  const {data,error}=await sb.rpc('admin_set_plan',{admin_pwd:APWD,p_id:btn.dataset.id,p_plan:nuevo});
+  if(error||!data||!data.ok) return;
+  btn.className='plan-badge '+data.plan;
+  btn.textContent=data.plan==='completo'?'Completo':'Basico';
 }
 
 async function toggleActivo(btn){

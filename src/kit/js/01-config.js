@@ -18,6 +18,21 @@ document.getElementById('agent-badge').textContent = AGENTE.nombre;
 const LIMITE_SEGUIMIENTOS = AGENTE.plan === 'completo' ? 50 : 20;
 
 // ══════════════════════════════════════════════
+// TIERS — herramientas exclusivas del plan Completo
+// ══════════════════════════════════════════════
+const HERRAMIENTAS_TIER2 = [
+  'propuesta-propietario','acuerdo-trabajo',
+  'generador-anuncio','cartera-propiedades-excel',
+  'diagnostico-comprador',
+  'control-seguimientos-excel',
+  'manejador-objeciones','comparador-inmuebles','comparador-inmuebles-excel',
+  'calc-antictretico','calc-anticretico-excel',
+  'generador-referidos','reactivador-contactos',
+  'registro-comisiones-excel','presentacion-personal-word'
+];
+const SOPORTE_WHATSAPP = ''; // TODO: número de Merkaba con código de país, ej. '59171234567'
+
+// ══════════════════════════════════════════════
 // FASES Y HERRAMIENTAS
 // ══════════════════════════════════════════════
 const FASES = [

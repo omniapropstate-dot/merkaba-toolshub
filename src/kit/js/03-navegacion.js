@@ -77,7 +77,30 @@ function renderFase(fase, idx){
 // ══════════════════════════════════════════════
 // HERRAMIENTAS
 // ══════════════════════════════════════════════
+function toolBloqueada(id){
+  var info = SEARCH_INDEX.find(function(t){ return t.id === id; });
+  var nombre = info ? info.nombre : 'Esta herramienta';
+  var icon = info ? info.icon : '🔒';
+  var msg = 'Hola! Quiero actualizar mi plan a Completo en el Kit del Agente Inmobiliario.';
+  var wa = SOPORTE_WHATSAPP ? 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(msg) : '#';
+  return `<div class="tool-section" id="tool-bloqueada-${id}">
+    <div class="tool-header">
+      <div class="tool-icon">🔒</div>
+      <div>
+        <div class="tool-title">${icon} ${esc(nombre)}</div>
+        <div class="tool-subtitle">Esta herramienta es parte del plan Completo. Actualizá tu acceso para desbloquearla junto con el resto de las herramientas de ese plan.</div>
+      </div>
+    </div>
+    <div class="btn-group">
+      <a class="btn btn-gold" href="${wa}" target="_blank" rel="noopener">💬 Quiero actualizar mi plan</a>
+    </div>
+  </div>`;
+}
+
 function renderTool(id){
+  if(HERRAMIENTAS_TIER2.indexOf(id) !== -1 && AGENTE.plan !== 'completo'){
+    return toolBloqueada(id);
+  }
   switch(id){
     case 'generador-seguimiento': return toolGeneradorSeguimiento();
     case 'calc-comision': return toolCalculadoraComision();

@@ -182,9 +182,10 @@ function onSearchInput(q){
     res.innerHTML = '<div style="font-size:0.82rem;color:var(--text-muted);padding:8px 0;">Sin resultados.</div>';
   } else {
     res.innerHTML = hits.map(function(t){
+      var bloqueada = HERRAMIENTAS_TIER2.indexOf(t.id) !== -1 && AGENTE.plan !== 'completo';
       return '<div class="search-result-item" onclick="showSingleTool(\''+t.id+'\')">'
         +'<span style="font-size:1.1rem;">'+t.icon+'</span>'
-        +'<div><div class="search-result-name">'+t.nombre+'</div>'
+        +'<div><div class="search-result-name">'+t.nombre+(bloqueada?' 🔒':'')+'</div>'
         +'<div class="search-result-tipo">'+t.tipo+'</div></div>'
         +'</div>';
     }).join('');
