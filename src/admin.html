@@ -101,19 +101,21 @@ select.fld-select{padding:8px 11px;border:1px solid var(--border);border-radius:
 .table-header{padding:0 2px 12px;display:flex;align-items:center;justify-content:space-between;}
 .table-header h2{font-family:var(--ff-d);font-size:0.92rem;font-weight:700;letter-spacing:-0.01em;color:var(--t1);}
 .count-badge{padding:3px 9px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid var(--border);font-family:var(--ff-m);font-size:0.67rem;font-weight:700;color:var(--t2);}
-.clientes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
-.cliente-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:12px;}
-.cc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;}
-.cc-nombre{font-family:var(--ff-d);font-weight:700;font-size:1rem;letter-spacing:-0.01em;color:var(--t1);}
+.clientes-grid{display:flex;flex-direction:column;gap:8px;}
+.cliente-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
+.cr-summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.cr-main{flex:1;min-width:160px;}
+.cr-nombre{font-family:var(--ff-d);font-weight:700;font-size:0.94rem;letter-spacing:-0.01em;color:var(--t1);}
+.cr-meta{font-size:0.78rem;color:var(--t3);margin-top:2px;}
 .cc-badges{display:flex;gap:6px;flex-wrap:wrap;}
+.cc-actions{display:flex;gap:8px;flex-wrap:wrap;}
 .cc-body{display:flex;flex-direction:column;gap:6px;}
 .cc-field{display:flex;justify-content:space-between;gap:10px;font-size:0.84rem;color:var(--t2);}
 .cc-field span{color:var(--t4);font-family:var(--ff-m);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;}
 .cc-field b{font-weight:500;color:var(--t2);text-align:right;word-break:break-word;}
-.cc-edit{display:flex;flex-direction:column;gap:8px;}
+.cc-edit{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
 .cc-edit-actions{display:flex;gap:8px;}
-.cc-actions{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:12px;}
-.cc-since{font-family:var(--ff-m);font-size:0.7rem;color:var(--t4);}
+.cc-since{font-family:var(--ff-m);font-size:0.7rem;color:var(--t4);margin-top:6px;}
 .btn-sm{padding:7px 14px;font-size:0.8rem;}
 
 /* TOGGLE BUTTONS */
@@ -282,19 +284,21 @@ function renderTabla(list){
     const f=new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
     const plan=c.plan||'basico';
     const id=c.id;
+    const meta=[c.ciudad,c.whatsapp].filter(Boolean).join(' · ')||'—';
     return '<div class="cliente-card" data-id="'+id+'">'
-      +'<div class="cc-head">'
-        +'<div class="cc-nombre">'+esc(c.nombre)+'</div>'
+      +'<div class="cr-summary" id="cr-summary-'+id+'">'
+        +'<div class="cr-main">'
+          +'<div class="cr-nombre">'+esc(c.nombre)+'</div>'
+          +'<div class="cr-meta">'+esc(meta)+'</div>'
+        +'</div>'
         +'<div class="cc-badges">'
           +'<button class="plan-badge '+plan+'" data-id="'+id+'" onclick="cambiarPlan(this)">'+(plan==='completo'?'Completo':'Basico')+'</button>'
           +'<button class="btn-toggle '+(c.activo?'activo':'inactivo')+'" data-id="'+id+'" onclick="toggleActivo(this)">'+(c.activo?'Activo':'Inactivo')+'</button>'
         +'</div>'
-      +'</div>'
-      +'<div class="cc-body" id="cc-view-'+id+'">'
-        +'<div class="cc-field"><span>Contrasena</span><b>'+esc(c.password)+'</b></div>'
-        +'<div class="cc-field"><span>Ciudad</span><b>'+esc(c.ciudad||'—')+'</b></div>'
-        +'<div class="cc-field"><span>WhatsApp</span><b>'+esc(c.whatsapp||'—')+'</b></div>'
-        +'<div class="cc-field"><span>Email</span><b>'+esc(c.email||'—')+'</b></div>'
+        +'<div class="cc-actions">'
+          +'<button class="btn-ghost btn-sm" onclick="activarEdicion(\''+id+'\')">Editar</button>'
+          +'<button class="btn-danger" data-id="'+id+'" data-nombre="'+esc(c.nombre)+'" onclick="eliminarCliente(this)">Eliminar</button>'
+        +'</div>'
       +'</div>'
       +'<div class="cc-edit" id="cc-edit-'+id+'" hidden>'
         +'<div class="form-group"><label>Nombre</label><input type="text" id="ed-nombre-'+id+'" value="'+esc(c.nombre)+'"/></div>'
@@ -306,23 +310,17 @@ function renderTabla(list){
           +'<button class="btn btn-navy btn-sm" onclick="guardarEdicion(\''+id+'\')">Guardar</button>'
           +'<button class="btn-ghost" onclick="cancelarEdicion(\''+id+'\')">Cancelar</button>'
         +'</div>'
+        +'<div class="cc-since">Cliente desde '+f+'</div>'
       +'</div>'
-      +'<div class="cc-actions">'
-        +'<button class="btn-ghost" onclick="activarEdicion(\''+id+'\')">Editar</button>'
-        +'<button class="btn-danger" data-id="'+id+'" data-nombre="'+esc(c.nombre)+'" onclick="eliminarCliente(this)">Eliminar</button>'
-      +'</div>'
-      +'<div class="cc-since">Cliente desde '+f+'</div>'
     +'</div>';
   }).join('');
 }
 
 function activarEdicion(id){
-  document.getElementById('cc-view-'+id).hidden = true;
   document.getElementById('cc-edit-'+id).hidden = false;
 }
 
 function cancelarEdicion(id){
-  document.getElementById('cc-view-'+id).hidden = false;
   document.getElementById('cc-edit-'+id).hidden = true;
 }
 
