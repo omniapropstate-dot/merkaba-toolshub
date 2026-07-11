@@ -24,10 +24,10 @@ function toolGeneradorAnuncio(){
 
     <div class="form-row cols-2">
       <div class="form-group"><label>Zona / Barrio</label>
-        <input id="an-zona" type="text" placeholder="Ej: Cala Cala, Norte, Plan 3000"/>
+        <input id="an-zona" type="text" placeholder="Ej: Zona Norte, Centro, Zona Sur"/>
       </div>
       <div class="form-group"><label>Ciudad</label>
-        <input id="an-ciudad" type="text" placeholder="Ej: Cochabamba"/>
+        <input id="an-ciudad" type="text" placeholder="Tu ciudad"/>
       </div>
     </div>
 
