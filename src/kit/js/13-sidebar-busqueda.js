@@ -98,8 +98,7 @@ function showBiblioteca(){
 }
 
 function goBack(){
-  if(_sidebarTab==='tipos') showTiposGrid();
-  else showEtapasGrid();
+  showMapa();
 }
 
 function initCollapsibles(){
