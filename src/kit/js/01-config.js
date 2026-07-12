@@ -1,8 +1,32 @@
 
 
-  // Chequeo de acceso — BORRADOR
+  // Chequeo de acceso
   if(!localStorage.getItem("mk_auth")){
     window.location.href = "/login";
+  } else {
+    // Revalida contra Supabase en cada carga: si cambio la contrasena o se
+    // desactivo la cuenta desde que este dispositivo inicio sesion, saca al
+    // toque. Sin esto, localStorage guardaba la sesion para siempre y cambiar
+    // la contrasena de alguien (ej. la cuenta demo) no le sacaba el acceso.
+    (function(){
+      var _id = localStorage.getItem('mk_id');
+      var _pwd = localStorage.getItem('mk_pwd');
+      var _valido = true;
+      try{
+        var _xhr = new XMLHttpRequest();
+        _xhr.open('POST', 'https://rdmqlclavqbhrhxbkiwo.supabase.co/rest/v1/rpc/session_valida', false);
+        _xhr.setRequestHeader('Content-Type','application/json');
+        _xhr.setRequestHeader('apikey','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q');
+        _xhr.setRequestHeader('Authorization','Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q');
+        _xhr.send(JSON.stringify({p_id:_id, p_password:_pwd}));
+        if(_xhr.status===200){ _valido = JSON.parse(_xhr.responseText)===true; }
+      }catch(e){ /* sin conexion: no expulsar por un problema de red */ }
+      if(!_valido){
+        localStorage.clear();
+        window.location.href = '/login';
+        throw new Error('sesion invalida');
+      }
+    })();
   }
 // ══════════════════════════════════════════════
 // CUENTA DEMO — no persiste guardados a Supabase

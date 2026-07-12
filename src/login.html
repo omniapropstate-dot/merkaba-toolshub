@@ -225,6 +225,7 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
       if(data && data.ok){
         localStorage.setItem('mk_auth', '1');
         localStorage.setItem('mk_id', data.id);
+        localStorage.setItem('mk_pwd', val);
         localStorage.setItem('mk_nombre', data.nombre || '');
         localStorage.setItem('mk_ciudad', data.ciudad || '');
         localStorage.setItem('mk_whatsapp', data.whatsapp || '');
