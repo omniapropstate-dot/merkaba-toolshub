@@ -250,6 +250,7 @@ select.fld-select{padding:8px 11px;border:1px solid var(--border);border-radius:
 const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
 const sb = window.supabase.createClient(SB_URL, SB_KEY);
+const DEMO_CLIENTE_ID = '033a71aa-b53c-450f-b0e7-332c7ec25b01';
 let APWD = '';
 
 async function adminLogin(){
@@ -277,7 +278,11 @@ let CLIENTES = [];
 async function cargarClientes(){
   const {data,error}=await sb.rpc('admin_list_clientes',{admin_pwd:APWD});
   if(error) return false;
-  CLIENTES = (data||[]).slice().sort(function(a,b){ return a.nombre.localeCompare(b.nombre,'es',{sensitivity:'base'}); });
+  CLIENTES = (data||[]).slice().sort(function(a,b){
+    if(a.id===DEMO_CLIENTE_ID) return -1;
+    if(b.id===DEMO_CLIENTE_ID) return 1;
+    return a.nombre.localeCompare(b.nombre,'es',{sensitivity:'base'});
+  });
   actualizarStats(CLIENTES);
   const q=(document.getElementById('buscador-input')||{}).value||'';
   filtrarClientes(q);
@@ -302,7 +307,16 @@ function clienteRowHTML(c){
   const f=new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
   const plan=c.plan||'basico';
   const id=c.id;
+  const esDemo=id===DEMO_CLIENTE_ID;
   const meta=[c.ciudad,c.whatsapp].filter(Boolean).join(' · ')||'—';
+  const fotoHTML=!esDemo?'':(
+    '<div class="cc-field"><span>Foto demo</span><b>'
+    +'<div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">'
+    +(c.foto?'<img src="'+c.foto+'" alt="foto demo" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--border-gold);">':'')
+    +'<button class="btn-ghost btn-sm" onclick="document.getElementById(\'demo-foto-input-'+id+'\').click()">Cambiar foto</button>'
+    +'<input type="file" accept="image/*" id="demo-foto-input-'+id+'" style="display:none;" onchange="cambiarFotoDemo(\''+id+'\',this)">'
+    +'</div></b></div>'
+  );
   return '<div class="cliente-card" data-id="'+id+'">'
     +'<div class="cr-summary" onclick="toggleCliente(\''+id+'\')">'
       +'<div class="cr-main">'
@@ -320,6 +334,7 @@ function clienteRowHTML(c){
         +'<div class="cc-field"><span>Ciudad</span><b>'+esc(c.ciudad||'—')+'</b></div>'
         +'<div class="cc-field"><span>WhatsApp</span><b>'+esc(c.whatsapp||'—')+'</b></div>'
         +'<div class="cc-field"><span>Email</span><b>'+esc(c.email||'—')+'</b></div>'
+        +fotoHTML
         +'<div class="cc-since">Cliente desde '+f+'</div>'
         +'<div class="cc-actions">'
           +'<button class="btn-ghost btn-sm" onclick="activarEdicion(\''+id+'\')">Editar</button>'
@@ -422,6 +437,42 @@ async function eliminarCliente(btn){
 }
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function _normalizeAvatarPhoto(dataUrl, callback){
+  var img = new Image();
+  img.onload = function(){
+    var size = 320;
+    var side = Math.min(img.width, img.height);
+    var sx = (img.width - side) / 2;
+    var sy = (img.height - side) / 2;
+    var cv = document.createElement('canvas');
+    cv.width = size; cv.height = size;
+    var ctx = cv.getContext('2d');
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+    callback(cv.toDataURL('image/png'));
+  };
+  img.src = dataUrl;
+}
+
+function cambiarFotoDemo(id, input){
+  const file = input.files[0];
+  if(!file) return;
+  const cliente = CLIENTES.find(function(c){ return c.id===id; });
+  if(!cliente) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    _normalizeAvatarPhoto(e.target.result, async function(fotoCircular){
+      const {error} = await sb.rpc('client_update_profile',{p_id:id,p_nombre:cliente.nombre,p_ciudad:cliente.ciudad||'',p_whatsapp:cliente.whatsapp||'',p_email:cliente.email||'',p_foto:fotoCircular});
+      if(error){ alert('No se pudo cambiar la foto.'); return; }
+      cargarClientes();
+    });
+  };
+  reader.readAsDataURL(file);
+}
 
 window.addEventListener('load',function(){
   document.getElementById('admin-pwd-input').addEventListener('keydown',function(e){ if(e.key==='Enter') adminLogin(); });

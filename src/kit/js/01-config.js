@@ -5,14 +5,21 @@
     window.location.href = "/login";
   }
 // ══════════════════════════════════════════════
+// CUENTA DEMO — no persiste guardados a Supabase
+// ══════════════════════════════════════════════
+const DEMO_CLIENTE_ID = '033a71aa-b53c-450f-b0e7-332c7ec25b01';
+
+// ══════════════════════════════════════════════
 // DATOS DEL AGENTE (viene del perfil en Supabase)
 // ══════════════════════════════════════════════
 const AGENTE = {
+  id: localStorage.getItem('mk_id') || '',
   nombre: localStorage.getItem('mk_nombre') || 'Agente',
   ciudad: localStorage.getItem('mk_ciudad') || 'Bolivia',
   whatsapp: localStorage.getItem('mk_whatsapp') || '',
   email: localStorage.getItem('mk_email') || '',
-  plan: localStorage.getItem('mk_plan') || 'basico'
+  plan: localStorage.getItem('mk_plan') || 'basico',
+  esDemo: localStorage.getItem('mk_id') === DEMO_CLIENTE_ID
 };
 document.getElementById('agent-badge').textContent = AGENTE.nombre;
 const LIMITE_SEGUIMIENTOS = AGENTE.plan === 'completo' ? 50 : 20;
