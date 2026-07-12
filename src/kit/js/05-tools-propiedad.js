@@ -76,7 +76,7 @@ ${detalles.join('   ')}
 ${features ? features+'\n' : ''}
 📍 Ubicación: ${zona}
 
-${features ? '' : ''}Interesados comunicarse al WhatsApp 👇
+Interesados comunicarse al WhatsApp 👇
 📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
 
   $('ficha-texto').textContent = texto;

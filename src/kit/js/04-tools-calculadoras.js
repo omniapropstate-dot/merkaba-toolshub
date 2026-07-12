@@ -237,7 +237,6 @@ function calcAntictretico(){
   const capBs = capital * tc;
   const comUSD = capital * (com/100);
   const totalAlquiler = alquiler * 12 * años;
-  const ahorro = totalAlquiler - 0;
   const rendimiento = alquiler>0 ? ((alquiler*12)/capital*100).toFixed(1) : '—';
   $('anti-cap-bs').textContent = 'Bs. '+capBs.toLocaleString('es-BO',{maximumFractionDigits:0});
   $('anti-com-usd').textContent = '$ '+comUSD.toLocaleString('es-BO',{maximumFractionDigits:0});

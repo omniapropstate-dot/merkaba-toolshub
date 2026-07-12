@@ -17,8 +17,6 @@ function toolSheetExterno(icon, titulo, desc, url){
   </div>`;
 }
 
-// INICIALIZAR
-// ══════════════════════════════════════════════
 // ══════════════════════════════════════════════
 // NAVEGACION POR TIPO
 // ══════════════════════════════════════════════
@@ -61,7 +59,7 @@ function showTipo(idx){
 }
 
 // ══════════════════════════════════════════════
-// COLAPSIBLES
+// NAVEGACION AUXILIAR Y COLAPSIBLES
 // ══════════════════════════════════════════════
 
 function showBiblioteca(){

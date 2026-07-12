@@ -31,7 +31,7 @@ function toolAcuerdoTrabajo(){
 }
 
 // ══════════════════════════════════════════════
-// HERRAMIENTA: PRESENTACION PERSONAL
+// HERRAMIENTA: BIBLIOTECA
 // ══════════════════════════════════════════════
 function toolBiblioteca(){
   return '<div class="tool-section" id="tool-biblioteca">'
@@ -44,8 +44,8 @@ function toolBiblioteca(){
     +'</div>';
 }
 
-
-
+// ══════════════════════════════════════════════
+// HERRAMIENTA: PRESENTACION PERSONAL
 // ══════════════════════════════════════════════
 function toolPresentacionPersonal(){
   return `<div class="tool-section" id="tool-presentacion">
@@ -272,7 +272,7 @@ function buildPresentacionHTML(especialidad, anos, zona, valor){
   if(AGENTE.email) contacto.push('&#9993;&#65039; '+esc(AGENTE.email));
   return DOC_INICIO
     +'<div style="background:linear-gradient(135deg,var(--pdf-navy),var(--pdf-navy-2));min-height:220px;display:flex;align-items:center;justify-content:center;padding:40px 36px;text-align:center;">'
-    +fotoHtml.replace('margin:0 auto 16px;','margin:0 auto 16px;')
+    +fotoHtml
     +'<div>'
     +'<div style="font-family:Georgia,serif;font-size:1.8rem;font-weight:700;color:#fff;letter-spacing:0.5px;margin-bottom:6px;">'+esc(AGENTE.nombre||'Agente Inmobiliario')+'</div>'
     +'<div style="height:3px;width:60px;background:var(--gold);border-radius:2px;margin:0 auto 12px;"></div>'

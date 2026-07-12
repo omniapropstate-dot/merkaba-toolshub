@@ -1,8 +1,7 @@
 
 // ══════════════════════════════════════════════
 // PERFIL DEL AGENTE
-const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
+// (SB_URL y SB_KEY viven en 01-config.js)
 
 var _temaSeleccionado = null;
 var _temaOriginal = null;
@@ -11,7 +10,6 @@ function abrirPerfil(){
   $('perfil-nombre').value = AGENTE.nombre;
   $('perfil-ciudad').value = AGENTE.ciudad;
   $('perfil-whatsapp').value = AGENTE.whatsapp;
-  $('perfil-email').value = AGENTE.email;
   $('perfil-email').value = AGENTE.email;
   const foto = localStorage.getItem('mk_foto');
   const ring = $('photo-ring-preview');

@@ -31,7 +31,7 @@ function toolBancoScripts(){
     cuerpo += `<div style="font-size:0.8rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin:${ci===0?'0':'18px'} 0 8px;">${nombreCat}</div>`;
     categorias[nombreCat].forEach(function(s, si){
       const accId = 'scr-'+ci+'-'+si;
-      const safe = s.txt.replace(/'/g,"\\'");
+      const attr = esc(s.txt);
       cuerpo += `<div class="home-acc" style="margin-bottom:8px;">
         <button class="home-acc-hdr" onclick="homeAccToggle('${accId}')">
           <span>${esc(s.cat)}</span>
@@ -41,8 +41,8 @@ function toolBancoScripts(){
           <div style="padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.84rem;color:var(--text);line-height:1.6;">
             "${esc(s.txt)}"
             <div style="margin-top:8px;display:flex;gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="copiar('${safe}')">📋 Copiar</button>
-              <button class="btn btn-outline btn-sm" onclick="abrirWhatsApp('${safe}')">💬 WhatsApp</button>
+              <button class="btn btn-outline btn-sm" data-t="${attr}" onclick="copiar(this.dataset.t)">📋 Copiar</button>
+              <button class="btn btn-outline btn-sm" data-t="${attr}" onclick="abrirWhatsApp(this.dataset.t)">💬 WhatsApp</button>
             </div>
           </div>
         </div>
@@ -116,7 +116,6 @@ function renderPlantillasLista(){
     return;
   }
   cont.innerHTML = '<div style="display:grid;gap:10px;">' + arr.map(p => {
-    const safe = p.contenido.replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');
     return `<div class="script-card">
       <div class="script-situation">${esc(p.titulo)}</div>
       <div style="font-size:0.87rem;color:var(--text);margin-top:6px;white-space:pre-wrap;">${esc(p.contenido)}</div>

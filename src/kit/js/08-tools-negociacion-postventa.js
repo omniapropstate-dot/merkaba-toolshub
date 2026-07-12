@@ -97,12 +97,14 @@ function _renderListaObjeciones(arr, prefix){
   return arr.map(function(ob, oi){
     var accId = 'obj-'+prefix+'-'+oi;
     var respuestasHtml = ob.respuestas.map(function(r){
-      var safe = r.replace(/'/g,"\\'");
+      // El texto va en un atributo data-* (no como argumento inline del onclick):
+      // las respuestas pueden contener comillas dobles y romperian el atributo.
+      var attr = esc(r);
       return '<div style="margin-bottom:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.84rem;color:var(--text);line-height:1.6;">'
         + '"'+esc(r)+'"'
         + '<div style="margin-top:8px;display:flex;gap:8px;">'
-        + '<button class="btn btn-outline btn-sm" onclick="copiar(\''+safe+'\')">📋 Copiar</button>'
-        + '<button class="btn btn-outline btn-sm" onclick="abrirWhatsApp(\''+safe+'\')">💬 WhatsApp</button>'
+        + '<button class="btn btn-outline btn-sm" data-t="'+attr+'" onclick="copiar(this.dataset.t)">📋 Copiar</button>'
+        + '<button class="btn btn-outline btn-sm" data-t="'+attr+'" onclick="abrirWhatsApp(this.dataset.t)">💬 WhatsApp</button>'
         + '</div></div>';
     }).join('');
     return '<div class="home-acc" style="margin-bottom:8px;">'

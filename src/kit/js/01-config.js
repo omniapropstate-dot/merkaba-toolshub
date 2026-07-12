@@ -1,5 +1,11 @@
 
 
+// ══════════════════════════════════════════════
+// SUPABASE — unica definicion para todo el kit
+// ══════════════════════════════════════════════
+const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
+
   // Chequeo de acceso — mk_auth vive en sessionStorage (no localStorage): se
   // borra al cerrar la pestana/navegador, para que el link SIEMPRE pida
   // contrasena de nuevo en una visita nueva, en vez de quedar adentro para
@@ -17,10 +23,10 @@
       var _valido = true;
       try{
         var _xhr = new XMLHttpRequest();
-        _xhr.open('POST', 'https://rdmqlclavqbhrhxbkiwo.supabase.co/rest/v1/rpc/session_valida', false);
+        _xhr.open('POST', SB_URL+'/rest/v1/rpc/session_valida', false);
         _xhr.setRequestHeader('Content-Type','application/json');
-        _xhr.setRequestHeader('apikey','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q');
-        _xhr.setRequestHeader('Authorization','Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q');
+        _xhr.setRequestHeader('apikey',SB_KEY);
+        _xhr.setRequestHeader('Authorization','Bearer '+SB_KEY);
         _xhr.send(JSON.stringify({p_id:_id, p_password:_pwd}));
         if(_xhr.status===200){ _valido = JSON.parse(_xhr.responseText)===true; }
       }catch(e){ /* sin conexion: no expulsar por un problema de red */ }
@@ -39,9 +45,9 @@
       var _id2 = localStorage.getItem('mk_id');
       var _pwd2 = localStorage.getItem('mk_pwd');
       if(!_id2) return;
-      fetch('https://rdmqlclavqbhrhxbkiwo.supabase.co/rest/v1/rpc/session_valida', {
+      fetch(SB_URL+'/rest/v1/rpc/session_valida', {
         method:'POST',
-        headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q'},
+        headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
         body: JSON.stringify({p_id:_id2, p_password:_pwd2})
       }).then(function(r){ return r.json(); }).then(function(ok){
         if(ok!==true){

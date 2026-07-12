@@ -50,6 +50,11 @@ function showPhase(idx){
   // scroll top
   document.querySelector('.kit-main').scrollTop = 0;
   window.scrollTo(0,0);
+  // resaltar la etapa activa en el sidebar (mismo patron que showTipo)
+  FASES.forEach(function(_,i){
+    var b = $('sidebar-phase-'+i);
+    if(b) b.classList.toggle('active', i===idx);
+  });
 }
 
 function showMapa(){
