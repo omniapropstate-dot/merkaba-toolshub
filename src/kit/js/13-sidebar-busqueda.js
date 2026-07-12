@@ -61,38 +61,8 @@ function showTipo(idx){
 }
 
 // ══════════════════════════════════════════════
-// GRIDS DE SELECCION + COLAPSIBLES
+// COLAPSIBLES
 // ══════════════════════════════════════════════
-function showEtapasGrid(){
-  setSidebarTab('etapas');
-  $('phase-mapa').hidden = true;
-  $('phase-content').hidden = false;
-  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
-  html += '<div class="mapa-grid">';
-  FASES.forEach(function(f,i){
-    var num = f.id==='transversal' ? 'Siempre disponible' : 'Etapa '+f.num;
-    var cnt = f.tools.length+' herramienta'+(f.tools.length>1?'s':'');
-    html += '<div class="mapa-card'+(f.color==='gold'?' gold':'')+ '" onclick="showPhase('+i+')"><div class="mapa-num">'+num+'</div><div class="mapa-name">'+f.nombre+'</div><div class="mapa-desc">'+f.desc+'</div><div class="mapa-tools">'+cnt+' →</div></div>';
-  });
-  html += '</div>';
-  $('phase-content').innerHTML = html;
-  window.scrollTo(0,0);
-}
-
-function showTiposGrid(){
-  setSidebarTab('tipos');
-  $('phase-mapa').hidden = true;
-  $('phase-content').hidden = false;
-  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
-  html += '<div class="mapa-grid">';
-  TIPOS.forEach(function(t,i){
-    var cnt = t.tools.length+' herramienta'+(t.tools.length>1?'s':'');
-    html += '<div class="mapa-card" onclick="showTipo('+i+')"><div class="mapa-num">'+t.icon+'</div><div class="mapa-name">'+t.nombre+'</div><div class="mapa-tools">'+cnt+' →</div></div>';
-  });
-  html += '</div>';
-  $('phase-content').innerHTML = html;
-  window.scrollTo(0,0);
-}
 
 function showBiblioteca(){
   window.open('https://drive.google.com/drive/folders/1pAF74TtE_bpi2qybJ4az9k_gQaROsvt2', '_blank');

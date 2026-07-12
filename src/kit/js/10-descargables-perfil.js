@@ -1,23 +1,3 @@
-function toolDescargable(id, icon, nombre, formato, desc, btnLabel, familia){
-  const badgeClass = familia==='ordena'?'badge-ordena':'badge-hace';
-  const badgeLabel = familia==='ordena'?'Ordena':'Hace';
-  return `<div class="tool-section" id="tool-${id}">
-    <div class="tool-header">
-      <div class="tool-icon">${icon}</div>
-      <div><div class="tool-title">${nombre} <span class="tool-badge ${badgeClass}">${badgeLabel}</span></div>
-      <div class="tool-subtitle">${desc}</div></div>
-    </div>
-    <div class="download-card">
-      <div class="download-icon">${icon}</div>
-      <div class="download-info">
-        <h4>${nombre}</h4>
-        <p>${formato} — Descarga y llena en tu computadora. Tus datos nunca salen de tu equipo.</p>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="toast('Plantilla disponible próximamente')">📥 ${btnLabel}</button>
-    </div>
-    <div style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">Las plantillas descargables estarán disponibles al momento del lanzamiento.</div>
-  </div>`;
-}
 
 // ══════════════════════════════════════════════
 // PERFIL DEL AGENTE

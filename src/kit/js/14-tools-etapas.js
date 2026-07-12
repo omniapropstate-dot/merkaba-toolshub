@@ -186,11 +186,11 @@ function toolGuiaVisita(){
   ];
 
   const html = secciones.map(s=>`
-    <div class="collapsible" id="${s.id}">
-      <button class="collapsible-trigger" onclick="toggleCollapsible('${s.id}')">
-        <span>${s.icono} ${s.titulo}</span><span class="collapsible-arrow">▼</span>
+    <div class="home-acc" style="margin-bottom:8px;">
+      <button class="home-acc-hdr" onclick="homeAccToggle('${s.id}')">
+        <span>${s.icono} ${s.titulo}</span><span id="${s.id}-arr" class="home-acc-arr">▼</span>
       </button>
-      <div class="collapsible-body" hidden>
+      <div id="${s.id}" class="home-acc-body" style="display:none;">
         <ul style="margin:0;padding-left:18px;line-height:1.8;">
           ${s.items.map(i=>`<li style="font-size:0.87rem;">${i}</li>`).join('')}
         </ul>
