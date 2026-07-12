@@ -4,6 +4,9 @@
 const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
 
+var _temaSeleccionado = null;
+var _temaOriginal = null;
+
 function abrirPerfil(){
   $('perfil-nombre').value = AGENTE.nombre;
   $('perfil-ciudad').value = AGENTE.ciudad;
@@ -14,10 +17,36 @@ function abrirPerfil(){
   const ring = $('photo-ring-preview');
   if(foto){ ring.innerHTML = '<img src="'+foto+'" alt="foto"/>'; } else { ring.innerHTML = '&#128100;'; }
   $('perfil-msg').textContent = '';
+  _temaSeleccionado = AGENTE.tema;
+  _temaOriginal = AGENTE.tema;
+  buildTemaPicker();
   $('perfil-modal').classList.add('open');
 }
 
-function cerrarPerfil(){ $('perfil-modal').classList.remove('open'); }
+function buildTemaPicker(){
+  var cont = $('perfil-tema-picker');
+  if(!cont) return;
+  cont.innerHTML = '';
+  Object.keys(TEMAS).forEach(function(id){
+    var t = TEMAS[id];
+    var sw = document.createElement('button');
+    sw.type = 'button';
+    sw.title = t.nombre;
+    var activo = id === _temaSeleccionado;
+    sw.style.cssText = 'width:34px;height:34px;border-radius:50%;cursor:pointer;padding:0;flex-shrink:0;'
+      + 'background:linear-gradient(135deg,'+t.primary+' 50%,'+t.accent+' 50%);'
+      + 'border:2px solid '+(activo ? t.accent : 'var(--border)')+';'
+      + 'box-shadow:'+(activo ? '0 0 0 2px '+t.accent+'33' : 'none')+';';
+    sw.onclick = function(){ _temaSeleccionado = id; buildTemaPicker(); aplicarTema(id); };
+    cont.appendChild(sw);
+  });
+}
+
+function cerrarPerfil(){
+  // Si cancela sin guardar, restaura el tema que estaba activo antes de abrir el modal.
+  if(_temaOriginal){ aplicarTema(_temaOriginal); }
+  $('perfil-modal').classList.remove('open');
+}
 
 // Comprime la foto a 320x320 y la recorta en circulo directamente sobre
 // los pixeles. Antes se guardaba la foto tal cual la subia el celular
@@ -73,12 +102,13 @@ async function guardarPerfil(){
   const msg = $('perfil-msg');
   if(!nombre){ msg.style.color='#c0392b'; msg.textContent='El nombre no puede estar vacio.'; return; }
   const id = localStorage.getItem('mk_id');
+  const tema = _temaSeleccionado || AGENTE.tema;
   if(!AGENTE.esDemo){
     try {
       await fetch(SB_URL+'/rest/v1/rpc/client_update_profile', {
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
-        body:JSON.stringify({p_id:id, p_nombre:nombre, p_ciudad:ciudad, p_whatsapp:whatsapp, p_email:email, p_foto:localStorage.getItem('mk_foto')||null})
+        body:JSON.stringify({p_id:id, p_nombre:nombre, p_ciudad:ciudad, p_whatsapp:whatsapp, p_email:email, p_foto:localStorage.getItem('mk_foto')||null, p_tema:tema})
       });
     } catch(e){ console.warn('Supabase update skipped'); }
   }
@@ -86,10 +116,14 @@ async function guardarPerfil(){
   localStorage.setItem('mk_ciudad', ciudad);
   localStorage.setItem('mk_whatsapp', whatsapp);
   localStorage.setItem('mk_email', email);
+  localStorage.setItem('mk_tema', tema);
   AGENTE.nombre = nombre;
   AGENTE.ciudad = ciudad;
   AGENTE.whatsapp = whatsapp;
   AGENTE.email = email;
+  AGENTE.tema = tema;
+  _temaOriginal = tema;
+  aplicarTema(tema);
   $('agent-badge').textContent = nombre;
   msg.style.color = '#2F9E6E';
   msg.textContent = 'Perfil actualizado.';

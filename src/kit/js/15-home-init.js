@@ -137,7 +137,7 @@ initHome();
 
 
 
-var _dp=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_dp=e;});window.addEventListener('appinstalled',function(){_dp=null;});function instalarApp(){if(_dp){_dp.prompt();_dp.userChoice.then(function(){_dp=null;});}else{var t=document.createElement('div');t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a1628;color:#fff;padding:16px 20px;border-radius:10px;font-size:13px;z-index:9999;text-align:center;max-width:300px;border:1px solid #EFAE3C;line-height:1.6;';t.innerHTML='<b>iPhone / Safari:</b><br>Toca el icono compartir y luego<br><i>Agregar a pantalla de inicio</i><br><br><b>Android (otro navegador):</b><br>Menu 3 puntos > Instalar app';document.body.appendChild(t);setTimeout(function(){t.remove();},6000);}}
+var _dp=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_dp=e;});window.addEventListener('appinstalled',function(){_dp=null;});function instalarApp(){if(_dp){_dp.prompt();_dp.userChoice.then(function(){_dp=null;});}else{var t=document.createElement('div');t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a1628;color:#fff;padding:16px 20px;border-radius:10px;font-size:13px;z-index:9999;text-align:center;max-width:300px;border:1px solid var(--gold);line-height:1.6;';t.innerHTML='<b>iPhone / Safari:</b><br>Toca el icono compartir y luego<br><i>Agregar a pantalla de inicio</i><br><br><b>Android (otro navegador):</b><br>Menu 3 puntos > Instalar app';document.body.appendChild(t);setTimeout(function(){t.remove();},6000);}}
 
 
 

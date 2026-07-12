@@ -58,6 +58,58 @@
 const DEMO_CLIENTE_ID = '033a71aa-b53c-450f-b0e7-332c7ec25b01';
 
 // ══════════════════════════════════════════════
+// TEMAS — paletas de color a elección del agente
+// ══════════════════════════════════════════════
+// Cada tema define PRIMARY (color de marca — texto/headings sobre el fondo
+// oscuro del kit, y fondo de botones con texto blanco) y ACCENT (highlight —
+// bordes/detalles sobre fondo oscuro, y fondo de chips/botones con texto
+// oscuro encima). primaryDark/primaryDark2 son variantes bien oscuras del
+// primary, usadas solo en los PDF (fondo blanco: header con degradado y
+// texto de encabezados). accentTextMuted/accentPastelBg son variantes del
+// accent pensadas para texto secundario y cajas de aviso muy claras sin
+// perder contraste en ningún caso.
+const TEMAS = {
+  dorado:   { nombre:'Dorado',            primary:'#4A90D9', primaryDark:'#1B335E', primaryDark2:'#243f72', accent:'#EFAE3C', accentLight:'#f5c842', textOnAccent:'#1a1306', accentTextMuted:'#7A5200', accentPastelBg:'#fff8e1' },
+  azul:     { nombre:'Azul profesional',  primary:'#3E7BC4', primaryDark:'#123156', primaryDark2:'#1B4A82', accent:'#5FD0E8', accentLight:'#8FE2F2', textOnAccent:'#04303a', accentTextMuted:'#0E6478', accentPastelBg:'#e8fafd' },
+  esmeralda:{ nombre:'Verde esmeralda',   primary:'#35B37E', primaryDark:'#0C4A31', primaryDark2:'#116B47', accent:'#7FE0A8', accentLight:'#A9EEC4', textOnAccent:'#08301f', accentTextMuted:'#1F7A4C', accentPastelBg:'#e9faf0' },
+  vino:     { nombre:'Bordo elegante',    primary:'#C4547A', primaryDark:'#5C1830', primaryDark2:'#7C2440', accent:'#E8A0B8', accentLight:'#F2C2D2', textOnAccent:'#4a0f22', accentTextMuted:'#9C3457', accentPastelBg:'#fceef3' },
+  grafito:  { nombre:'Plata / Grafito',   primary:'#8B95A8', primaryDark:'#262B36', primaryDark2:'#3A4356', accent:'#A9B4C4', accentLight:'#C6CEDA', textOnAccent:'#20242c', accentTextMuted:'#525C6E', accentPastelBg:'#f0f2f5' },
+  cobre:    { nombre:'Terracota / Cobre', primary:'#D97B4F', primaryDark:'#5C260F', primaryDark2:'#7A3418', accent:'#F2B88A', accentLight:'#F7D2AE', textOnAccent:'#4a2410', accentTextMuted:'#9C4A22', accentPastelBg:'#fdf1e7' },
+  ejecutivo:{ nombre:'Negro ejecutivo',   primary:'#8A8580', primaryDark:'#0F0F11', primaryDark2:'#17171A', accent:'#D4AF6A', accentLight:'#E4CB94', textOnAccent:'#241a05', accentTextMuted:'#8A6A2E', accentPastelBg:'#f7f1e3' }
+};
+
+function _hexToRgbStr(hex){
+  var h = hex.replace('#','');
+  var r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+  return r+','+g+','+b;
+}
+function _mixHex(hex, targetHex, amt){
+  var a = _hexToRgbStr(hex).split(',').map(Number);
+  var b = _hexToRgbStr(targetHex).split(',').map(Number);
+  var r = Math.round(a[0]+(b[0]-a[0])*amt);
+  var g = Math.round(a[1]+(b[1]-a[1])*amt);
+  var bl = Math.round(a[2]+(b[2]-a[2])*amt);
+  return 'rgb('+r+','+g+','+bl+')';
+}
+function aplicarTema(id){
+  var t = TEMAS[id] || TEMAS.dorado;
+  var root = document.documentElement.style;
+  root.setProperty('--navy', t.primary);
+  root.setProperty('--navy-dark', _mixHex(t.primary, '#000000', 0.35));
+  root.setProperty('--navy-soft', 'rgba('+_hexToRgbStr(t.primary)+',0.12)');
+  root.setProperty('--gold', t.accent);
+  root.setProperty('--gold-soft', 'rgba('+_hexToRgbStr(t.accent)+',0.15)');
+  root.setProperty('--gold-rgb', _hexToRgbStr(t.accent));
+  root.setProperty('--gold-light', t.accentLight);
+  root.setProperty('--text-on-gold', t.textOnAccent);
+  root.setProperty('--accent-text-muted', t.accentTextMuted);
+  root.setProperty('--gold-pastel-bg', t.accentPastelBg);
+  root.setProperty('--pdf-navy', t.primaryDark);
+  root.setProperty('--pdf-navy-2', t.primaryDark2);
+  root.setProperty('--pdf-navy-soft', 'rgba('+_hexToRgbStr(t.primaryDark)+',0.1)');
+}
+
+// ══════════════════════════════════════════════
 // DATOS DEL AGENTE (viene del perfil en Supabase)
 // ══════════════════════════════════════════════
 const AGENTE = {
@@ -67,9 +119,11 @@ const AGENTE = {
   whatsapp: localStorage.getItem('mk_whatsapp') || '',
   email: localStorage.getItem('mk_email') || '',
   plan: localStorage.getItem('mk_plan') || 'basico',
+  tema: localStorage.getItem('mk_tema') || 'dorado',
   esDemo: localStorage.getItem('mk_id') === DEMO_CLIENTE_ID
 };
 document.getElementById('agent-badge').textContent = AGENTE.nombre;
+aplicarTema(AGENTE.tema);
 const LIMITE_SEGUIMIENTOS = AGENTE.plan === 'completo' ? 50 : 20;
 
 // ══════════════════════════════════════════════

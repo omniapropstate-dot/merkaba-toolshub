@@ -103,14 +103,14 @@ async function renderPDF(htmlContent, filename){
 function _agentHeaderHTML(){
   var foto = localStorage.getItem('mk_foto') || '';
   var fotoHtml = foto
-    ? '<img src="'+foto+'" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid #EFAE3C;flex-shrink:0;" />'
-    : '<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid #EFAE3C;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">&#128100;</div>';
+    ? '<img src="'+foto+'" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);flex-shrink:0;" />'
+    : '<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid var(--gold);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">&#128100;</div>';
   var contacto = [];
   if(AGENTE.ciudad) contacto.push('<span>&#128205; '+esc(AGENTE.ciudad)+'</span>');
   if(AGENTE.whatsapp) contacto.push('<span>&#128242; '+esc(AGENTE.whatsapp)+'</span>');
   if(AGENTE.email) contacto.push('<span>&#9993;&#65039; '+esc(AGENTE.email)+'</span>');
   var fecha = new Date().toLocaleDateString('es-BO', {day:'2-digit', month:'long', year:'numeric'});
-  return '<div style="background:linear-gradient(135deg,#1B335E 0%,#243f72 100%);color:#fff;padding:28px 36px;display:flex;align-items:center;gap:20px;">'
+  return '<div style="background:linear-gradient(135deg,var(--pdf-navy) 0%,var(--pdf-navy-2) 100%);color:#fff;padding:28px 36px;display:flex;align-items:center;gap:20px;">'
     + fotoHtml
     + '<div style="flex:1;">'
     +   '<div style="font-family:Georgia,serif;font-size:1.3rem;font-weight:700;letter-spacing:0.5px;margin-bottom:6px;">'+esc(AGENTE.nombre || 'Agente')+'</div>'
@@ -118,7 +118,7 @@ function _agentHeaderHTML(){
     + '</div>'
     + '<div style="text-align:right;font-size:0.78rem;color:rgba(255,255,255,0.55);">'+fecha+'</div>'
     + '</div>'
-    + '<div style="height:4px;background:linear-gradient(90deg,#EFAE3C,#f5c842,#EFAE3C);"></div>';
+    + '<div style="height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));"></div>';
 }
 
 function buildPropuestaHTML(texto){
@@ -126,21 +126,21 @@ function buildPropuestaHTML(texto){
   var parrafosHtml = parrafos.map(function(p){
     var t = p.trim();
     if(/^\d+\.\s/.test(t) || (t.length < 60 && t.endsWith(':'))){
-      return '<h3 style="font-family:Georgia,serif;font-size:1rem;color:#1B335E;margin:18px 0 6px;font-weight:700;border-left:3px solid #EFAE3C;padding-left:10px;">'+esc(t)+'</h3>';
+      return '<h3 style="font-family:Georgia,serif;font-size:1rem;color:var(--pdf-navy);margin:18px 0 6px;font-weight:700;border-left:3px solid var(--gold);padding-left:10px;">'+esc(t)+'</h3>';
     }
     return '<p style="margin:0 0 10px;line-height:1.7;color:#2d3748;font-size:0.92rem;">'+esc(t)+'</p>';
   }).join('');
   return DOC_INICIO
     + _agentHeaderHTML()
     + '<div style="padding:32px 36px;">'
-    +   '<h1 style="font-family:Georgia,serif;font-size:1.6rem;color:#1B335E;margin:0 0 6px;font-weight:700;">Propuesta de Captaci&#243;n</h1>'
-    +   '<div style="width:48px;height:3px;background:#EFAE3C;border-radius:2px;margin-bottom:24px;"></div>'
-    +   '<div style="background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:20px 24px;margin-bottom:24px;">'
+    +   '<h1 style="font-family:Georgia,serif;font-size:1.6rem;color:var(--pdf-navy);margin:0 0 6px;font-weight:700;">Propuesta de Captaci&#243;n</h1>'
+    +   '<div style="width:48px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:24px;"></div>'
+    +   '<div style="background:#f8f9fc;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:20px 24px;margin-bottom:24px;">'
     +     parrafosHtml
     +   '</div>'
     +   '<div style="margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
     +     '<div style="font-size:0.75rem;color:#94a3b8;">Documento confidencial &middot; Generado para uso profesional</div>'
-    +     '<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +     '<div style="width:80px;height:2px;background:var(--gold);border-radius:1px;"></div>'
     +   '</div>'
     + '</div>'
     + '</body></html>';
@@ -148,9 +148,9 @@ function buildPropuestaHTML(texto){
 
 function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos){
   var chips = [
-    op && '<span style="background:#1B335E;color:#fff;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;">'+esc(op)+'</span>',
-    tipo && '<span style="background:rgba(27,51,94,0.1);color:#1B335E;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">'+esc(tipo)+'</span>',
-    zona && '<span style="background:rgba(239,174,60,0.15);color:#b8860b;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">&#128205; '+esc(zona)+'</span>'
+    op && '<span style="background:var(--pdf-navy);color:#fff;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;">'+esc(op)+'</span>',
+    tipo && '<span style="background:var(--pdf-navy-soft);color:var(--pdf-navy);padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">'+esc(tipo)+'</span>',
+    zona && '<span style="background:var(--gold-soft);color:var(--accent-text-muted);padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">&#128205; '+esc(zona)+'</span>'
   ].filter(Boolean).join(' ');
 
   var statsArr = [];
@@ -161,7 +161,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
   var statsHtml = statsArr.map(function(s){
     return '<div style="text-align:center;background:#f8f9fc;border-radius:10px;padding:14px 20px;flex:1;min-width:80px;">'
       + '<div style="font-size:1.4rem;">'+s.icon+'</div>'
-      + '<div style="font-size:1.1rem;font-weight:700;color:#1B335E;">'+esc(String(s.val))+'</div>'
+      + '<div style="font-size:1.1rem;font-weight:700;color:var(--pdf-navy);">'+esc(String(s.val))+'</div>'
       + '<div style="font-size:0.72rem;color:#718096;">'+s.lbl+'</div>'
       + '</div>';
   }).join('');
@@ -169,7 +169,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
   var featList = features ? features.split(/\n|,/).map(function(f){ return f.trim(); }).filter(Boolean) : [];
   var featHtml = featList.length
     ? '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;">'
-      + featList.map(function(f){ return '<span style="background:#eef1f6;color:#1B335E;padding:5px 12px;border-radius:999px;font-size:0.78rem;">&#10003; '+esc(f)+'</span>'; }).join('')
+      + featList.map(function(f){ return '<span style="background:#eef1f6;color:var(--pdf-navy);padding:5px 12px;border-radius:999px;font-size:0.78rem;">&#10003; '+esc(f)+'</span>'; }).join('')
       + '</div>'
     : '';
 
@@ -180,15 +180,15 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
       return '<img src="'+src+'" style="width:calc(50% - 4px);border-radius:8px;display:block;" />';
     }).join('');
     fotosHtml = '<div style="margin-top:24px;">'
-      + '<h3 style="font-family:Georgia,serif;font-size:1rem;color:#1B335E;margin:0 0 12px;font-weight:700;">Fotograf&#237;as</h3>'
+      + '<h3 style="font-family:Georgia,serif;font-size:1rem;color:var(--pdf-navy);margin:0 0 12px;font-weight:700;">Fotograf&#237;as</h3>'
       + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+imgs+'</div>'
       + '</div>';
   }
 
   var precioHtml = precio
-    ? '<div style="background:linear-gradient(135deg,#EFAE3C,#f5c842);border-radius:10px;padding:16px 24px;margin:20px 0;display:flex;align-items:center;justify-content:space-between;">'
-      + '<span style="font-size:0.85rem;font-weight:600;color:#7a5900;">Precio</span>'
-      + '<span style="font-size:1.4rem;font-weight:800;color:#1B335E;">'+esc(precio)+'</span>'
+    ? '<div style="background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:10px;padding:16px 24px;margin:20px 0;display:flex;align-items:center;justify-content:space-between;">'
+      + '<span style="font-size:0.85rem;font-weight:600;color:var(--accent-text-muted);">Precio</span>'
+      + '<span style="font-size:1.4rem;font-weight:800;color:var(--pdf-navy);">'+esc(precio)+'</span>'
       + '</div>'
     : '';
 
@@ -196,7 +196,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
     + _agentHeaderHTML()
     + '<div style="padding:28px 36px;">'
     +   '<div style="margin-bottom:16px;">'
-    +     '<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:#1B335E;margin:0 0 8px;font-weight:700;">Ficha de Propiedad</h1>'
+    +     '<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:var(--pdf-navy);margin:0 0 8px;font-weight:700;">Ficha de Propiedad</h1>'
     +     '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+chips+'</div>'
     +   '</div>'
     +   precioHtml
@@ -205,7 +205,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
     +   fotosHtml
     +   '<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
     +     '<div style="font-size:0.75rem;color:#94a3b8;">Documento generado para uso profesional</div>'
-    +     '<div style="width:80px;height:2px;background:#EFAE3C;border-radius:1px;"></div>'
+    +     '<div style="width:80px;height:2px;background:var(--gold);border-radius:1px;"></div>'
     +   '</div>'
     + '</div>'
     + '</body></html>';

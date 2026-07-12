@@ -235,6 +235,7 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
         localStorage.setItem('mk_pendientes', JSON.stringify(data.pendientes || []));
         localStorage.setItem('mk_seguimientos', JSON.stringify(data.seguimientos || []));
         localStorage.setItem('mk_plan', data.plan || 'basico');
+        localStorage.setItem('mk_tema', data.tema || 'dorado');
         window.location.href = '/kit-inmobiliario';
       } else {
         errEl.textContent = 'Contraseña incorrecta. Verifica con tu asesor.';
