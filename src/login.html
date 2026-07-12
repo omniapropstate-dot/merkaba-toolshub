@@ -203,7 +203,7 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
 </div>
 
 <script>
-  if(localStorage.getItem("mk_auth")==="1"){ window.location.replace("/kit-inmobiliario"); }
+  if(sessionStorage.getItem("mk_auth")==="1"){ window.location.replace("/kit-inmobiliario"); }
 
   const SB_URL = 'https://rdmqlclavqbhrhxbkiwo.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q';
@@ -223,7 +223,7 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
       });
       const data = await res.json();
       if(data && data.ok){
-        localStorage.setItem('mk_auth', '1');
+        sessionStorage.setItem('mk_auth', '1');
         localStorage.setItem('mk_id', data.id);
         localStorage.setItem('mk_pwd', val);
         localStorage.setItem('mk_nombre', data.nombre || '');

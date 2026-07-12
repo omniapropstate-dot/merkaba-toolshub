@@ -1,7 +1,10 @@
 
 
-  // Chequeo de acceso
-  if(!localStorage.getItem("mk_auth")){
+  // Chequeo de acceso — mk_auth vive en sessionStorage (no localStorage): se
+  // borra al cerrar la pestana/navegador, para que el link SIEMPRE pida
+  // contrasena de nuevo en una visita nueva, en vez de quedar adentro para
+  // siempre como pasaba antes.
+  if(sessionStorage.getItem("mk_auth")!=="1"){
     window.location.href = "/login";
   } else {
     // Revalida contra Supabase en cada carga: si cambio la contrasena o se
@@ -23,6 +26,7 @@
       }catch(e){ /* sin conexion: no expulsar por un problema de red */ }
       if(!_valido){
         localStorage.clear();
+        sessionStorage.clear();
         window.location.href = '/login';
         throw new Error('sesion invalida');
       }

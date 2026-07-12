@@ -118,6 +118,7 @@ async function guardarPerfil(){
 
 function logoutKit(){
   localStorage.clear();
+  sessionStorage.clear();
   window.location.href = '/login';
 }
 
