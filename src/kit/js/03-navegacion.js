@@ -41,7 +41,35 @@ function buildSidebar(){
 // ══════════════════════════════════════════════
 // NAVEGACIÓN
 // ══════════════════════════════════════════════
+// Historial del navegador: sin esto, la flecha "atrás" del celular sacaba
+// del kit por completo (era la misma pagina de siempre, sin "paginas"
+// internas a las que volver) y obligaba a poner la contraseña de nuevo.
+// Con un solo nivel Inicio <-> contenido, alcanza con marcar el momento en
+// que se sale del Inicio; "atrás" primero vuelve al Inicio del kit, recién
+// si se presiona de nuevo estando en el Inicio sale del sitio.
+var _enHome = true;
+history.replaceState({mkKit:true, view:'home'}, '', location.pathname);
+window.addEventListener('popstate', function(e){
+  var st = e.state;
+  if(!st || !st.mkKit || st.view==='home'){ showMapa(); }
+});
+
+function _entrarContenido(){
+  if(_enHome){
+    history.pushState({mkKit:true, view:'content'}, '', location.pathname);
+    _enHome = false;
+  } else {
+    history.replaceState({mkKit:true, view:'content'}, '', location.pathname);
+  }
+}
+
+function irAlInicio(){
+  if(_enHome){ showMapa(); return; }
+  history.back();
+}
+
 function showPhase(idx){
+  _entrarContenido();
   $('phase-mapa').hidden = true;
   $('phase-content').hidden = false;
   $('phase-content').innerHTML = renderFase(FASES[idx], idx);
@@ -52,6 +80,7 @@ function showPhase(idx){
 }
 
 function showMapa(){
+  _enHome = true;
   $('phase-mapa').hidden = false;
   $('phase-content').hidden = true;
   initHome();

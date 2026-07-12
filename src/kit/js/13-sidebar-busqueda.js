@@ -45,6 +45,7 @@ function buildSidebarTipos(){
 }
 
 function showTipo(idx){
+  _entrarContenido();
   $('phase-mapa').hidden = true;
   $('phase-content').hidden = false;
   var tipo = TIPOS[idx];
@@ -98,7 +99,7 @@ function showBiblioteca(){
 }
 
 function goBack(){
-  showMapa();
+  irAlInicio();
 }
 
 function initCollapsibles(){
@@ -193,12 +194,13 @@ function onSearchInput(q){
 }
 
 function showSingleTool(id){
+  _entrarContenido();
   var inp = $('home-search-input'); if(inp) inp.value = '';
   var res = $('home-search-results'); if(res){ res.hidden=true; res.innerHTML=''; }
   setSidebarTab('etapas');
   $('phase-mapa').hidden = true;
   $('phase-content').hidden = false;
-  var html = '<div style="margin-bottom:20px;"><button onclick="showMapa()" class="btn btn-outline btn-sm">← Inicio</button></div>';
+  var html = '<div style="margin-bottom:20px;"><button onclick="irAlInicio()" class="btn btn-outline btn-sm">← Inicio</button></div>';
   html += renderTool(id);
   $('phase-content').innerHTML = html;
   initCollapsibles();
