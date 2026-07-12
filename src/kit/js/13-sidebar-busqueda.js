@@ -141,7 +141,7 @@ var SEARCH_INDEX = [
   {id:'guia-captacion',            nombre:'Guía de captación',                tipo:'Guías',       icon:'📖'},
   {id:'guia-legal',                nombre:'Guía del proceso legal',            tipo:'Guías',       icon:'📖'},
   {id:'manejador-objeciones',      nombre:'Manejador de objeciones',          tipo:'Guías',       icon:'📖'},
-  {id:'banco-scripts',             nombre:'Banco de scripts',                 tipo:'Guías',       icon:'📖'},
+  {id:'banco-scripts',             nombre:'Mensajes para cada momento',       tipo:'Guías',       icon:'📖'},
   {id:'ficha-propiedad',           nombre:'Ficha de propiedad',               tipo:'Formularios', icon:'📄'},
   {id:'filtro-comprador',          nombre:'Filtro de comprador',              tipo:'Formularios', icon:'📄'},
   {id:'comparador-inmuebles',      nombre:'Comparador de inmuebles',          tipo:'Formularios', icon:'📄'},

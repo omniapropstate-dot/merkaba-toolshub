@@ -152,9 +152,13 @@ function buildComparadorHTML(props){
   var cols = props.map(function(p){ return '<th style="padding:11px 14px;text-align:center;font-size:0.82rem;">'+esc(p.nombre||'Propiedad')+'</th>'; }).join('');
   var rows = [
     {label:'Precio (USD)', fn:function(p){ return p.precio?'<strong>$ '+p.precio.toLocaleString('es-BO')+'</strong>':'—'; }},
+    {label:'Zona', fn:function(p){ return p.zona?esc(p.zona):'—'; }},
     {label:'Superficie', fn:function(p){ return p.m2?p.m2+' m&sup2;':'—'; }},
     {label:'Precio por m&sup2;', fn:function(p){ return (p.precio&&p.m2)?'$ '+(p.precio/p.m2).toFixed(0)+'/m&sup2;':'—'; }},
     {label:'Dormitorios', fn:function(p){ return p.dorm||'—'; }},
+    {label:'Antig&uuml;edad', fn:function(p){ return p.antiguedad?p.antiguedad+' a&ntilde;os':'—'; }},
+    {label:'Parqueo', fn:function(p){ return p.parqueo||'—'; }},
+    {label:'Expensas', fn:function(p){ return p.expensas?'$ '+p.expensas+'/mes':'—'; }},
   ];
   // highlight best value per row
   var rowsHtml = rows.map(function(r,i){
@@ -162,6 +166,10 @@ function buildComparadorHTML(props){
     var vals = props.map(r.fn);
     return '<tr style="background:'+bg+'"><td style="padding:10px 14px;font-weight:600;color:#1B335E;font-size:0.85rem;">'+r.label+'</td>'+vals.map(function(v){ return '<td style="padding:10px 14px;text-align:center;font-size:0.85rem;">'+v+'</td>'; }).join('')+'</tr>';
   }).join('');
+  var recomendacion = _recomendacionComparador(props);
+  var recomendacionHtml = recomendacion
+    ? '<div style="margin-top:16px;background:#fffbeb;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:14px 18px;"><p style="margin:0;font-size:0.82rem;color:#4a5568;line-height:1.6;">&#128161; '+esc(recomendacion)+'</p></div>'
+    : '';
   return DOC_INICIO
     +_agentHeaderHTML()
     +'<div style="padding:32px 36px;">'
@@ -171,7 +179,8 @@ function buildComparadorHTML(props){
     +'<thead><tr style="background:#1B335E;color:#fff;"><th style="padding:11px 14px;text-align:left;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;">CARACTERISTICA</th>'+cols+'</tr></thead>'
     +'<tbody>'+rowsHtml+'</tbody>'
     +'</table>'
-    +'<div style="margin-top:24px;background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:14px 18px;">'
+    +recomendacionHtml
+    +'<div style="margin-top:16px;background:#f8f9fc;border-left:4px solid #EFAE3C;border-radius:0 8px 8px 0;padding:14px 18px;">'
     +'<p style="margin:0;font-size:0.82rem;color:#4a5568;line-height:1.6;">Comparativa preparada especialmente para ti. Cualquier consulta sobre estas propiedades, estoy disponible por WhatsApp.</p>'
     +'</div>'
     +'<div style="margin-top:28px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;">'
@@ -320,12 +329,7 @@ async function generarPDFAntictretico(){
 }
 
 async function generarPDFComparador(){
-  var props = [1,2,3].map(function(n){ return {
-    nombre: (document.getElementById('comp-nombre-'+n)||{}).value||'',
-    precio: parseFloat((document.getElementById('comp-precio-'+n)||{}).value)||0,
-    m2: parseFloat((document.getElementById('comp-m2-'+n)||{}).value)||0,
-    dorm: parseFloat((document.getElementById('comp-dorm-'+n)||{}).value)||0,
-  }; }).filter(function(p){ return p.nombre||p.precio; });
+  var props = _leerPropiedadesComparador();
   if(props.length<2){ toast('Compara al menos 2 propiedades primero'); return; }
   toast('Preparando PDF...');
   try{ await _loadLibs(); await renderPDF(buildComparadorHTML(props),'Comparativa_Inmuebles.pdf'); }

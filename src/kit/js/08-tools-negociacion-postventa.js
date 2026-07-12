@@ -146,7 +146,7 @@ function toolComparadorInmuebles(){
     <div class="tool-header">
       <div class="tool-icon">⚖️</div>
       <div><div class="tool-title">Comparador de inmuebles <span class="tool-badge badge-hace">Hace</span></div>
-      <div class="tool-subtitle">Ingresa hasta 3 propiedades y genera una comparación visual para mostrarle al cliente. Ayuda a que decida más rápido.</div></div>
+      <div class="tool-subtitle">Ingresa hasta 3 propiedades y genera una comparación visual para mostrarle al cliente. Completa solo los datos que tengas — ninguno es obligatorio.</div></div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px;">
       ${[1,2,3].map(n=>`
@@ -155,7 +155,15 @@ function toolComparadorInmuebles(){
         <input type="text" placeholder="Nombre / dirección" id="comp-nombre-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
         <input type="number" placeholder="Precio (USD)" id="comp-precio-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
         <input type="number" placeholder="m²" id="comp-m2-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
-        <input type="number" placeholder="Dormitorios" id="comp-dorm-${n}" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+        <input type="number" placeholder="Dormitorios" id="comp-dorm-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+        <input type="text" placeholder="Zona / barrio (opcional)" id="comp-zona-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+        <input type="number" placeholder="Antigüedad (años, opcional)" id="comp-antiguedad-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
+        <select id="comp-parqueo-${n}" style="width:100%;margin-bottom:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;">
+          <option value="">Parqueo (opcional)</option>
+          <option value="Sí">Con parqueo</option>
+          <option value="No">Sin parqueo</option>
+        </select>
+        <input type="number" placeholder="Expensas USD/mes (opcional)" id="comp-expensas-${n}" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;background:var(--surface);font-family:Inter,sans-serif;"/>
       </div>`).join('')}
     </div>
     <div class="btn-group">
@@ -166,7 +174,8 @@ function toolComparadorInmuebles(){
         <div class="result-label">Comparación</div>
         <div id="comp-tabla" style="overflow-x:auto;"></div>
       </div>
-      <div class="btn-group">
+      <div id="comp-recomendacion" style="margin-top:12px;padding:12px 14px;background:var(--surface-2);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:0.85rem;color:var(--text);line-height:1.6;"></div>
+      <div class="btn-group" style="margin-top:10px;">
         <button class="btn btn-outline btn-sm" onclick="copiar(document.getElementById('comp-texto-plano').textContent)">&#128203; Copiar texto</button>
         <button class="btn btn-gold btn-sm" onclick="generarPDFComparador()">&#128196; Comparativa PDF</button>
       </div>
@@ -175,13 +184,60 @@ function toolComparadorInmuebles(){
   </div>`;
 }
 
-function generarComparacion(){
-  const props = [1,2,3].map(n=>({
+function _leerPropiedadesComparador(){
+  return [1,2,3].map(n=>({
     nombre: document.getElementById(`comp-nombre-${n}`).value.trim(),
     precio: parseFloat(document.getElementById(`comp-precio-${n}`).value)||0,
     m2: parseFloat(document.getElementById(`comp-m2-${n}`).value)||0,
     dorm: parseFloat(document.getElementById(`comp-dorm-${n}`).value)||0,
+    zona: document.getElementById(`comp-zona-${n}`).value.trim(),
+    antiguedad: parseFloat(document.getElementById(`comp-antiguedad-${n}`).value)||0,
+    parqueo: document.getElementById(`comp-parqueo-${n}`).value,
+    expensas: parseFloat(document.getElementById(`comp-expensas-${n}`).value)||0,
   })).filter(p=>p.nombre||p.precio);
+}
+
+function _filasComparador(){
+  return [
+    {label:'Precio (USD)', fn:p=>p.precio?'$ '+p.precio.toLocaleString('es-BO'):'—'},
+    {label:'Zona', fn:p=>p.zona||'—'},
+    {label:'Superficie (m²)', fn:p=>p.m2?p.m2+' m²':'—'},
+    {label:'Precio por m²', fn:p=>(p.precio&&p.m2)?'$ '+(p.precio/p.m2).toFixed(0)+'/m²':'—'},
+    {label:'Dormitorios', fn:p=>p.dorm||'—'},
+    {label:'Antigüedad', fn:p=>p.antiguedad?p.antiguedad+' años':'—'},
+    {label:'Parqueo', fn:p=>p.parqueo||'—'},
+    {label:'Expensas', fn:p=>p.expensas?'$ '+p.expensas+'/mes':'—'},
+  ];
+}
+
+function _recomendacionComparador(props){
+  const frases = [];
+  const conM2 = props.filter(p=>p.precio && p.m2);
+  if(conM2.length>=2){
+    const mejor = conM2.reduce((a,b)=>(a.precio/a.m2)<(b.precio/b.m2)?a:b);
+    frases.push(`${mejor.nombre||'Una propiedad'} tiene el mejor precio por m² ($${(mejor.precio/mejor.m2).toFixed(0)}/m²).`);
+  }
+  const conDorm = props.filter(p=>p.dorm);
+  if(conDorm.length>=2){
+    const masGrande = conDorm.reduce((a,b)=>a.dorm>b.dorm?a:b);
+    const empatados = conDorm.filter(p=>p.dorm===masGrande.dorm);
+    if(empatados.length===1) frases.push(`${masGrande.nombre||'Una propiedad'} tiene más dormitorios (${masGrande.dorm}).`);
+  }
+  const conParqueoInfo = props.filter(p=>p.parqueo);
+  const conParqueo = props.filter(p=>p.parqueo==='Sí');
+  if(conParqueo.length>0 && conParqueo.length<conParqueoInfo.length){
+    frases.push(`Con parqueo: ${conParqueo.map(p=>p.nombre||'una propiedad').join(', ')}.`);
+  }
+  const conExpensas = props.filter(p=>p.expensas);
+  if(conExpensas.length>=2){
+    const masBarata = conExpensas.reduce((a,b)=>a.expensas<b.expensas?a:b);
+    frases.push(`${masBarata.nombre||'Una propiedad'} tiene la expensa más baja ($${masBarata.expensas}/mes).`);
+  }
+  return frases.join(' ');
+}
+
+function generarComparacion(){
+  const props = _leerPropiedadesComparador();
   if(props.length<2){ toast('Completa al menos 2 propiedades'); return; }
 
   let tabla = `<table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
@@ -190,14 +246,7 @@ function generarComparacion(){
       ${props.map(p=>`<th style="padding:8px 12px;text-align:center;">${p.nombre||'—'}</th>`).join('')}
     </tr></thead><tbody>`;
 
-  const rows = [
-    {label:'Precio (USD)', fn:p=>p.precio?'$ '+p.precio.toLocaleString('es-BO'):'—'},
-    {label:'Superficie (m²)', fn:p=>p.m2?p.m2+' m²':'—'},
-    {label:'Precio por m²', fn:p=>(p.precio&&p.m2)?'$ '+(p.precio/p.m2).toFixed(0)+'/m²':'—'},
-    {label:'Dormitorios', fn:p=>p.dorm||'—'},
-  ];
-
-  rows.forEach((r,i)=>{
+  _filasComparador().forEach((r,i)=>{
     const bg = i%2===0?'var(--surface-2)':'var(--surface)';
     tabla += `<tr style="background:${bg};">
       <td style="padding:8px 12px;font-weight:600;color:var(--navy);">${r.label}</td>
@@ -208,9 +257,24 @@ function generarComparacion(){
   tabla += `</tbody></table>`;
   $('comp-tabla').innerHTML = tabla;
 
+  const recomendacion = _recomendacionComparador(props);
+  const recEl = $('comp-recomendacion');
+  if(recomendacion){ recEl.hidden = false; recEl.textContent = '💡 ' + recomendacion; }
+  else { recEl.hidden = true; recEl.textContent = ''; }
+
   // Texto plano para copiar
   let txt = 'COMPARACIÓN DE INMUEBLES\n\n';
-  props.forEach(p=>{ txt += `${p.nombre||'Propiedad'}: $${p.precio.toLocaleString('es-BO')} | ${p.m2?p.m2+'m²':''} | ${p.dorm?p.dorm+' dorm.':''}\n`; });
+  props.forEach(p=>{
+    txt += `${p.nombre||'Propiedad'}: $${p.precio.toLocaleString('es-BO')}`
+      + (p.zona?` | ${p.zona}`:'')
+      + (p.m2?` | ${p.m2}m²`:'')
+      + (p.dorm?` | ${p.dorm} dorm.`:'')
+      + (p.antiguedad?` | ${p.antiguedad} años`:'')
+      + (p.parqueo?` | Parqueo: ${p.parqueo}`:'')
+      + (p.expensas?` | Expensas: $${p.expensas}/mes`:'')
+      + '\n';
+  });
+  if(recomendacion) txt += '\n' + recomendacion;
   $('comp-texto-plano').textContent = txt;
   $('comp-resultado').hidden = false;
 }

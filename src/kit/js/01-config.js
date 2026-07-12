@@ -99,7 +99,7 @@ const FASES = [
   { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles','comparador-inmuebles-excel'] },
   { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico','calc-anticretico-excel'] },
   { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que la mayoría ignora. Un cliente satisfecho puede traerte 3 más', color:'gold', tools:['mensaje-postventa','generador-referidos','reactivador-contactos'] },
-  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, banco de scripts', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes','biblioteca'] },
+  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, mensajes para cada momento', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes','biblioteca'] },
 ];
 
 const TIPOS = [
