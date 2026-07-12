@@ -31,6 +31,26 @@
         throw new Error('sesion invalida');
       }
     })();
+    // Ademas del chequeo al cargar, revisa cada 60s mientras el kit sigue
+    // abierto: si alguien cambia esta contrasena mientras otro ya esta
+    // adentro (ej. rotar la contrasena de la cuenta demo), lo saca sin que
+    // tenga que recargar el navegador el mismo.
+    setInterval(function(){
+      var _id2 = localStorage.getItem('mk_id');
+      var _pwd2 = localStorage.getItem('mk_pwd');
+      if(!_id2) return;
+      fetch('https://rdmqlclavqbhrhxbkiwo.supabase.co/rest/v1/rpc/session_valida', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkbXFsY2xhdnFiaHJoeGJraXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQyMTUsImV4cCI6MjA5NzAzMDIxNX0.y06LLkP2TuyffScZl-rGNsl1pMLtpqYSisBG8-t727Q'},
+        body: JSON.stringify({p_id:_id2, p_password:_pwd2})
+      }).then(function(r){ return r.json(); }).then(function(ok){
+        if(ok!==true){
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.href = '/login';
+        }
+      }).catch(function(){ /* sin conexion: no expulsar por un corte de red */ });
+    }, 60000);
   }
 // ══════════════════════════════════════════════
 // CUENTA DEMO — no persiste guardados a Supabase
