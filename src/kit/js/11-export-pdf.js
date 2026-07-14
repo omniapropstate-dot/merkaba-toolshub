@@ -159,7 +159,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, garaje, antigue
   if(m2) statsArr.push({ icon:'&#128208;', val:m2+' m&#178;', lbl:'Superficie' });
   if(garaje) statsArr.push({ icon:'&#128663;', val:garaje, lbl:'Garaje' });
   if(antiguedad) statsArr.push({ icon:'&#128197;', val:antiguedad+' a&#241;os', lbl:'Antig&#252;edad' });
-  if(expensas) statsArr.push({ icon:'&#128176;', val:'$'+expensas+'/mes', lbl:'Expensas' });
+  if(expensas) statsArr.push({ icon:'&#128176;', val:'Bs. '+expensas+'/mes', lbl:'Expensas' });
 
   var statsHtml = statsArr.map(function(s){
     return '<div style="text-align:center;background:#f8f9fc;border-radius:10px;padding:10px 14px;flex:1;min-width:74px;">'
@@ -180,7 +180,7 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, garaje, antigue
   var fotosHtml = '';
   if(fotosArr.length){
     var imgs = fotosArr.map(function(src){
-      return '<img src="'+src+'" style="width:calc(33.333% - 5px);height:118px;object-fit:cover;border-radius:8px;display:block;" />';
+      return '<img src="'+src+'" style="width:calc(50% - 4px);height:155px;object-fit:cover;border-radius:8px;display:block;" />';
     }).join('');
     fotosHtml = '<div style="margin-top:14px;">'
       + '<h3 style="font-family:Georgia,serif;font-size:0.92rem;color:var(--pdf-navy);margin:0 0 8px;font-weight:700;">Fotograf&#237;as</h3>'

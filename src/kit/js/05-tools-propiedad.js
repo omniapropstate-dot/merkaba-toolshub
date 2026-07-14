@@ -29,7 +29,7 @@ function toolFichaPropiedad(){
         </select>
       </div>
       <div class="form-group"><label>Antigüedad (años)</label><input id="ficha-antiguedad" type="number" placeholder="Ej: 5"/></div>
-      <div class="form-group"><label>Expensas (USD/mes)</label><input id="ficha-expensas" type="number" placeholder="Si aplica"/></div>
+      <div class="form-group"><label>Expensas (Bs/mes)</label><input id="ficha-expensas" type="number" placeholder="Si aplica"/></div>
     </div>
     <div class="form-group" style="margin-bottom:12px;">
       <label>Características destacadas (una por línea)</label>
@@ -83,7 +83,7 @@ function generarFicha(){
   if(m2) detalles.push(`📐 ${m2} m²`);
   if(garaje) detalles.push(`🚗 ${garaje}`);
   if(antiguedad) detalles.push(`📅 ${antiguedad} año${antiguedad>1?'s':''}`);
-  if(expensas) detalles.push(`💰 Expensas $${expensas}/mes`);
+  if(expensas) detalles.push(`💰 Expensas Bs. ${expensas}/mes`);
 
   const texto = `${emoji} EN ${op.toUpperCase()}: ${tipo} en ${zona}
 
