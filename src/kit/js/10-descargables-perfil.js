@@ -199,7 +199,7 @@ function _normalizePhoto(dataUrl, callback){
 }
 
 function cargarFotosPropiedad(input){
-  var files = Array.from(input.files).slice(0, 5);
+  var files = Array.from(input.files).slice(0, 6);
   _fotosPropiedad = new Array(files.length);
   var preview = $('ficha-fotos-preview');
   if(preview) preview.innerHTML = '';

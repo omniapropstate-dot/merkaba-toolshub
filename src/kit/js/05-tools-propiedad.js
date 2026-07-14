@@ -22,12 +22,24 @@ function toolFichaPropiedad(){
       <div class="form-group"><label>Baños</label><input id="ficha-baños" type="number" placeholder="2"/></div>
       <div class="form-group"><label>Superficie (m²)</label><input id="ficha-m2" type="number" placeholder="120"/></div>
     </div>
-    <div class="form-group" style="margin-bottom:12px;">
-      <label>Características destacadas (una por línea)</label>
-      <textarea id="ficha-features" placeholder="Garaje incluido&#10;Vista a la cordillera&#10;Conjunto cerrado&#10;Ascensor"></textarea>
+    <div class="form-row cols-3">
+      <div class="form-group"><label>Garaje</label>
+        <select id="ficha-garaje">
+          <option value="">No</option><option>1 garaje</option><option>2 garajes</option><option>Más de 2</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Antigüedad (años)</label><input id="ficha-antiguedad" type="number" placeholder="Ej: 5"/></div>
+      <div class="form-group"><label>Expensas (USD/mes)</label><input id="ficha-expensas" type="number" placeholder="Si aplica"/></div>
     </div>
     <div class="form-group" style="margin-bottom:12px;">
-      <label>Fotos de la propiedad (max. 5, desde tu celular o computadora)</label>
+      <label>Características destacadas (una por línea)</label>
+      <textarea id="ficha-features" placeholder="Vista a la cordillera&#10;Conjunto cerrado&#10;Ascensor"></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>Fotos de la propiedad (máx. 6, desde tu celular o computadora)</label>
+      <div style="font-size:0.76rem;color:var(--text-muted);margin:2px 0 8px;line-height:1.4;">
+        Recomendadas: fachada, living, dormitorios, cocina, baño y patio/jardín (si tiene). Evitá fotos con reflejos, sombras de personas o marcas de agua.
+      </div>
       <input type="file" id="ficha-fotos-input" accept="image/*" multiple onchange="cargarFotosPropiedad(this)" style="font-size:0.85rem;padding:6px 0;width:100%;"/>
       <div id="ficha-fotos-preview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;"></div>
     </div>
@@ -56,6 +68,9 @@ function generarFicha(){
   const dorm = $('ficha-dorm').value;
   const baños = $('ficha-baños').value;
   const m2 = $('ficha-m2').value;
+  const garaje = $('ficha-garaje').value;
+  const antiguedad = $('ficha-antiguedad').value;
+  const expensas = $('ficha-expensas').value;
   const featuresRaw = $('ficha-features').value.trim();
   const features = featuresRaw ? featuresRaw.split('\n').filter(f=>f.trim()).map(f=>'✅ '+f.trim()).join('\n') : '';
 
@@ -66,6 +81,9 @@ function generarFicha(){
   if(dorm) detalles.push(`🛏 ${dorm} dormitorio${dorm>1?'s':''}`);
   if(baños) detalles.push(`🚿 ${baños} baño${baños>1?'s':''}`);
   if(m2) detalles.push(`📐 ${m2} m²`);
+  if(garaje) detalles.push(`🚗 ${garaje}`);
+  if(antiguedad) detalles.push(`📅 ${antiguedad} año${antiguedad>1?'s':''}`);
+  if(expensas) detalles.push(`💰 Expensas $${expensas}/mes`);
 
   const texto = `${emoji} EN ${op.toUpperCase()}: ${tipo} en ${zona}
 

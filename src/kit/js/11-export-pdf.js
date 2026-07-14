@@ -146,7 +146,7 @@ function buildPropuestaHTML(texto){
     + '</body></html>';
 }
 
-function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos){
+function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, garaje, antiguedad, expensas, features, fotos){
   var chips = [
     op && '<span style="background:var(--pdf-navy);color:#fff;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;">'+esc(op)+'</span>',
     tipo && '<span style="background:var(--pdf-navy-soft);color:var(--pdf-navy);padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:600;">'+esc(tipo)+'</span>',
@@ -157,55 +157,58 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, fotos
   if(dorm) statsArr.push({ icon:'&#127951;', val:dorm, lbl:'Dormitorios' });
   if(banos) statsArr.push({ icon:'&#128698;', val:banos, lbl:'Ba&#241;os' });
   if(m2) statsArr.push({ icon:'&#128208;', val:m2+' m&#178;', lbl:'Superficie' });
+  if(garaje) statsArr.push({ icon:'&#128663;', val:garaje, lbl:'Garaje' });
+  if(antiguedad) statsArr.push({ icon:'&#128197;', val:antiguedad+' a&#241;os', lbl:'Antig&#252;edad' });
+  if(expensas) statsArr.push({ icon:'&#128176;', val:'$'+expensas+'/mes', lbl:'Expensas' });
 
   var statsHtml = statsArr.map(function(s){
-    return '<div style="text-align:center;background:#f8f9fc;border-radius:10px;padding:14px 20px;flex:1;min-width:80px;">'
-      + '<div style="font-size:1.4rem;">'+s.icon+'</div>'
-      + '<div style="font-size:1.1rem;font-weight:700;color:var(--pdf-navy);">'+esc(String(s.val))+'</div>'
-      + '<div style="font-size:0.72rem;color:#718096;">'+s.lbl+'</div>'
+    return '<div style="text-align:center;background:#f8f9fc;border-radius:10px;padding:10px 14px;flex:1;min-width:74px;">'
+      + '<div style="font-size:1.2rem;">'+s.icon+'</div>'
+      + '<div style="font-size:1rem;font-weight:700;color:var(--pdf-navy);">'+esc(String(s.val))+'</div>'
+      + '<div style="font-size:0.68rem;color:#718096;">'+s.lbl+'</div>'
       + '</div>';
   }).join('');
 
   var featList = features ? features.split(/\n|,/).map(function(f){ return f.trim(); }).filter(Boolean) : [];
   var featHtml = featList.length
-    ? '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;">'
-      + featList.map(function(f){ return '<span style="background:#eef1f6;color:var(--pdf-navy);padding:5px 12px;border-radius:999px;font-size:0.78rem;">&#10003; '+esc(f)+'</span>'; }).join('')
+    ? '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">'
+      + featList.map(function(f){ return '<span style="background:#eef1f6;color:var(--pdf-navy);padding:4px 11px;border-radius:999px;font-size:0.76rem;">&#10003; '+esc(f)+'</span>'; }).join('')
       + '</div>'
     : '';
 
-  var fotosArr = (fotos || []).filter(Boolean).slice(0,5);
+  var fotosArr = (fotos || []).filter(Boolean).slice(0,6);
   var fotosHtml = '';
   if(fotosArr.length){
     var imgs = fotosArr.map(function(src){
-      return '<img src="'+src+'" style="width:calc(50% - 4px);border-radius:8px;display:block;" />';
+      return '<img src="'+src+'" style="width:calc(33.333% - 5px);height:118px;object-fit:cover;border-radius:8px;display:block;" />';
     }).join('');
-    fotosHtml = '<div style="margin-top:24px;">'
-      + '<h3 style="font-family:Georgia,serif;font-size:1rem;color:var(--pdf-navy);margin:0 0 12px;font-weight:700;">Fotograf&#237;as</h3>'
-      + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+imgs+'</div>'
+    fotosHtml = '<div style="margin-top:14px;">'
+      + '<h3 style="font-family:Georgia,serif;font-size:0.92rem;color:var(--pdf-navy);margin:0 0 8px;font-weight:700;">Fotograf&#237;as</h3>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:7px;">'+imgs+'</div>'
       + '</div>';
   }
 
   var precioHtml = precio
-    ? '<div style="background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:10px;padding:16px 24px;margin:20px 0;display:flex;align-items:center;justify-content:space-between;">'
-      + '<span style="font-size:0.85rem;font-weight:600;color:var(--accent-text-muted);">Precio</span>'
-      + '<span style="font-size:1.4rem;font-weight:800;color:var(--pdf-navy);">'+esc(precio)+'</span>'
+    ? '<div style="background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:10px;padding:12px 20px;margin:14px 0;display:flex;align-items:center;justify-content:space-between;">'
+      + '<span style="font-size:0.82rem;font-weight:600;color:var(--accent-text-muted);">Precio</span>'
+      + '<span style="font-size:1.25rem;font-weight:800;color:var(--pdf-navy);">'+esc(precio)+'</span>'
       + '</div>'
     : '';
 
   return DOC_INICIO
     + _agentHeaderHTML()
-    + '<div style="padding:28px 36px;">'
-    +   '<div style="margin-bottom:16px;">'
-    +     '<h1 style="font-family:Georgia,serif;font-size:1.5rem;color:var(--pdf-navy);margin:0 0 8px;font-weight:700;">Ficha de Propiedad</h1>'
+    + '<div style="padding:20px 32px;">'
+    +   '<div style="margin-bottom:10px;">'
+    +     '<h1 style="font-family:Georgia,serif;font-size:1.3rem;color:var(--pdf-navy);margin:0 0 6px;font-weight:700;">Ficha de Propiedad</h1>'
     +     '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+chips+'</div>'
     +   '</div>'
     +   precioHtml
-    +   (statsHtml ? '<div style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap;">'+statsHtml+'</div>' : '')
+    +   (statsHtml ? '<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">'+statsHtml+'</div>' : '')
     +   featHtml
     +   fotosHtml
-    +   '<div style="margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
-    +     '<div style="font-size:0.75rem;color:#94a3b8;">Documento generado para uso profesional</div>'
-    +     '<div style="width:80px;height:2px;background:var(--gold);border-radius:1px;"></div>'
+    +   '<div style="margin-top:18px;padding-top:10px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">'
+    +     '<div style="font-size:0.72rem;color:#94a3b8;">Documento generado para uso profesional</div>'
+    +     '<div style="width:70px;height:2px;background:var(--gold);border-radius:1px;"></div>'
     +   '</div>'
     + '</div>'
     + '</body></html>';
@@ -231,15 +234,18 @@ async function generarPDFFicha(){
   var zona = $('ficha-zona') ? $('ficha-zona').value : '';
   var precio = $('ficha-precio') ? $('ficha-precio').value : '';
   var dorm = $('ficha-dorm') ? $('ficha-dorm').value : '';
-  var banos = $('ficha-banos') ? $('ficha-banos').value : '';
+  var banos = $('ficha-baños') ? $('ficha-baños').value : '';
   var m2 = $('ficha-m2') ? $('ficha-m2').value : '';
+  var garaje = $('ficha-garaje') ? $('ficha-garaje').value : '';
+  var antiguedad = $('ficha-antiguedad') ? $('ficha-antiguedad').value : '';
+  var expensas = $('ficha-expensas') ? $('ficha-expensas').value : '';
   var features = $('ficha-features') ? $('ficha-features').value : '';
   var texto = $('ficha-texto') ? $('ficha-texto').textContent.trim() : '';
   if(!texto){ toast('Genera la ficha primero.'); return; }
   toast('Preparando PDF...');
   try{
     await _loadLibs();
-    var html = buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, features, _fotosPropiedad);
+    var html = buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, garaje, antiguedad, expensas, features, _fotosPropiedad);
     await renderPDF(html, 'Ficha_Propiedad.pdf');
   } catch(e){
     toast('Error al generar el PDF: ' + (e.message || 'error'));
