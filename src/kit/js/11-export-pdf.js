@@ -156,9 +156,9 @@ function buildFichaHTML(op, tipo, zona, precio, dorm, banos, m2, garaje, antigue
   var statsArr = [];
   if(dorm) statsArr.push({ icon:'&#127951;', val:dorm, lbl:'Dormitorios' });
   if(banos) statsArr.push({ icon:'&#128698;', val:banos, lbl:'Ba&#241;os' });
-  if(m2) statsArr.push({ icon:'&#128208;', val:m2+' m&#178;', lbl:'Superficie' });
+  if(m2) statsArr.push({ icon:'&#128208;', val:m2+' m²', lbl:'Superficie' });
   if(garaje) statsArr.push({ icon:'&#128663;', val:garaje, lbl:'Garaje' });
-  if(antiguedad) statsArr.push({ icon:'&#128197;', val:antiguedad+' a&#241;os', lbl:'Antig&#252;edad' });
+  if(antiguedad) statsArr.push({ icon:'&#128197;', val:antiguedad+' años', lbl:'Antigüedad' });
   if(expensas) statsArr.push({ icon:'&#128176;', val:'Bs. '+expensas+'/mes', lbl:'Expensas' });
 
   var statsHtml = statsArr.map(function(s){
