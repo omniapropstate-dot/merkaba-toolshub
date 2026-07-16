@@ -162,14 +162,24 @@ const FASES = [
   { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, mensajes para cada momento', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes','biblioteca'] },
 ];
 
+// Iconos de linea propios (24x24, trazo 1.6, currentColor) — reemplazan los emoji
+// de TIPOS. catClass fija el color de la categoria via --cat-* en styles.css.
+const SVG_ICON_CALC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="4" rx="1"/><circle cx="7.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.5" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg>';
+const SVG_ICON_GEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+const SVG_ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><polyline points="8.5 13 10.5 15 15.5 10"/></svg>';
+const SVG_ICON_GUIA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5Z"/></svg>';
+const SVG_ICON_FORM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="16.5" x2="13" y2="16.5"/></svg>';
+const SVG_ICON_EXCEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="1.5"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="3.5" y1="14.5" x2="20.5" y2="14.5"/><line x1="10" y1="4" x2="10" y2="20"/></svg>';
+const SVG_ICON_ORG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="5" height="16" rx="1.3"/><rect x="9.7" y="4" width="5" height="10" rx="1.3"/><rect x="15.9" y="4" width="5" height="13" rx="1.3"/></svg>';
+
 const TIPOS = [
-  { id:'calculadoras', icon:'🧮', nombre:'Calculadoras', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
-  { id:'generadores', icon:'✏️', nombre:'Generadores de texto', tools:['propuesta-propietario','respuesta-rapida','generador-seguimiento','mensaje-postventa','generador-anuncio','generador-referidos','reactivador-contactos'] },
-  { id:'checklists', icon:'✅', nombre:'Checklists', tools:['checklist-visita','checklist-antictretico'] },
-  { id:'guias', icon:'📖', nombre:'Guías y referencias', tools:['guia-captacion','guia-legal','manejador-objeciones','banco-scripts','guia-visita'] },
-  { id:'formularios', icon:'📄', nombre:'Formularios', tools:['ficha-propiedad','filtro-comprador','comparador-inmuebles','acuerdo-trabajo','presentacion-personal-word','diagnostico-comprador'] },
-  { id:'excel', icon:'📊', nombre:'Excel / Sheets', tools:['cartera-propiedades-excel','control-seguimientos-excel','comparador-inmuebles-excel','calc-anticretico-excel','registro-comisiones-excel'] },
-  { id:'organizadores', icon:'🗂️', nombre:'Mis organizadores', tools:['mis-plantillas','tablero-pendientes','tablero-seguimientos'] },
+  { id:'calculadoras', icon:SVG_ICON_CALC, catClass:'cat-calc', nombre:'Calculadoras', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
+  { id:'generadores', icon:SVG_ICON_GEN, catClass:'cat-gen', nombre:'Generadores de texto', tools:['propuesta-propietario','respuesta-rapida','generador-seguimiento','mensaje-postventa','generador-anuncio','generador-referidos','reactivador-contactos'] },
+  { id:'checklists', icon:SVG_ICON_CHECK, catClass:'cat-check', nombre:'Checklists', tools:['checklist-visita','checklist-antictretico'] },
+  { id:'guias', icon:SVG_ICON_GUIA, catClass:'cat-guia', nombre:'Guías y referencias', tools:['guia-captacion','guia-legal','manejador-objeciones','banco-scripts','guia-visita'] },
+  { id:'formularios', icon:SVG_ICON_FORM, catClass:'cat-form', nombre:'Formularios', tools:['ficha-propiedad','filtro-comprador','comparador-inmuebles','acuerdo-trabajo','presentacion-personal-word','diagnostico-comprador'] },
+  { id:'excel', icon:SVG_ICON_EXCEL, catClass:'cat-excel', nombre:'Excel / Sheets', tools:['cartera-propiedades-excel','control-seguimientos-excel','comparador-inmuebles-excel','calc-anticretico-excel','registro-comisiones-excel'] },
+  { id:'organizadores', icon:SVG_ICON_ORG, catClass:'cat-org', nombre:'Mis organizadores', tools:['mis-plantillas','tablero-pendientes','tablero-seguimientos'] },
 ];
 
 // ══════════════════════════════════════════════

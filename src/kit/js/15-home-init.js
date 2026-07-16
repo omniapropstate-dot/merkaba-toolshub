@@ -50,7 +50,7 @@ function initHome(){
         return '<div class="home-seg-item"><span class="home-seg-dot"></span><span style="flex:1;">'+esc(s.nombre)+(s.propiedad?' — '+esc(s.propiedad):'')+' <span style="color:var(--text-muted);">('+txt+')</span></span></div>';
       }).join('');
       var verMasSeg = alerta.length > 4 ? '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">+'+(alerta.length-4)+' más</div>' : '';
-      ss.innerHTML = '<div class="home-seg-title">⚠️ '+alerta.length+' seguimiento'+(alerta.length>1?'s':'')+' que requiere'+(alerta.length>1?'n':'')+' atención</div>'
+      ss.innerHTML = '<div class="home-seg-title"><svg class="home-seg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><polyline points="12 7.5 12 12 15.5 14"/></svg>'+alerta.length+' seguimiento'+(alerta.length>1?'s':'')+' que requiere'+(alerta.length>1?'n':'')+' atención</div>'
         + filasSeg + verMasSeg
         + '<button class="home-pend-ver" onclick="verSeguimientos()">Ver seguimientos →</button>';
     }
@@ -87,14 +87,14 @@ function initHome(){
   var ql = $('home-ql');
   if(ql){
     var tipoCards = TIPOS.map(function(t,i){
-      return '<button class="home-ql-card" onclick="showTipo('+i+')">'                                  
+      return '<button class="home-ql-card '+t.catClass+'" onclick="showTipo('+i+')">'
         +'<span class="home-ql-icon">'+t.icon+'</span>'
         +'<span class="home-ql-count">'+t.tools.length+'</span>'
         +'<span class="home-ql-name">'+t.nombre+'</span>'
         +'</button>';
     }).join('');
     tipoCards += '<button class="home-ql-card bib" onclick="showBiblioteca()">'
-      +'<span class="home-ql-icon">📚</span>'
+      +'<span class="home-ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 12 3l8 3.5-8 3.5-8-3.5Z"/><path d="M4 12l8 3.5 8-3.5"/><path d="M4 17.5l8 3.5 8-3.5"/></svg></span>'
       +'<span class="home-ql-count">33</span>'
       +'<span class="home-ql-name">Biblioteca</span>'
       +'</button>';
@@ -113,17 +113,17 @@ function initHome(){
       +'<span>🔧 Por tipo de herramienta</span>'
       +'<span id="acc-tipo-arr" class="home-acc-arr">▼</span>'
       +'</button>'
-      +'<div id="acc-tipo" class="home-acc-body" style="display:none;">'
+      +'<div id="acc-tipo" class="home-acc-body-wrap"><div class="home-acc-body"><div class="home-acc-body-inner">'
       +'<div class="home-ql-grid">'+tipoCards+'</div>'
-      +'</div></div>'
+      +'</div></div></div></div>'
       +'<div class="home-acc" style="margin-top:10px;">'
-      +'<button class="home-acc-hdr" onclick="homeAccToggle(\'acc-etapa\')">'                
+      +'<button class="home-acc-hdr" onclick="homeAccToggle(\'acc-etapa\')">'
       +'<span>🗂️ Por etapa de venta</span>'
       +'<span id="acc-etapa-arr" class="home-acc-arr">▼</span>'
       +'</button>'
-      +'<div id="acc-etapa" class="home-acc-body" style="display:none;">'
+      +'<div id="acc-etapa" class="home-acc-body-wrap"><div class="home-acc-body"><div class="home-acc-body-inner">'
       +'<div class="home-ql-grid">'+etapaCards+'</div>'
-      +'</div></div>';
+      +'</div></div></div></div>';
   }
 }
 

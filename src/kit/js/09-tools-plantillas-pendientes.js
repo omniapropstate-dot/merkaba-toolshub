@@ -37,7 +37,7 @@ function toolBancoScripts(){
           <span>${esc(s.cat)}</span>
           <span id="${accId}-arr" class="home-acc-arr">▼</span>
         </button>
-        <div id="${accId}" class="home-acc-body" style="display:none;">
+        <div id="${accId}" class="home-acc-body-wrap"><div class="home-acc-body"><div class="home-acc-body-inner">
           <div style="padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.84rem;color:var(--text);line-height:1.6;">
             "${esc(s.txt)}"
             <div style="margin-top:8px;display:flex;gap:8px;">
@@ -45,7 +45,7 @@ function toolBancoScripts(){
               <button class="btn btn-outline btn-sm" data-t="${attr}" onclick="abrirWhatsApp(this.dataset.t)">💬 WhatsApp</button>
             </div>
           </div>
-        </div>
+        </div></div></div>
       </div>`;
     });
   });

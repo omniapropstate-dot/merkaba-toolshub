@@ -95,13 +95,13 @@ function toolCalculadoraComision(){
       <button class="btn btn-primary" onclick="calcComision()">Calcular</button>
     </div>
     <div id="com-resultado" hidden>
-      <div class="result-box navy-accent" style="margin-top:16px;">
-        <div class="result-label">Tu comisión</div>
-        <div class="result-grid">
-          <div class="result-item"><div class="result-item-label">En USD</div><div class="result-item-value" id="com-usd">—</div></div>
-          <div class="result-item"><div class="result-item-label">En Bolivianos</div><div class="result-item-value" id="com-bs">—</div></div>
-          <div class="result-item"><div class="result-item-label">Precio de venta</div><div class="result-item-value" id="com-total">—</div></div>
-          <div class="result-item"><div class="result-item-label">Al propietario</div><div class="result-item-value" id="com-neto">—</div></div>
+      <div class="result-hero" style="margin-top:16px;">
+        <div class="result-hero-label">Tu comisión</div>
+        <div class="result-hero-num" id="com-usd">—</div>
+        <div class="result-hero-sub">Equivale a <span id="com-bs">—</span> al tipo de cambio ingresado</div>
+        <div class="result-hero-grid">
+          <div class="result-hero-item"><div class="result-hero-item-label">Precio de venta</div><div class="result-hero-item-value" id="com-total">—</div></div>
+          <div class="result-hero-item"><div class="result-hero-item-label">Al propietario</div><div class="result-hero-item-value" id="com-neto">—</div></div>
         </div>
       </div>
       <div class="btn-group" style="margin-top:10px;">
@@ -119,11 +119,12 @@ function calcComision(){
   const comUSD = precio * (pct/100);
   const comBs = comUSD * tc;
   const neto = precio - comUSD;
-  $('com-usd').textContent = '$ '+comUSD.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
+  animarNumero('com-usd', comUSD, function(v){ return '$ '+Math.round(v).toLocaleString('es-BO'); });
   $('com-bs').textContent = 'Bs. '+comBs.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
   $('com-total').textContent = '$ '+precio.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
   $('com-neto').textContent = '$ '+neto.toLocaleString('es-BO',{minimumFractionDigits:0,maximumFractionDigits:0});
   $('com-resultado').hidden = false;
+  flashResultado(document.querySelector('#com-resultado .result-hero'));
 }
 
 // ══════════════════════════════════════════════
@@ -153,14 +154,14 @@ function toolCalculadoraTipoCambio(){
       <button class="btn btn-primary" onclick="calcTC()">Calcular</button>
     </div>
     <div id="tc-resultado" hidden>
-      <div class="result-box" style="margin-top:16px;">
-        <div class="result-label">Equivalencias</div>
-        <div class="result-grid">
-          <div class="result-item"><div class="result-item-label">Al tipo oficial</div><div class="result-item-value" id="tc-en-oficial">—</div></div>
-          <div class="result-item"><div class="result-item-label">Al tipo paralelo</div><div class="result-item-value" id="tc-en-paralelo">—</div></div>
-          <div class="result-item"><div class="result-item-label">Brecha (diferencia)</div><div class="result-item-value" id="tc-brecha">—</div></div>
+      <div class="result-hero" style="margin-top:16px;">
+        <div class="result-hero-label">Brecha entre tipos de cambio</div>
+        <div class="result-hero-num" id="tc-brecha">—</div>
+        <div class="result-hero-sub" id="tc-consejo"></div>
+        <div class="result-hero-grid">
+          <div class="result-hero-item"><div class="result-hero-item-label">Al tipo oficial</div><div class="result-hero-item-value" id="tc-en-oficial">—</div></div>
+          <div class="result-hero-item"><div class="result-hero-item-label">Al tipo paralelo</div><div class="result-hero-item-value" id="tc-en-paralelo">—</div></div>
         </div>
-        <div id="tc-consejo" style="margin-top:12px;font-size:0.82rem;color:var(--text-muted);"></div>
       </div>
     </div>
   </div>`;
@@ -176,12 +177,13 @@ function calcTC(){
   const brecha = enParalelo - enOficial;
   $('tc-en-oficial').textContent = 'Bs. '+enOficial.toLocaleString('es-BO',{maximumFractionDigits:0});
   $('tc-en-paralelo').textContent = 'Bs. '+enParalelo.toLocaleString('es-BO',{maximumFractionDigits:0});
-  $('tc-brecha').textContent = 'Bs. '+brecha.toLocaleString('es-BO',{maximumFractionDigits:0});
+  animarNumero('tc-brecha', brecha, function(v){ return 'Bs. '+Math.round(v).toLocaleString('es-BO'); });
   const quien = $('tc-quien').value;
   $('tc-consejo').textContent = quien==='comprador'
     ? `Si el comprador paga en Bs. al tipo paralelo (Bs. ${paralelo}), está pagando Bs. ${brecha.toLocaleString('es-BO',{maximumFractionDigits:0})} más de lo que correspondería al tipo oficial. Conviene pactar en USD con acuerdo explícito del tipo de cambio.`
     : `Si el vendedor recibe en Bs. al tipo oficial (Bs. ${oficial}), recibe Bs. ${brecha.toLocaleString('es-BO',{maximumFractionDigits:0})} menos de lo que valdría al tipo paralelo. Conviene negociar a qué tasa se hace la conversión.`;
   $('tc-resultado').hidden = false;
+  flashResultado(document.querySelector('#tc-resultado .result-hero'));
 }
 
 // ══════════════════════════════════════════════
@@ -207,13 +209,13 @@ function toolCalculadoraAntictretico(){
       <button class="btn btn-primary" onclick="calcAntictretico()">Calcular</button>
     </div>
     <div id="anti-resultado" hidden>
-      <div class="result-box" style="margin-top:16px;">
-        <div class="result-label">Resumen del anticrético</div>
-        <div class="result-grid">
-          <div class="result-item"><div class="result-item-label">Capital en Bs.</div><div class="result-item-value" id="anti-cap-bs">—</div></div>
-          <div class="result-item"><div class="result-item-label">Tu comisión (USD)</div><div class="result-item-value" id="anti-com-usd">—</div></div>
-          <div class="result-item"><div class="result-item-label">Ahorro vs. alquiler</div><div class="result-item-value" id="anti-ahorro">—</div></div>
-          <div class="result-item"><div class="result-item-label">Rendimiento implícito</div><div class="result-item-value" id="anti-rendimiento">—</div></div>
+      <div class="result-hero" style="margin-top:16px;">
+        <div class="result-hero-label">Tu comisión</div>
+        <div class="result-hero-num" id="anti-com-usd">—</div>
+        <div class="result-hero-sub">Sobre un capital de <span id="anti-cap-bs">—</span></div>
+        <div class="result-hero-grid">
+          <div class="result-hero-item"><div class="result-hero-item-label">Ahorro vs. alquiler</div><div class="result-hero-item-value" id="anti-ahorro">—</div></div>
+          <div class="result-hero-item"><div class="result-hero-item-label">Rendimiento implícito</div><div class="result-hero-item-value" id="anti-rendimiento">—</div></div>
         </div>
       </div>
       <div class="btn-group" style="margin-top:10px;">
@@ -239,10 +241,11 @@ function calcAntictretico(){
   const totalAlquiler = alquiler * 12 * años;
   const rendimiento = alquiler>0 ? ((alquiler*12)/capital*100).toFixed(1) : '—';
   $('anti-cap-bs').textContent = 'Bs. '+capBs.toLocaleString('es-BO',{maximumFractionDigits:0});
-  $('anti-com-usd').textContent = '$ '+comUSD.toLocaleString('es-BO',{maximumFractionDigits:0});
+  animarNumero('anti-com-usd', comUSD, function(v){ return '$ '+Math.round(v).toLocaleString('es-BO'); });
   $('anti-ahorro').textContent = alquiler>0 ? '$ '+totalAlquiler.toLocaleString('es-BO',{maximumFractionDigits:0})+' equiv.' : 'N/A';
   $('anti-rendimiento').textContent = rendimiento !== '—' ? rendimiento+'% anual' : '—';
   $('anti-resultado').hidden = false;
+  flashResultado(document.querySelector('#anti-resultado .result-hero'));
 }
 
 // ══════════════════════════════════════════════

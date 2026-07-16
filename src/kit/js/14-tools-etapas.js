@@ -190,11 +190,11 @@ function toolGuiaVisita(){
       <button class="home-acc-hdr" onclick="homeAccToggle('${s.id}')">
         <span>${s.icono} ${s.titulo}</span><span id="${s.id}-arr" class="home-acc-arr">▼</span>
       </button>
-      <div id="${s.id}" class="home-acc-body" style="display:none;">
+      <div id="${s.id}" class="home-acc-body-wrap"><div class="home-acc-body"><div class="home-acc-body-inner">
         <ul style="margin:0;padding-left:18px;line-height:1.8;">
           ${s.items.map(i=>`<li style="font-size:0.87rem;">${i}</li>`).join('')}
         </ul>
-      </div>
+      </div></div></div>
     </div>`).join('');
 
   return `<div class="tool-section" id="tool-guia-visita">

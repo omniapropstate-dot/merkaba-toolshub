@@ -112,7 +112,7 @@ function _renderListaObjeciones(arr, prefix){
       + '<span>'+esc(ob.situacion)+'</span>'
       + '<span id="'+accId+'-arr" class="home-acc-arr">▼</span>'
       + '</button>'
-      + '<div id="'+accId+'" class="home-acc-body" style="display:none;">'+respuestasHtml+'</div>'
+      + '<div id="'+accId+'" class="home-acc-body-wrap"><div class="home-acc-body"><div class="home-acc-body-inner">'+respuestasHtml+'</div></div></div>'
       + '</div>';
   }).join('');
 }

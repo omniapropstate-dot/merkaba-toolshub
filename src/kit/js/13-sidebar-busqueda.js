@@ -133,8 +133,8 @@ var SEARCH_INDEX = [
 function homeAccToggle(id){
   var body = $(id); var arr = $(id+'-arr');
   if(!body) return;
-  var open = body.style.display !== 'none';
-  body.style.display = open ? 'none' : 'block';
+  var open = body.style.gridTemplateRows === '1fr';
+  body.style.gridTemplateRows = open ? '0fr' : '1fr';
   if(arr) arr.style.transform = open ? '' : 'rotate(180deg)';
 }
 
