@@ -165,7 +165,13 @@ function buildMobileContent(tab, btnEl){
   items.forEach(function(item,i){
     var btn = document.createElement('button');
     btn.style.cssText = 'width:100%;text-align:left;padding:10px 20px;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);border-bottom:1px solid var(--border);';
-    btn.textContent = tab==='etapas' ? (item.num?'Etapa '+item.num+' — ':'') + item.nombre : item.icon+' '+item.nombre;
+    // item.icon de TIPOS es markup SVG: para 'tipos' hay que insertarlo como HTML
+    // (con textContent se veria el codigo <svg> literal). Para 'etapas' es texto plano.
+    if(tab==='etapas'){
+      btn.textContent = (item.num?'Etapa '+item.num+' — ':'') + item.nombre;
+    } else {
+      btn.innerHTML = '<span class="tipo-ico" style="margin-right:8px;">'+item.icon+'</span>'+esc(item.nombre);
+    }
     btn.onclick = function(){ setSidebarTab(tab); if(tab==='etapas') showPhase(i); else showTipo(i); toggleMobileMenu(); };
     listEl.appendChild(btn);
   });

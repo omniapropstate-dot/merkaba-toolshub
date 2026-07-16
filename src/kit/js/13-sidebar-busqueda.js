@@ -47,7 +47,7 @@ function showTipo(idx){
   $('phase-mapa').hidden = true;
   $('phase-content').hidden = false;
   var tipo = TIPOS[idx];
-  var fakeFase = { id:tipo.id, num:'', nombre:tipo.icon+' '+tipo.nombre, desc:'', color:'navy', tools:tipo.tools };
+  var fakeFase = { id:tipo.id, num:'', nombre:'<span class="tipo-ico">'+tipo.icon+'</span> '+tipo.nombre, desc:'', color:'navy', tools:tipo.tools };
   $('phase-content').innerHTML = renderFase(fakeFase, -1);
   initCollapsibles();
   document.querySelector('.kit-main').scrollTop = 0;
