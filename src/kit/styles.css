@@ -157,6 +157,7 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .badge-hace{background:var(--navy-soft);color:var(--navy);}
 .badge-guia{background:var(--gold-soft);color:var(--accent-text-muted);}
 .badge-ordena{background:var(--success-soft);color:#1A6645;}
+.demo-badge{display:inline-block;padding:2px 10px;border-radius:999px;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.02em;vertical-align:middle;background:var(--gold-soft);color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.35);}
 
 /* ── FORMULARIO ── */
 .form-row{display:grid;gap:12px;margin-bottom:16px;}

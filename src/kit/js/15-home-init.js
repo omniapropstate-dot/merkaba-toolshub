@@ -10,7 +10,9 @@ function agregarPendienteHome(){
 function initHome(){
   var hora = new Date().getHours();
   var saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
-  $('home-greeting').textContent = saludo + ', ' + (AGENTE.nombre || 'Agente');
+  var greetHtml = saludo + ', ' + esc(AGENTE.nombre || 'Agente');
+  if(AGENTE.esDemo) greetHtml += ' <span class="demo-badge">⚠️ Cuenta Demo</span>';
+  $('home-greeting').innerHTML = greetHtml;
   var ciudad = AGENTE.ciudad || '';
   var pendientes = JSON.parse(localStorage.getItem('mk_pendientes') || '[]');
   var sinResolver = pendientes.filter(function(p){ return !p.hecho; });
