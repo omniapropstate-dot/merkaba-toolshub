@@ -98,9 +98,9 @@ function initCollapsibles(){
 // BUSCADOR
 // ══════════════════════════════════════════════
 var SEARCH_INDEX = [
-  {id:'calc-comision',             nombre:'Calculadora de comisión',          tipo:'Comisiones y conversiones', icon:'🧮'},
-  {id:'calc-tipo-cambio',          nombre:'Calculadora tipo de cambio',       tipo:'Comisiones y conversiones', icon:'🧮'},
-  {id:'calc-antictretico',         nombre:'Calculadora anticrético',          tipo:'Comisiones y conversiones', icon:'🧮'},
+  {id:'calc-comision',             nombre:'Calculadora de comisión',          tipo:'Calculadoras', icon:'🧮'},
+  {id:'calc-tipo-cambio',          nombre:'Calculadora tipo de cambio',       tipo:'Calculadoras', icon:'🧮'},
+  {id:'calc-antictretico',         nombre:'Calculadora anticrético',          tipo:'Calculadoras', icon:'🧮'},
   {id:'propuesta-propietario',     nombre:'Propuesta al propietario',         tipo:'Documentos listos para compartir', icon:'📄'},
   {id:'respuesta-rapida',          nombre:'Respuesta rápida al lead',         tipo:'Mensajes listos para enviar', icon:'✏️'},
   {id:'generador-seguimiento',     nombre:'Generador de seguimiento',         tipo:'Mensajes listos para enviar', icon:'✏️'},
@@ -121,9 +121,9 @@ var SEARCH_INDEX = [
   {id:'comparador-inmuebles-excel',nombre:'Comparador de inmuebles (Excel)',  tipo:'Planillas de Excel',       icon:'📊'},
   {id:'calc-anticretico-excel',    nombre:'Calculadora anticrético (Excel)',  tipo:'Planillas de Excel',       icon:'📊'},
   {id:'registro-comisiones-excel', nombre:'Registro de comisiones',           tipo:'Planillas de Excel',       icon:'📊'},
-  {id:'mis-plantillas',            nombre:'Mis plantillas',                   tipo:'Plantillas, pendientes y seguimientos',icon:'🗂️'},
-  {id:'tablero-pendientes',        nombre:'Tablero de pendientes',            tipo:'Plantillas, pendientes y seguimientos',icon:'🗂️'},
-  {id:'tablero-seguimientos',      nombre:'Seguimientos activos',             tipo:'Plantillas, pendientes y seguimientos',icon:'🗂️'},
+  {id:'mis-plantillas',            nombre:'Mis plantillas',                   tipo:'Agendas y recordatorios',icon:'🗂️'},
+  {id:'tablero-pendientes',        nombre:'Tablero de pendientes',            tipo:'Agendas y recordatorios',icon:'🗂️'},
+  {id:'tablero-seguimientos',      nombre:'Seguimientos activos',             tipo:'Agendas y recordatorios',icon:'🗂️'},
   {id:'generador-anuncio',         nombre:'Generador de anuncio de propiedad',tipo:'Mensajes listos para enviar',  icon:'✏️'},
   {id:'guia-visita',               nombre:'Guía de la visita',                tipo:'Guías y evaluaciones rápidas',        icon:'📖'},
   {id:'diagnostico-comprador',     nombre:'Diagnóstico del comprador',        tipo:'Guías y evaluaciones rápidas',  icon:'✅'},

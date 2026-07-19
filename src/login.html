@@ -58,7 +58,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:clamp
 .grid{width:100%;display:grid;grid-template-columns:1fr 400px;gap:clamp(32px,5vw,72px);align-items:center;}
 @media(max-width:760px){
   .grid{grid-template-columns:1fr;max-width:420px;margin:0 auto;}
-  .copy-col{text-align:center;}.stats{justify-content:center;}.pills{justify-content:center;}.eyebrow{justify-content:center;}
+  .copy-col{text-align:center;}.stat-row{justify-content:center;}.stat-extra{justify-content:center;}.eyebrow{justify-content:center;}
   .hero-icon-wrap{display:none;}
 }
 
@@ -69,12 +69,13 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:clamp
 h1{font-family:var(--ff-d);font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:700;line-height:1.03;letter-spacing:-0.035em;color:var(--t1);margin-bottom:14px;text-wrap:balance;}
 h1 em{font-style:normal;color:var(--gold);}
 .sub{font-size:clamp(0.9rem,1.2vw,1rem);color:var(--t2);line-height:1.7;max-width:44ch;margin-bottom:28px;}
-.stats{display:flex;gap:28px;margin-bottom:28px;}
-.stat-n{font-family:var(--ff-d);font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-0.04em;color:var(--gold);line-height:1;margin-bottom:3px;}
-.stat-l{font-family:var(--ff-m);font-size:0.66rem;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;}
+.stat-row{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
+.stat-n{font-family:var(--ff-d);font-size:clamp(1.8rem,3.6vw,2.4rem);font-weight:700;letter-spacing:-0.04em;color:var(--gold);line-height:1;}
+.stat-l{font-family:var(--ff-m);font-size:0.68rem;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;}
+.stat-extra{display:inline-flex;align-items:center;gap:7px;font-family:var(--ff-b);font-size:0.78rem;color:var(--t3);margin-bottom:22px;}
+.stat-extra svg{width:13px;height:13px;flex-shrink:0;opacity:0.8;}
+.stat-extra b{color:var(--t2);font-weight:600;}
 .cobertura{font-size:0.82rem;color:var(--t2);border-left:2px solid var(--gold);padding-left:12px;margin-bottom:20px;line-height:1.5;}
-.pills{display:flex;flex-wrap:wrap;gap:6px;}
-.pill{display:inline-flex;align-items:center;padding:4px 11px;border-radius:999px;font-family:var(--ff-m);font-size:0.67rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;border:1px solid var(--border-md);color:var(--t2);background:rgba(255,255,255,0.05);}
 
 /* ACCESS CARD */
 .card{background:var(--surface);border:1px solid var(--border-md);border-radius:22px;padding:clamp(22px,3vw,34px);position:relative;z-index:2;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.14),0 20px 44px rgba(0,0,0,0.24);}
@@ -112,15 +113,16 @@ input[type="password"]::placeholder{color:var(--t4);letter-spacing:0.02em;}
 /* HINT */
 .hint{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:10px;font-family:var(--ff-m);font-size:0.66rem;color:var(--t4);letter-spacing:0.04em;}
 
-/* CARRUSEL — vista rápida de las 31 herramientas, loop continuo (19-jul-2026) */
-.mkt-marquee{position:relative;z-index:2;width:100%;overflow:hidden;padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015);}
-.mkt-track{display:flex;gap:12px;width:max-content;animation:mktScroll 60s linear infinite;}
-.mkt-marquee:hover .mkt-track{animation-play-state:paused;}
+/* CARRUSEL — burbujas de "tipo de herramienta" (6 categorías + Biblioteca), loop continuo
+   que NUNCA se pausa (ni con mouse ni con touch — a proposito, sin regla :hover) */
+.mkt-marquee{position:relative;z-index:2;width:100%;overflow:hidden;padding:22px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015);}
+.mkt-track{display:flex;gap:14px;width:max-content;animation:mktScroll 30s linear infinite;}
 @keyframes mktScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.mkt-card{flex-shrink:0;width:128px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border:1px solid var(--border);border-radius:12px;background:var(--surface);text-align:center;}
-.mkt-ico{font-size:1.05rem;line-height:1;}
-.mkt-name{font-family:var(--ff-b);font-size:0.68rem;color:var(--t2);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-@media(max-width:600px){.mkt-card{width:108px;padding:10px 6px;}.mkt-name{font-size:0.64rem;}}
+.mkt-card{flex-shrink:0;width:164px;display:flex;flex-direction:column;align-items:center;gap:9px;padding:16px 12px;border:1px solid var(--border);border-radius:16px;background:var(--surface);text-align:center;}
+.mkt-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--gold-glow);flex-shrink:0;}
+.mkt-ico svg{width:19px;height:19px;color:var(--gold);}
+.mkt-name{font-family:var(--ff-b);font-size:0.76rem;font-weight:600;color:var(--t1);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+@media(max-width:600px){.mkt-card{width:136px;padding:12px 8px;}.mkt-name{font-size:0.72rem;}}
 
 /* FOOTER */
 footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
@@ -165,19 +167,15 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
         </div>
         <h1>Kit del Agente<br>Inmobiliario <em>Boliviano</em></h1>
         <p class="sub">Herramientas, calculadoras y guías diseñadas para cerrar más operaciones en el mercado boliviano.</p>
-        <div class="stats">
-          <div><div class="stat-n">31</div><div class="stat-l">Herramientas</div></div>
-          <div><div class="stat-n">33</div><div class="stat-l">Libros en PDF</div></div>
+        <div class="stat-row">
+          <div class="stat-n">31</div>
+          <div class="stat-l">Herramientas</div>
+        </div>
+        <div class="stat-extra">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 12 3l8 3.5-8 3.5-8-3.5Z"/><path d="M4 12l8 3.5 8-3.5"/><path d="M4 17.5l8 3.5 8-3.5"/></svg>
+          + Biblioteca con <b>33 libros en PDF</b>
         </div>
         <p class="cobertura">Cubre todo el proceso: desde captar la propiedad hasta cobrar tu comisión.</p>
-        <div class="pills">
-          <span class="pill">Comisiones y conversiones</span>
-          <span class="pill">Mensajes listos para enviar</span>
-          <span class="pill">Documentos listos para compartir</span>
-          <span class="pill">Guías y evaluaciones rápidas</span>
-          <span class="pill">Planillas de Excel</span>
-          <span class="pill">Plantillas, pendientes y seguimientos</span>
-        </div>
       </div>
 
       <!-- Access card -->
@@ -225,22 +223,28 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
 
 <script>
   (function(){
-    var HERR = [
-      ['🧮','Calculadora de comisión'],['🧮','Calculadora tipo de cambio'],['🧮','Calculadora anticrético'],
-      ['📄','Propuesta al propietario'],['✏️','Respuesta rápida al lead'],['✏️','Generador de seguimiento'],
-      ['✏️','Mensaje post-venta'],['✅','Checklist de visita'],['✅','Checklist anticrético'],
-      ['📖','Guía de captación'],['📖','Guía del proceso legal'],['✏️','Manejador de objeciones'],
-      ['✏️','Mensajes para cada momento'],['📄','Ficha de propiedad'],['✅','Filtro de comprador'],
-      ['📄','Comparador de inmuebles'],['📄','Acuerdo de trabajo'],['📄','Presentación personal'],
-      ['📊','Control de cartera de propiedades'],['📊','Control de seguimientos'],['📊','Comparador de inmuebles (Excel)'],
-      ['📊','Calculadora anticrético (Excel)'],['📊','Registro de comisiones'],['🗂️','Mis plantillas'],
-      ['🗂️','Tablero de pendientes'],['🗂️','Seguimientos activos'],['✏️','Generador de anuncio de propiedad'],
-      ['📖','Guía de la visita'],['✅','Diagnóstico del comprador'],['✏️','Generador de mensajes de referido'],
-      ['✏️','Reactivador de contactos pasados']
+    // Iconos de linea — mismos SVG que usa el kit por dentro para "Por tipo" (01-config.js),
+    // no emojis, para que la landing se vea coherente con lo que hay adentro.
+    var SVG_CALC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="4" rx="1"/><circle cx="7.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.5" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg>';
+    var SVG_GEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+    var SVG_FORM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="16.5" x2="13" y2="16.5"/></svg>';
+    var SVG_GUIA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5Z"/></svg>';
+    var SVG_EXCEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="1.5"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="3.5" y1="14.5" x2="20.5" y2="14.5"/><line x1="10" y1="4" x2="10" y2="20"/></svg>';
+    var SVG_ORG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="5" height="16" rx="1.3"/><rect x="9.7" y="4" width="5" height="10" rx="1.3"/><rect x="15.9" y="4" width="5" height="13" rx="1.3"/></svg>';
+    var SVG_BIB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 12 3l8 3.5-8 3.5-8-3.5Z"/><path d="M4 12l8 3.5 8-3.5"/><path d="M4 17.5l8 3.5 8-3.5"/></svg>';
+
+    var TIPOS = [
+      [SVG_CALC, 'Calculadoras'],
+      [SVG_GEN,  'Mensajes listos para enviar'],
+      [SVG_FORM, 'Documentos listos para compartir'],
+      [SVG_GUIA, 'Guías y evaluaciones rápidas'],
+      [SVG_EXCEL,'Planillas de Excel'],
+      [SVG_ORG,  'Agendas y recordatorios'],
+      [SVG_BIB,  'Biblioteca']
     ];
     var track = document.getElementById('mkt-track');
     if(track){
-      var cardsHtml = HERR.map(function(h){ return '<div class="mkt-card"><span class="mkt-ico">'+h[0]+'</span><span class="mkt-name">'+h[1]+'</span></div>'; }).join('');
+      var cardsHtml = TIPOS.map(function(t){ return '<div class="mkt-card"><span class="mkt-ico">'+t[0]+'</span><span class="mkt-name">'+t[1]+'</span></div>'; }).join('');
       track.innerHTML = cardsHtml + cardsHtml;
     }
   })();

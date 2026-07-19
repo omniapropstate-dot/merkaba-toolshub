@@ -172,12 +172,12 @@ const SVG_ICON_EXCEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
 const SVG_ICON_ORG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="5" height="16" rx="1.3"/><rect x="9.7" y="4" width="5" height="10" rx="1.3"/><rect x="15.9" y="4" width="5" height="13" rx="1.3"/></svg>';
 
 const TIPOS = [
-  { id:'comisiones', icon:SVG_ICON_CALC, catClass:'cat-calc', nombre:'Comisiones y conversiones', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
+  { id:'comisiones', icon:SVG_ICON_CALC, catClass:'cat-calc', nombre:'Calculadoras', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
   { id:'mensajes', icon:SVG_ICON_GEN, catClass:'cat-gen', nombre:'Mensajes listos para enviar', tools:['respuesta-rapida','generador-seguimiento','mensaje-postventa','generador-anuncio','generador-referidos','reactivador-contactos','manejador-objeciones','banco-scripts'] },
   { id:'documentos', icon:SVG_ICON_FORM, catClass:'cat-form', nombre:'Documentos listos para compartir', tools:['ficha-propiedad','comparador-inmuebles','propuesta-propietario','acuerdo-trabajo','presentacion-personal-word'] },
   { id:'guias', icon:SVG_ICON_GUIA, catClass:'cat-guia', nombre:'Guías y evaluaciones rápidas', tools:['checklist-visita','checklist-antictretico','guia-captacion','guia-legal','guia-visita','filtro-comprador','diagnostico-comprador'] },
   { id:'excel', icon:SVG_ICON_EXCEL, catClass:'cat-excel', nombre:'Planillas de Excel', tools:['cartera-propiedades-excel','control-seguimientos-excel','comparador-inmuebles-excel','calc-anticretico-excel','registro-comisiones-excel'] },
-  { id:'organizadores', icon:SVG_ICON_ORG, catClass:'cat-org', nombre:'Plantillas, pendientes y seguimientos', tools:['mis-plantillas','tablero-pendientes','tablero-seguimientos'] },
+  { id:'organizadores', icon:SVG_ICON_ORG, catClass:'cat-org', nombre:'Agendas y recordatorios', tools:['mis-plantillas','tablero-pendientes','tablero-seguimientos'] },
 ];
 
 // ══════════════════════════════════════════════
