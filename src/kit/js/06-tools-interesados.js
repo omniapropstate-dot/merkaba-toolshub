@@ -2,9 +2,10 @@ function toolRespuestaRapida(){
   return `<div class="tool-section" id="tool-respuesta">
     <div class="tool-header">
       <div class="tool-icon gold">⚡</div>
-      <div><div class="tool-title">Respuesta rápida a consultas <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Respuesta rápida a consultas</div>
       <div class="tool-subtitle">El que responde rápido tiene más chances de cerrar. Genera tu primera respuesta en segundos y pégala directo en WhatsApp.</div></div>
     </div>
+    ${badgesHerramienta('respuesta-rapida')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del interesado (si lo sabes)</label><input id="rr-nombre" type="text" placeholder="Juan (o dejarlo vacío)"/></div>
       <div class="form-group"><label>¿Por qué canal llegó la consulta?</label>
@@ -67,9 +68,10 @@ function toolFiltroComprador(){
   let html = `<div class="tool-section" id="tool-filtro">
     <div class="tool-header">
       <div class="tool-icon">🔍</div>
-      <div><div class="tool-title">Filtro: ¿comprador real o mirón? <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Filtro: ¿comprador real o mirón?</div>
       <div class="tool-subtitle">Antes de mostrar la propiedad, usa estas preguntas para saber si el interesado realmente puede y quiere comprar. Así no pierdes tiempo.</div></div>
     </div>
+    ${badgesHerramienta('filtro-comprador')}
     <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">Marca las respuestas del interesado para ver su perfil de comprador.</p>
     <div id="filtro-preguntas">`;
 

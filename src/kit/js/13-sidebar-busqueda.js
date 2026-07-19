@@ -1,12 +1,13 @@
-function toolSheetExterno(icon, titulo, desc, url){
+function toolSheetExterno(id, icon, titulo, desc, url){
   return `<div class="tool-section">
     <div class="tool-header">
       <div class="tool-icon">${icon}</div>
       <div>
-        <div class="tool-title">${titulo} <span class="tool-badge" style="background:rgba(66,133,244,0.1);color:#1a73e8;font-size:0.7rem;padding:2px 8px;border-radius:999px;font-weight:700;">Google Sheets</span></div>
+        <div class="tool-title">${titulo}</div>
         <div class="tool-subtitle">${desc}</div>
       </div>
     </div>
+    ${badgesHerramienta(id)}
     <div style="background:#f8f9fc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
       <div style="font-size:0.83rem;color:#4a5568;line-height:1.5;">Abre la planilla en Google Sheets. Puedes hacer una copia personal para editarla con tus datos.<br/><span style="font-size:0.78rem;color:#94a3b8;">Solo lectura &mdash; para guardar tus datos usa <strong>Archivo &rarr; Hacer una copia</strong></span></div>
       <a href="${url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1a73e8;color:#fff;padding:10px 18px;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;flex-shrink:0;font-family:Inter,sans-serif;">
@@ -97,37 +98,37 @@ function initCollapsibles(){
 // BUSCADOR
 // ══════════════════════════════════════════════
 var SEARCH_INDEX = [
-  {id:'calc-comision',             nombre:'Calculadora de comisión',          tipo:'Calculadoras', icon:'🧮'},
-  {id:'calc-tipo-cambio',          nombre:'Calculadora tipo de cambio',       tipo:'Calculadoras', icon:'🧮'},
-  {id:'calc-antictretico',         nombre:'Calculadora anticrético',          tipo:'Calculadoras', icon:'🧮'},
-  {id:'propuesta-propietario',     nombre:'Propuesta al propietario',         tipo:'Generadores', icon:'✏️'},
-  {id:'respuesta-rapida',          nombre:'Respuesta rápida al lead',         tipo:'Generadores', icon:'✏️'},
-  {id:'generador-seguimiento',     nombre:'Generador de seguimiento',         tipo:'Generadores', icon:'✏️'},
-  {id:'mensaje-postventa',         nombre:'Mensaje post-venta',               tipo:'Generadores', icon:'✏️'},
-  {id:'checklist-visita',          nombre:'Checklist de visita',              tipo:'Checklists',  icon:'✅'},
-  {id:'checklist-antictretico',    nombre:'Checklist anticrético',            tipo:'Checklists',  icon:'✅'},
-  {id:'guia-captacion',            nombre:'Guía de captación',                tipo:'Guías',       icon:'📖'},
-  {id:'guia-legal',                nombre:'Guía del proceso legal',            tipo:'Guías',       icon:'📖'},
-  {id:'manejador-objeciones',      nombre:'Manejador de objeciones',          tipo:'Guías',       icon:'📖'},
-  {id:'banco-scripts',             nombre:'Mensajes para cada momento',       tipo:'Guías',       icon:'📖'},
-  {id:'ficha-propiedad',           nombre:'Ficha de propiedad',               tipo:'Formularios', icon:'📄'},
-  {id:'filtro-comprador',          nombre:'Filtro de comprador',              tipo:'Formularios', icon:'📄'},
-  {id:'comparador-inmuebles',      nombre:'Comparador de inmuebles',          tipo:'Formularios', icon:'📄'},
-  {id:'acuerdo-trabajo',           nombre:'Acuerdo de trabajo',               tipo:'Formularios', icon:'📄'},
-  {id:'presentacion-personal-word',nombre:'Presentación personal',            tipo:'Formularios', icon:'📄'},
-  {id:'cartera-propiedades-excel', nombre:'Control de cartera de propiedades',tipo:'Excel',       icon:'📊'},
-  {id:'control-seguimientos-excel',nombre:'Control de seguimientos',          tipo:'Excel',       icon:'📊'},
-  {id:'comparador-inmuebles-excel',nombre:'Comparador de inmuebles (Excel)',  tipo:'Excel',       icon:'📊'},
-  {id:'calc-anticretico-excel',    nombre:'Calculadora anticrético (Excel)',  tipo:'Excel',       icon:'📊'},
-  {id:'registro-comisiones-excel', nombre:'Registro de comisiones',           tipo:'Excel',       icon:'📊'},
-  {id:'mis-plantillas',            nombre:'Mis plantillas',                   tipo:'Organizadores',icon:'🗂️'},
-  {id:'tablero-pendientes',        nombre:'Tablero de pendientes',            tipo:'Organizadores',icon:'🗂️'},
-  {id:'tablero-seguimientos',      nombre:'Seguimientos activos',             tipo:'Organizadores',icon:'🗂️'},
-  {id:'generador-anuncio',         nombre:'Generador de anuncio de propiedad',tipo:'Generadores',  icon:'✏️'},
-  {id:'guia-visita',               nombre:'Guía de la visita',                tipo:'Guías',        icon:'📖'},
-  {id:'diagnostico-comprador',     nombre:'Diagnóstico del comprador',        tipo:'Formularios',  icon:'📄'},
-  {id:'generador-referidos',       nombre:'Generador de mensajes de referido',tipo:'Generadores',  icon:'✏️'},
-  {id:'reactivador-contactos',     nombre:'Reactivador de contactos pasados', tipo:'Generadores',  icon:'✏️'},
+  {id:'calc-comision',             nombre:'Calculadora de comisión',          tipo:'Comisiones y conversiones', icon:'🧮'},
+  {id:'calc-tipo-cambio',          nombre:'Calculadora tipo de cambio',       tipo:'Comisiones y conversiones', icon:'🧮'},
+  {id:'calc-antictretico',         nombre:'Calculadora anticrético',          tipo:'Comisiones y conversiones', icon:'🧮'},
+  {id:'propuesta-propietario',     nombre:'Propuesta al propietario',         tipo:'Documentos listos para compartir', icon:'📄'},
+  {id:'respuesta-rapida',          nombre:'Respuesta rápida al lead',         tipo:'Mensajes listos para enviar', icon:'✏️'},
+  {id:'generador-seguimiento',     nombre:'Generador de seguimiento',         tipo:'Mensajes listos para enviar', icon:'✏️'},
+  {id:'mensaje-postventa',         nombre:'Mensaje post-venta',               tipo:'Mensajes listos para enviar', icon:'✏️'},
+  {id:'checklist-visita',          nombre:'Checklist de visita',              tipo:'Guías y evaluaciones rápidas',  icon:'✅'},
+  {id:'checklist-antictretico',    nombre:'Checklist anticrético',            tipo:'Guías y evaluaciones rápidas',  icon:'✅'},
+  {id:'guia-captacion',            nombre:'Guía de captación',                tipo:'Guías y evaluaciones rápidas',       icon:'📖'},
+  {id:'guia-legal',                nombre:'Guía del proceso legal',            tipo:'Guías y evaluaciones rápidas',       icon:'📖'},
+  {id:'manejador-objeciones',      nombre:'Manejador de objeciones',          tipo:'Mensajes listos para enviar',       icon:'✏️'},
+  {id:'banco-scripts',             nombre:'Mensajes para cada momento',       tipo:'Mensajes listos para enviar',       icon:'✏️'},
+  {id:'ficha-propiedad',           nombre:'Ficha de propiedad',               tipo:'Documentos listos para compartir', icon:'📄'},
+  {id:'filtro-comprador',          nombre:'Filtro de comprador',              tipo:'Guías y evaluaciones rápidas', icon:'✅'},
+  {id:'comparador-inmuebles',      nombre:'Comparador de inmuebles',          tipo:'Documentos listos para compartir', icon:'📄'},
+  {id:'acuerdo-trabajo',           nombre:'Acuerdo de trabajo',               tipo:'Documentos listos para compartir', icon:'📄'},
+  {id:'presentacion-personal-word',nombre:'Presentación personal',            tipo:'Documentos listos para compartir', icon:'📄'},
+  {id:'cartera-propiedades-excel', nombre:'Control de cartera de propiedades',tipo:'Planillas de Excel',       icon:'📊'},
+  {id:'control-seguimientos-excel',nombre:'Control de seguimientos',          tipo:'Planillas de Excel',       icon:'📊'},
+  {id:'comparador-inmuebles-excel',nombre:'Comparador de inmuebles (Excel)',  tipo:'Planillas de Excel',       icon:'📊'},
+  {id:'calc-anticretico-excel',    nombre:'Calculadora anticrético (Excel)',  tipo:'Planillas de Excel',       icon:'📊'},
+  {id:'registro-comisiones-excel', nombre:'Registro de comisiones',           tipo:'Planillas de Excel',       icon:'📊'},
+  {id:'mis-plantillas',            nombre:'Mis plantillas',                   tipo:'Plantillas, pendientes y seguimientos',icon:'🗂️'},
+  {id:'tablero-pendientes',        nombre:'Tablero de pendientes',            tipo:'Plantillas, pendientes y seguimientos',icon:'🗂️'},
+  {id:'tablero-seguimientos',      nombre:'Seguimientos activos',             tipo:'Plantillas, pendientes y seguimientos',icon:'🗂️'},
+  {id:'generador-anuncio',         nombre:'Generador de anuncio de propiedad',tipo:'Mensajes listos para enviar',  icon:'✏️'},
+  {id:'guia-visita',               nombre:'Guía de la visita',                tipo:'Guías y evaluaciones rápidas',        icon:'📖'},
+  {id:'diagnostico-comprador',     nombre:'Diagnóstico del comprador',        tipo:'Guías y evaluaciones rápidas',  icon:'✅'},
+  {id:'generador-referidos',       nombre:'Generador de mensajes de referido',tipo:'Mensajes listos para enviar',  icon:'✏️'},
+  {id:'reactivador-contactos',     nombre:'Reactivador de contactos pasados', tipo:'Mensajes listos para enviar',  icon:'✏️'},
 ];
 
 function homeAccToggle(id){

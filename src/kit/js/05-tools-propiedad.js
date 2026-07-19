@@ -2,9 +2,10 @@ function toolFichaPropiedad(){
   return `<div class="tool-section" id="tool-ficha">
     <div class="tool-header">
       <div class="tool-icon">🏠</div>
-      <div><div class="tool-title">Generador de ficha de propiedad <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Generador de ficha de propiedad</div>
       <div class="tool-subtitle">Completa los datos de la propiedad y genera una publicación lista para pegar en Facebook, UltraCasas o InfoCasas.</div></div>
     </div>
+    ${badgesHerramienta('ficha-propiedad')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Tipo de operación</label>
         <select id="ficha-op"><option>Venta</option><option>Alquiler</option><option>Anticrético</option></select>
@@ -108,9 +109,10 @@ function toolPropuestaPropietario(){
   return `<div class="tool-section" id="tool-propuesta">
     <div class="tool-header">
       <div class="tool-icon">📑</div>
-      <div><div class="tool-title">Propuesta al propietario <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Propuesta al propietario</div>
       <div class="tool-subtitle">Genera un texto claro para presentarle al propietario: por qué ese precio de venta y por qué tu comisión vale la pena.</div></div>
     </div>
+    ${badgesHerramienta('propuesta-propietario')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del propietario</label><input id="prop-nombre" type="text" placeholder="Sr. Mamani"/></div>
       <div class="form-group"><label>Tipo de inmueble</label><input id="prop-inmueble" type="text" placeholder="Departamento en Miraflores"/></div>

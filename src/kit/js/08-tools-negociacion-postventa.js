@@ -121,9 +121,10 @@ function toolManejadorObjeciones(){
   return `<div class="tool-section" id="tool-objeciones">
     <div class="tool-header">
       <div class="tool-icon gold">💬</div>
-      <div><div class="tool-title">Manejador de objeciones <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Manejador de objeciones</div>
       <div class="tool-subtitle">Respuestas listas para las objeciones más comunes — de compradores y de propietarios. Elige la que mejor se adapte y cópiala.</div></div>
     </div>
+    ${badgesHerramienta('manejador-objeciones')}
     <div class="sidebar-tabs" style="margin-bottom:14px;">
       <button class="sidebar-tab active" id="obj-tab-comprador" onclick="objTab('comprador')">Compradores</button>
       <button class="sidebar-tab" id="obj-tab-propietario" onclick="objTab('propietario')">Propietarios</button>
@@ -147,9 +148,10 @@ function toolComparadorInmuebles(){
   return `<div class="tool-section" id="tool-comparador">
     <div class="tool-header">
       <div class="tool-icon">⚖️</div>
-      <div><div class="tool-title">Comparador de inmuebles <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Comparador de inmuebles</div>
       <div class="tool-subtitle">Ingresa hasta 3 propiedades y genera una comparación visual para mostrarle al cliente. Completa solo los datos que tengas — ninguno es obligatorio.</div></div>
     </div>
+    ${badgesHerramienta('comparador-inmuebles')}
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px;">
       ${[1,2,3].map(n=>`
       <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;">
@@ -288,9 +290,10 @@ function toolMensajePostventa(){
   return `<div class="tool-section" id="tool-postventa">
     <div class="tool-header">
       <div class="tool-icon gold">🤝</div>
-      <div><div class="tool-title">Mensaje de seguimiento post-venta <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Mensaje de seguimiento post-venta</div>
       <div class="tool-subtitle">Un cliente feliz puede traerte más clientes. Este mensaje mantiene la relación después del cierre y abre la puerta a que te recomienden.</div></div>
     </div>
+    ${badgesHerramienta('mensaje-postventa')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del cliente</label><input id="pv-nombre" type="text" placeholder="María Quispe"/></div>
       <div class="form-group"><label>¿Qué operación concretaron?</label>

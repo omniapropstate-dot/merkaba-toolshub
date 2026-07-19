@@ -53,9 +53,10 @@ function toolBancoScripts(){
   return `<div class="tool-section" id="tool-banco-scripts">
     <div class="tool-header">
       <div class="tool-icon">💬</div>
-      <div><div class="tool-title">Mensajes para cada momento <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Mensajes para cada momento</div>
       <div class="tool-subtitle">Mensajes listos organizados por momento del proceso — desde captar al propietario hasta confirmar la firma. Copia el que necesites, ajústalo si hace falta y envía.</div></div>
     </div>
+    ${badgesHerramienta('banco-scripts')}
     ${cuerpo}
   </div>`;
 }
@@ -71,10 +72,11 @@ function toolMisPlantillas(){
     <div class="tool-header">
       <div class="tool-icon">📋</div>
       <div>
-        <div class="tool-title">Mis plantillas <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-title">Mis plantillas</div>
         <div class="tool-subtitle">Guarda los mensajes que más usas. Se sincronizan entre tu celular y tu computadora.</div>
       </div>
     </div>
+    ${badgesHerramienta('mis-plantillas')}
     <div style="display:grid;gap:10px;margin-bottom:20px;">
       <div class="form-group"><label>Título de la plantilla</label><input id="plt-titulo" type="text" placeholder="Ej: Seguimiento día 3, Respuesta a precio alto..."/></div>
       <div class="form-group"><label>Mensaje</label><textarea id="plt-contenido" rows="3" placeholder="Escribí o pegá aquí el mensaje que querés guardar..."></textarea></div>
@@ -139,10 +141,11 @@ function toolTableroPendientes(){
     <div class="tool-header">
       <div class="tool-icon">📅</div>
       <div>
-        <div class="tool-title">Pendientes del día <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-title">Pendientes del día</div>
         <div class="tool-subtitle">${hoyFmt} — Tus tareas de hoy. Se guardan y puedes verlas desde cualquier dispositivo.</div>
       </div>
     </div>
+    ${badgesHerramienta('tablero-pendientes')}
     <div style="display:flex;gap:10px;margin-bottom:16px;">
       <input id="pend-nueva" type="text" style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.9rem;background:var(--surface-2);color:var(--text);" placeholder="Ej: Llamar a María sobre el dpto. en Sopocachi..." onkeydown="if(event.key==='Enter')agregarPendiente()"/>
       <button class="btn btn-primary" onclick="agregarPendiente()">+ Agregar</button>
@@ -221,10 +224,11 @@ function toolTableroSeguimientos(){
     <div class="tool-header">
       <div class="tool-icon gold">🎯</div>
       <div>
-        <div class="tool-title">Seguimientos activos <span class="tool-badge badge-ordena">Ordena</span></div>
+        <div class="tool-title">Seguimientos activos</div>
         <div class="tool-subtitle">La mayoría de leads se pierde por falta de seguimiento, no por mala calidad. Cargá a quién le debés seguir y el kit te avisa cuándo te toca. Tu plan permite hasta ${LIMITE_SEGUIMIENTOS} seguimientos activos.</div>
       </div>
     </div>
+    ${badgesHerramienta('tablero-seguimientos')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del cliente</label><input id="sg-nombre" type="text" placeholder="María Quispe"/></div>
       <div class="form-group"><label>Propiedad (opcional)</label><input id="sg-propiedad" type="text" placeholder="Dpto. 3 amb. Sopocachi"/></div>

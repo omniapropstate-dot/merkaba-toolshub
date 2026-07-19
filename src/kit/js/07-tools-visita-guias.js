@@ -23,9 +23,10 @@ function toolChecklistVisita(){
   let html = `<div class="tool-section" id="tool-checklist-visita">
     <div class="tool-header">
       <div class="tool-icon">✅</div>
-      <div><div class="tool-title">Checklist de visita <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Checklist de visita</div>
       <div class="tool-subtitle">No improvises la visita. Sigue este checklist para llegar preparado y no perderte los momentos clave donde el comprador muestra interés real.</div></div>
-    </div>`;
+    </div>
+    ${badgesHerramienta('checklist-visita')}`;
   items.forEach((sec,si)=>{
     html += `<div style="margin-bottom:20px;"><div style="font-size:0.8rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">${sec.t}</div><ul class="checklist">`;
     sec.items.forEach((it,ii)=>{
@@ -66,9 +67,10 @@ function toolChecklistAntictretico(){
   let html = `<div class="tool-section" id="tool-checklist-anti">
     <div class="tool-header">
       <div class="tool-icon">🏛️</div>
-      <div><div class="tool-title">Checklist de anticrético <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Checklist de anticrético</div>
       <div class="tool-subtitle">Revisa cada punto antes de entregar el dinero del anticrético. Saltarse un paso puede generar problemas legales que duran meses.</div></div>
     </div>
+    ${badgesHerramienta('checklist-antictretico')}
     <ul class="checklist">`;
   items.forEach((it,i)=>{
     const id=`ca-${i}`;
@@ -91,9 +93,10 @@ function toolGuiaCaptacion(){
   return `<div class="tool-section" id="tool-guia-captacion">
     <div class="tool-header">
       <div class="tool-icon">🎯</div>
-      <div><div class="tool-title">Guía de captación y defensa del precio <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Guía de captación y defensa del precio</div>
       <div class="tool-subtitle">Cómo prepararte para la reunión con el propietario, proponer un precio justo y defender tu comisión sin perder el trabajo.</div></div>
     </div>
+    ${badgesHerramienta('guia-captacion')}
     <div class="guide-steps">
       <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-content"><h4>Investigar antes de ir</h4><p>Busca en UltraCasas e InfoCasas propiedades similares en la misma zona. Anota 2-3 con precio y características. Esos son tus datos concretos de respaldo.</p></div></div>
       <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><h4>La reunión: escuchar antes de hablar</h4><p>Pregunta: "¿Cuánto espera obtener por la propiedad?" Deja que hable. Luego presenta tu precio sugerido con datos concretos, no con opiniones.</p></div></div>
@@ -112,9 +115,10 @@ function toolGuiaLegal(){
   return `<div class="tool-section" id="tool-guia-legal">
     <div class="tool-header">
       <div class="tool-icon">⚖️</div>
-      <div><div class="tool-title">Guía del proceso legal <span class="tool-badge badge-guia">Guía</span></div>
+      <div><div class="tool-title">Guía del proceso legal</div>
       <div class="tool-subtitle">Los pasos del proceso legal de una venta en Bolivia. Orientación para guiar al cliente — no reemplaza a un abogado.</div></div>
     </div>
+    ${badgesHerramienta('guia-legal')}
     <div class="guide-steps">
       <div class="guide-step"><div class="guide-step-num">1</div><div class="guide-step-content"><h4>Folio real (Información Rápida de Derechos Reales)</h4><p>Verifica que el vendedor es el propietario real, que no hay hipotecas, gravámenes ni embargos. Se obtiene en la oficina de Derechos Reales del departamento. Costo: aproximadamente Bs. 15-30.</p></div></div>
       <div class="guide-step"><div class="guide-step-num">2</div><div class="guide-step-content"><h4>Minuta de compraventa</h4><p>Documento preparado por un abogado que establece las condiciones de la venta: precio, forma de pago, plazos. Ambas partes deben firmarlo ante notario.</p></div></div>

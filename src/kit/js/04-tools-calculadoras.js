@@ -2,9 +2,10 @@ function toolGeneradorSeguimiento(){
   return `<div class="tool-section" id="tool-seguimiento">
     <div class="tool-header">
       <div class="tool-icon gold">💬</div>
-      <div><div class="tool-title">Generador de seguimiento <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Generador de seguimiento</div>
       <div class="tool-subtitle">La mayoría de ventas requiere varios contactos antes de cerrarse. Genera aquí el mensaje exacto según en qué momento estás con el cliente.</div></div>
     </div>
+    ${badgesHerramienta('generador-seguimiento')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del cliente</label><input id="seg-nombre" type="text" placeholder="María Quispe"/></div>
       <div class="form-group"><label>Propiedad que visitó</label><input id="seg-propiedad" type="text" placeholder="Dpto. 3 amb. en Sopocachi"/></div>
@@ -83,9 +84,10 @@ function toolCalculadoraComision(){
   return `<div class="tool-section" id="tool-comision">
     <div class="tool-header">
       <div class="tool-icon">💰</div>
-      <div><div class="tool-title">Calculadora de comisión <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Calculadora de comisión</div>
       <div class="tool-subtitle">Calcula tu comisión en USD y Bs. para mostrarle al propietario cuánto te corresponde.</div></div>
     </div>
+    ${badgesHerramienta('calc-comision')}
     <div class="form-row cols-3">
       <div class="form-group"><label>Precio de venta (USD)</label><input id="com-precio" type="number" placeholder="80000"/></div>
       <div class="form-group"><label>Tu comisión (%)</label><input id="com-pct" type="number" placeholder="3" step="0.5"/></div>
@@ -134,9 +136,10 @@ function toolCalculadoraTipoCambio(){
   return `<div class="tool-section" id="tool-tc">
     <div class="tool-header">
       <div class="tool-icon">💱</div>
-      <div><div class="tool-title">Doble tipo de cambio <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Doble tipo de cambio</div>
       <div class="tool-subtitle">Calcula cuánto recibe cada parte según el tipo de cambio oficial o el paralelo. Así evitas mal entendidos y sorpresas en el cierre.</div></div>
     </div>
+    ${badgesHerramienta('calc-tipo-cambio')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Precio pactado (USD)</label><input id="tc-precio" type="number" placeholder="80000"/></div>
       <div class="form-group"><label>Tipo de cambio oficial (Bs.)</label><input id="tc-oficial" type="number" placeholder="6.96" step="0.01"/></div>
@@ -193,9 +196,10 @@ function toolCalculadoraAntictretico(){
   return `<div class="tool-section" id="tool-antictretico">
     <div class="tool-header">
       <div class="tool-icon">🏛️</div>
-      <div><div class="tool-title">Calculadora de anticrético <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Calculadora de anticrético</div>
       <div class="tool-subtitle">Calcula la comisión del anticrético, su equivalente en alquiler mensual y el monto en bolivianos. También te recuerda que hay que registrarlo en Derechos Reales.</div></div>
     </div>
+    ${badgesHerramienta('calc-antictretico')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Capital del anticrético (USD)</label><input id="anti-capital" type="number" placeholder="30000"/></div>
       <div class="form-group"><label>Duración del contrato (años)</label><input id="anti-años" type="number" placeholder="2"/></div>

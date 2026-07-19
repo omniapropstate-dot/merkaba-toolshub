@@ -3,10 +3,11 @@ function toolGeneradorAnuncio(){
     <div class="tool-header">
       <div class="tool-icon gold">📣</div>
       <div>
-        <div class="tool-title">Generador de anuncio de propiedad <span class="tool-badge badge-hace">Hace</span></div>
+        <div class="tool-title">Generador de anuncio de propiedad</div>
         <div class="tool-subtitle">Completá los datos y obtenés el texto listo para publicar en Facebook, UltraCasas o InfoCasas.</div>
       </div>
     </div>
+    ${badgesHerramienta('generador-anuncio')}
 
     <div class="form-row cols-2">
       <div class="form-group"><label>Tipo de propiedad</label>
@@ -201,10 +202,11 @@ function toolGuiaVisita(){
     <div class="tool-header">
       <div class="tool-icon gold">🚪</div>
       <div>
-        <div class="tool-title">Guía de la visita <span class="tool-badge badge-guia">Guía</span></div>
+        <div class="tool-title">Guía de la visita</div>
         <div class="tool-subtitle">Cómo mostrar y vender en la visita. Antes, durante y al final.</div>
       </div>
     </div>
+    ${badgesHerramienta('guia-visita')}
     ${html}
   </div>`;
 }
@@ -215,10 +217,11 @@ function toolDiagnosticoComprador(){
     <div class="tool-header">
       <div class="tool-icon gold">🔍</div>
       <div>
-        <div class="tool-title">Diagnóstico del comprador <span class="tool-badge badge-guia">Guía</span></div>
+        <div class="tool-title">Diagnóstico del comprador</div>
         <div class="tool-subtitle">Respondé 6 preguntas rápidas y te dice si el visitante es un comprador real o un mirón.</div>
       </div>
     </div>
+    ${badgesHerramienta('diagnostico-comprador')}
 
     <div id="dc-form">
       ${[
@@ -294,10 +297,11 @@ function toolGeneradorReferidos(){
     <div class="tool-header">
       <div class="tool-icon gold">🌟</div>
       <div>
-        <div class="tool-title">Generador de mensajes de referido <span class="tool-badge badge-hace">Hace</span></div>
+        <div class="tool-title">Generador de mensajes de referido</div>
         <div class="tool-subtitle">Los referidos convierten 50 veces mejor que un lead frío. Este generador te arma el mensaje exacto para pedirlos sin incomodar.</div>
       </div>
     </div>
+    ${badgesHerramienta('generador-referidos')}
 
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del cliente</label>
@@ -380,10 +384,11 @@ function toolReactivadorContactos(){
     <div class="tool-header">
       <div class="tool-icon gold">🔄</div>
       <div>
-        <div class="tool-title">Reactivador de contactos pasados <span class="tool-badge badge-hace">Hace</span></div>
+        <div class="tool-title">Reactivador de contactos pasados</div>
         <div class="tool-subtitle">Para leads que no cerraron, clientes de hace tiempo o propietarios con los que perdiste el contacto.</div>
       </div>
     </div>
+    ${badgesHerramienta('reactivador-contactos')}
 
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del contacto</label>

@@ -11,13 +11,16 @@
   --text:rgba(238,245,255,0.94); --text-muted:rgba(175,200,240,0.58); --text-light:rgba(140,175,220,0.36);
   --success:#3DD68C; --success-soft:rgba(61,214,140,0.12);
   --radius:14px; --radius-sm:9px;
-  /* Paleta categorica fija — identidad de las 7 categorias de herramientas (TIPOS).
+  /* Paleta categorica fija — identidad de las 6 categorias de herramientas (TIPOS).
      NO cambia con el tema del cliente (eso solo mueve --navy/--gold via aplicarTema()).
      Validada con la skill dataviz: contraste >=3:1 sobre --surface/--surface-2, separacion
      CVD (daltonismo protan/deutan) >=12, franja roja excluida a proposito (el kit ya usa
      rojo para el estado "atrasado" en seguimientos, ningun color de categoria puede
-     confundirse con eso). Ver conversacion de diseño de jul-2026 para el detalle. */
-  --cat-calc:#0f88cc; --cat-gen:#00a69c; --cat-check:#66a159; --cat-guia:#845891;
+     confundirse con eso). Ver conversacion de diseño de jul-2026 para el detalle. Bajo de
+     7 a 6 colores (19-jul-2026, fusion de Checklists en Guias): se quito --cat-check y se
+     dejaron los otros 6 tal cual — un subconjunto de un set que ya cumplia todos los pares
+     sigue cumpliendo todos los pares, no hace falta re-validar. */
+  --cat-calc:#0f88cc; --cat-gen:#00a69c; --cat-guia:#845891;
   --cat-form:#13a5c9; --cat-excel:#a98c26; --cat-org:#ad482a;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -111,7 +114,6 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .home-ql-card.gold{--tile-accent:var(--gold);border-color:var(--gold);}
 .home-ql-card.cat-calc{--tile-accent:var(--cat-calc);}
 .home-ql-card.cat-gen{--tile-accent:var(--cat-gen);}
-.home-ql-card.cat-check{--tile-accent:var(--cat-check);}
 .home-ql-card.cat-guia{--tile-accent:var(--cat-guia);}
 .home-ql-card.cat-form{--tile-accent:var(--cat-form);}
 .home-ql-card.cat-excel{--tile-accent:var(--cat-excel);}
@@ -153,10 +155,14 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .tool-icon.gold{background:var(--gold-soft);}
 .tool-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);}
 .tool-subtitle{font-size:0.82rem;color:var(--text-muted);margin-top:2px;}
-.tool-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-left:8px;}
-.badge-hace{background:var(--navy-soft);color:var(--navy);}
-.badge-guia{background:var(--gold-soft);color:var(--accent-text-muted);}
-.badge-ordena{background:var(--success-soft);color:#1A6645;}
+/* Badges de tipo + etapa — reemplazan los badges viejos Hace/Guía/Ordena/Google Sheets
+   (19-jul-2026): ahora toda herramienta muestra las mismas 2 burbujas fijas debajo del
+   título, sin importar cuál sea, en vez de un badge cuyo significado no siempre coincidia
+   con la categoria real de la herramienta. */
+.tool-badges{display:flex;gap:6px;flex-wrap:wrap;margin:-6px 0 18px;}
+.tool-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;}
+.badge-tipo{background:color-mix(in srgb, var(--tb-c, var(--navy)) 18%, transparent);color:var(--tb-c, var(--navy));}
+.badge-etapa{background:var(--surface-2);color:var(--text-muted);border:1px solid var(--border);}
 .demo-badge{display:inline-block;padding:2px 10px;border-radius:999px;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.02em;vertical-align:middle;background:var(--gold-soft);color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.35);}
 
 /* ── FORMULARIO ── */

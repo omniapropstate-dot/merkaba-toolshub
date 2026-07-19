@@ -2,9 +2,10 @@ function toolAcuerdoTrabajo(){
   return `<div class="tool-section" id="tool-acuerdo">
     <div class="tool-header">
       <div class="tool-icon">📝</div>
-      <div><div class="tool-title">Acuerdo de trabajo <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Acuerdo de trabajo</div>
       <div class="tool-subtitle">Completa los datos y genera un acuerdo en PDF con tu marca. No es un contrato legal vinculante — es un compromiso de palabra puesto en papel.</div></div>
     </div>
+    ${badgesHerramienta('acuerdo-trabajo')}
     <div class="form-row cols-2">
       <div class="form-group"><label>Nombre del propietario</label><input id="ac-propietario" type="text" placeholder="Juan Mamani"/></div>
       <div class="form-group"><label>CI del propietario</label><input id="ac-ci" type="text" placeholder="1234567 LP"/></div>
@@ -51,9 +52,10 @@ function toolPresentacionPersonal(){
   return `<div class="tool-section" id="tool-presentacion">
     <div class="tool-header">
       <div class="tool-icon">&#128100;</div>
-      <div><div class="tool-title">Presentacion personal <span class="tool-badge badge-hace">Hace</span></div>
+      <div><div class="tool-title">Presentacion personal</div>
       <div class="tool-subtitle">Genera una pagina de presentacion profesional con tus datos del perfil lista para compartir con propietarios y compradores.</div></div>
     </div>
+    ${badgesHerramienta('presentacion-personal-word')}
     <div class="form-group"><label>Especialidad principal</label>
       <select id="pres-esp">
         <option>Venta y alquiler de inmuebles residenciales</option>
