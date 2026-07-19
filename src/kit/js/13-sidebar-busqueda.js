@@ -142,10 +142,10 @@ function homeAccToggle(id){
 function onSearchInput(q){
   var res = $('home-search-results');
   if(!res) return;
-  q = (q||'').trim().toLowerCase();
+  q = _normalizarTexto((q||'').trim());
   if(q.length < 2){ res.hidden = true; res.innerHTML = ''; return; }
   var hits = SEARCH_INDEX.filter(function(t){
-    return t.nombre.toLowerCase().indexOf(q) >= 0 || t.tipo.toLowerCase().indexOf(q) >= 0;
+    return _normalizarTexto(t.nombre).indexOf(q) >= 0 || _normalizarTexto(t.tipo).indexOf(q) >= 0;
   });
   if(hits.length === 0){
     res.innerHTML = '<div style="font-size:0.82rem;color:var(--text-muted);padding:8px 0;">Sin resultados.</div>';

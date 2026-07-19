@@ -12,6 +12,10 @@ function $(id){ return document.getElementById(id); }
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+// Quita tildes/diacriticos y pasa a minusculas, para que el buscador encuentre
+// "comision" aunque el texto real diga "comisión".
+function _normalizarTexto(s){ return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
+
 // Cuenta un numero grande de resultado (result-hero-num) desde su valor anterior hasta
 // el nuevo en vez de saltar de golpe. formatFn recibe el valor (float) y devuelve el
 // texto a mostrar, ej: function(v){ return '$ '+Math.round(v).toLocaleString('es-BO'); }
