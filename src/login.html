@@ -39,7 +39,7 @@ html,body{min-height:100%;font-family:var(--ff-b);background:var(--bg);color:var
 .hero-icon{position:relative;width:100%;filter:drop-shadow(0 22px 38px rgba(0,0,0,0.45));animation:heroFloat 6.5s ease-in-out infinite;}
 @keyframes heroFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
 @keyframes heroGlowPulse{0%,100%{opacity:0.7;transform:scale(1);}50%{opacity:1;transform:scale(1.05);}}
-@media (prefers-reduced-motion: reduce){.hero-icon,.hero-icon-glow,.mkt-track{animation:none;}}
+@media (prefers-reduced-motion: reduce){.hero-icon,.hero-icon-glow,.mkt-track,h1{animation:none;}}
 
 /* LAYOUT */
 .page{display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1;}
@@ -56,6 +56,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:18p
 main{flex:1;display:flex;align-items:center;justify-content:center;padding:clamp(32px,5vw,64px) clamp(20px,5vw,60px);}
 .grid-wrap{position:relative;width:100%;max-width:940px;margin:0 auto;}
 .grid{width:100%;display:grid;grid-template-columns:1fr 400px;gap:clamp(32px,5vw,72px);align-items:center;}
+.copy-col{min-width:0;}
 @media(max-width:760px){
   .grid{grid-template-columns:1fr;max-width:420px;margin:0 auto;}
   .copy-col{text-align:center;}.stat-row{justify-content:center;}.stat-extra{justify-content:center;}.eyebrow{justify-content:center;}
@@ -66,12 +67,13 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:clamp
 .eyebrow{display:flex;align-items:center;gap:11px;margin-bottom:16px;}
 .eyebrow-rule{width:26px;height:1px;background:var(--gold);flex-shrink:0;}
 .eyebrow-text{font-family:var(--ff-m);font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);}
-h1{font-family:var(--ff-d);font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:700;line-height:1.03;letter-spacing:-0.035em;color:var(--t1);margin-bottom:14px;text-wrap:balance;}
+h1{font-family:var(--ff-d);font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:700;line-height:1.03;letter-spacing:-0.035em;color:var(--t1);margin-bottom:14px;text-wrap:balance;animation:h1Float 6.5s ease-in-out infinite;}
+@keyframes h1Float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 h1 em{font-style:normal;color:var(--gold);}
 .sub{font-size:clamp(0.9rem,1.2vw,1rem);color:var(--t2);line-height:1.7;max-width:44ch;margin-bottom:28px;}
 .stat-row{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
 .stat-n{font-family:var(--ff-d);font-size:clamp(1.8rem,3.6vw,2.4rem);font-weight:700;letter-spacing:-0.04em;color:var(--gold);line-height:1;}
-.stat-l{font-family:var(--ff-m);font-size:0.68rem;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;}
+.stat-l{font-family:var(--ff-b);font-size:0.8rem;font-weight:500;color:var(--t2);line-height:1.3;max-width:19ch;}
 .stat-extra{display:inline-flex;align-items:center;gap:7px;font-family:var(--ff-b);font-size:0.78rem;color:var(--t3);margin-bottom:22px;}
 .stat-extra svg{width:13px;height:13px;flex-shrink:0;opacity:0.8;}
 .stat-extra b{color:var(--t2);font-weight:600;}
@@ -169,13 +171,16 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
         <p class="sub">Herramientas, calculadoras y guías diseñadas para cerrar más operaciones en el mercado boliviano.</p>
         <div class="stat-row">
           <div class="stat-n">31</div>
-          <div class="stat-l">Herramientas</div>
+          <div class="stat-l">Herramientas que te ahorrarán tiempo y esfuerzo</div>
         </div>
         <div class="stat-extra">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 12 3l8 3.5-8 3.5-8-3.5Z"/><path d="M4 12l8 3.5 8-3.5"/><path d="M4 17.5l8 3.5 8-3.5"/></svg>
           + Biblioteca con <b>33 libros en PDF</b>
         </div>
         <p class="cobertura">Cubre todo el proceso: desde captar la propiedad hasta cobrar tu comisión.</p>
+        <section class="mkt-marquee" aria-hidden="true">
+          <div class="mkt-track" id="mkt-track"></div>
+        </section>
       </div>
 
       <!-- Access card -->
@@ -210,10 +215,6 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
       </div>
     </div>
   </main>
-
-  <section class="mkt-marquee" aria-hidden="true">
-    <div class="mkt-track" id="mkt-track"></div>
-  </section>
 
   <footer>
     <span class="ftr-text">© 2026 Merkaba Consulting Group</span>
