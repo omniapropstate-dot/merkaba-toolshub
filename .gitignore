@@ -2,3 +2,4 @@ worker.js
 __pycache__/
 *.pyc
 dist/
+.wrangler/
