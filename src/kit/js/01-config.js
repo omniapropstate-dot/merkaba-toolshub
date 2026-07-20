@@ -137,12 +137,11 @@ const LIMITE_SEGUIMIENTOS = AGENTE.plan === 'completo' ? 50 : 20;
 // ══════════════════════════════════════════════
 const HERRAMIENTAS_TIER2 = [
   'propuesta-propietario','acuerdo-trabajo',
-  'generador-anuncio','cartera-propiedades-excel',
+  'cartera-propiedades-excel',
   'diagnostico-comprador',
   'control-seguimientos-excel',
-  'manejador-objeciones','comparador-inmuebles','comparador-inmuebles-excel',
-  'calc-antictretico','calc-anticretico-excel',
-  'generador-referidos','reactivador-contactos',
+  'manejador-objeciones','comparador-inmuebles',
+  'calc-antictretico',
   'registro-comisiones-excel','presentacion-personal-word'
 ];
 const SOPORTE_WHATSAPP = '59169638816';
@@ -152,14 +151,14 @@ const SOPORTE_WHATSAPP = '59169638816';
 // ══════════════════════════════════════════════
 const FASES = [
   { id:'captacion', num:1, nombre:'Captación', desc:'Reunión con el propietario, precio de salida, acuerdo de trabajo', color:'navy', tools:['guia-captacion','propuesta-propietario','calc-comision','acuerdo-trabajo'] },
-  { id:'publicacion', num:2, nombre:'Publicación y marketing', desc:'Ficha de propiedad, canales, portales', color:'navy', tools:['ficha-propiedad','cartera-propiedades-excel','generador-anuncio'] },
+  { id:'publicacion', num:2, nombre:'Publicación y marketing', desc:'Ficha de propiedad, canales, portales', color:'navy', tools:['ficha-propiedad','cartera-propiedades-excel'] },
   { id:'interesados', num:3, nombre:'Atención de interesados', desc:'Primera respuesta, filtrar interesados, separar curiosos de compradores con intención real', color:'navy', tools:['respuesta-rapida','filtro-comprador'] },
-  { id:'visita', num:4, nombre:'La visita', desc:'Checklist antes de mostrar, leer señales de cierre', color:'navy', tools:['checklist-visita','guia-visita','diagnostico-comprador'] },
+  { id:'visita', num:4, nombre:'La visita', desc:'Checklist antes de mostrar, leer señales de cierre', color:'navy', tools:['checklist-visita','diagnostico-comprador'] },
   { id:'seguimiento', num:5, nombre:'Seguimiento post-visita', desc:'La mayoría de ventas se cierra después de 5 contactos o más. Aquí están las herramientas para no perder el hilo', color:'gold', tools:['generador-seguimiento','tablero-seguimientos','control-seguimientos-excel'] },
-  { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles','comparador-inmuebles-excel'] },
-  { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico','calc-anticretico-excel'] },
-  { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que la mayoría ignora. Un cliente satisfecho puede traerte 3 más', color:'gold', tools:['mensaje-postventa','generador-referidos','reactivador-contactos'] },
-  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, mensajes para cada momento', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes','biblioteca'] },
+  { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles'] },
+  { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico'] },
+  { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que la mayoría ignora. Un cliente satisfecho puede traerte 3 más', color:'gold', tools:['mensaje-postventa'] },
+  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, scripts de captación', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes','biblioteca'] },
 ];
 
 // Iconos de linea propios (24x24, trazo 1.6, currentColor) — reemplazan los emoji
@@ -173,10 +172,10 @@ const SVG_ICON_ORG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
 
 const TIPOS = [
   { id:'comisiones', icon:SVG_ICON_CALC, catClass:'cat-calc', nombre:'Calculadoras', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
-  { id:'mensajes', icon:SVG_ICON_GEN, catClass:'cat-gen', nombre:'Mensajes listos para enviar', tools:['respuesta-rapida','generador-seguimiento','mensaje-postventa','generador-anuncio','generador-referidos','reactivador-contactos','manejador-objeciones','banco-scripts'] },
+  { id:'mensajes', icon:SVG_ICON_GEN, catClass:'cat-gen', nombre:'Mensajes listos para enviar', tools:['respuesta-rapida','generador-seguimiento','mensaje-postventa','manejador-objeciones','banco-scripts'] },
   { id:'documentos', icon:SVG_ICON_FORM, catClass:'cat-form', nombre:'Documentos listos para compartir', tools:['ficha-propiedad','comparador-inmuebles','propuesta-propietario','acuerdo-trabajo','presentacion-personal-word'] },
-  { id:'guias', icon:SVG_ICON_GUIA, catClass:'cat-guia', nombre:'Guías y evaluaciones rápidas', tools:['checklist-visita','checklist-antictretico','guia-captacion','guia-legal','guia-visita','filtro-comprador','diagnostico-comprador'] },
-  { id:'excel', icon:SVG_ICON_EXCEL, catClass:'cat-excel', nombre:'Planillas de Excel', tools:['cartera-propiedades-excel','control-seguimientos-excel','comparador-inmuebles-excel','calc-anticretico-excel','registro-comisiones-excel'] },
+  { id:'guias', icon:SVG_ICON_GUIA, catClass:'cat-guia', nombre:'Guías y evaluaciones rápidas', tools:['checklist-visita','checklist-antictretico','guia-captacion','guia-legal','filtro-comprador','diagnostico-comprador'] },
+  { id:'excel', icon:SVG_ICON_EXCEL, catClass:'cat-excel', nombre:'Planillas de Excel', tools:['cartera-propiedades-excel','control-seguimientos-excel','registro-comisiones-excel'] },
   { id:'organizadores', icon:SVG_ICON_ORG, catClass:'cat-org', nombre:'Agendas y recordatorios', tools:['mis-plantillas','tablero-pendientes','tablero-seguimientos'] },
 ];
 

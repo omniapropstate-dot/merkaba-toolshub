@@ -17,7 +17,10 @@ function toolGeneradorSeguimiento(){
           <option value="3dias">3 días</option>
           <option value="1semana">1 semana</option>
           <option value="2semanas">2 semanas</option>
-          <option value="1mes">1 mes o más</option>
+          <option value="1mes">1 mes</option>
+          <option value="2a3meses">2-3 meses</option>
+          <option value="6meses">6 meses</option>
+          <option value="mas1anio">Más de 1 año</option>
         </select>
       </div>
       <div class="form-group"><label>¿Qué dijo al finalizar la visita?</label>
@@ -58,7 +61,7 @@ function generarSeguimiento(){
   const novedad = $('seg-novedad').value.trim();
   const agente = AGENTE.nombre;
 
-  const saludos = {'1dia':'Hola', '3dias':'Hola', '1semana':'Hola, espero que estés bien', '2semanas':'Hola, espero que estés bien', '1mes':'Hola, ¿cómo estás?'};
+  const saludos = {'1dia':'Hola', '3dias':'Hola', '1semana':'Hola, espero que estés bien', '2semanas':'Hola, espero que estés bien', '1mes':'Hola, ¿cómo estás?', '2a3meses':'Hola, hace tiempo no hablamos', '6meses':'Hola, ha pasado tiempo', 'mas1anio':'Hola, ha pasado bastante tiempo'};
   const saludo = saludos[tiempo];
 
   let cuerpo = '';
@@ -209,6 +212,10 @@ function toolCalculadoraAntictretico(){
       <div class="form-group"><label>Tipo de cambio paralelo</label><input id="anti-tc" type="number" placeholder="10.5" step="0.1"/></div>
       <div class="form-group"><label>Alquiler mensual equivalente (USD)</label><input id="anti-alquiler" type="number" placeholder="300"/></div>
     </div>
+    <div class="form-row cols-2">
+      <div class="form-group"><label>IT — Impuesto a la Transferencia (%)</label><input id="anti-it" type="number" placeholder="3" step="0.5"/></div>
+      <div class="form-group"><label>Gastos notariales estimados (USD)</label><input id="anti-notariales" type="number" placeholder="150"/></div>
+    </div>
     <div class="btn-group">
       <button class="btn btn-primary" onclick="calcAntictretico()">Calcular</button>
     </div>
@@ -220,6 +227,8 @@ function toolCalculadoraAntictretico(){
         <div class="result-hero-grid">
           <div class="result-hero-item"><div class="result-hero-item-label">Ahorro vs. alquiler</div><div class="result-hero-item-value" id="anti-ahorro">—</div></div>
           <div class="result-hero-item"><div class="result-hero-item-label">Rendimiento implícito</div><div class="result-hero-item-value" id="anti-rendimiento">—</div></div>
+          <div class="result-hero-item"><div class="result-hero-item-label">IT a pagar</div><div class="result-hero-item-value" id="anti-it-usd">—</div></div>
+          <div class="result-hero-item"><div class="result-hero-item-label">Capital neto (IT + notariales)</div><div class="result-hero-item-value" id="anti-neto">—</div></div>
         </div>
       </div>
       <div class="btn-group" style="margin-top:10px;">
@@ -239,15 +248,21 @@ function calcAntictretico(){
   const com = parseFloat($('anti-com').value)||3;
   const tc = parseFloat($('anti-tc').value)||10.5;
   const alquiler = parseFloat($('anti-alquiler').value)||0;
+  const itPct = parseFloat($('anti-it').value)||3;
+  const notariales = parseFloat($('anti-notariales').value)||0;
   if(!capital){ toast('Ingresa el capital del anticrético'); return; }
   const capBs = capital * tc;
   const comUSD = capital * (com/100);
   const totalAlquiler = alquiler * 12 * años;
   const rendimiento = alquiler>0 ? ((alquiler*12)/capital*100).toFixed(1) : '—';
+  const itUSD = capital * (itPct/100);
+  const capitalNeto = capital - itUSD - notariales;
   $('anti-cap-bs').textContent = 'Bs. '+capBs.toLocaleString('es-BO',{maximumFractionDigits:0});
   animarNumero('anti-com-usd', comUSD, function(v){ return '$ '+Math.round(v).toLocaleString('es-BO'); });
   $('anti-ahorro').textContent = alquiler>0 ? '$ '+totalAlquiler.toLocaleString('es-BO',{maximumFractionDigits:0})+' equiv.' : 'N/A';
   $('anti-rendimiento').textContent = rendimiento !== '—' ? rendimiento+'% anual' : '—';
+  $('anti-it-usd').textContent = '$ '+itUSD.toLocaleString('es-BO',{maximumFractionDigits:0});
+  $('anti-neto').textContent = '$ '+capitalNeto.toLocaleString('es-BO',{maximumFractionDigits:0});
   $('anti-resultado').hidden = false;
   flashResultado(document.querySelector('#anti-resultado .result-hero'));
 }

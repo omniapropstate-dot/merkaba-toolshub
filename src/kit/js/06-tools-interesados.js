@@ -68,7 +68,7 @@ function toolFiltroComprador(){
   let html = `<div class="tool-section" id="tool-filtro">
     <div class="tool-header">
       <div class="tool-icon">🔍</div>
-      <div><div class="tool-title">Filtro: ¿comprador real o mirón?</div>
+      <div><div class="tool-title">Filtro: ¿comprador real o mirón? (antes de la visita)</div>
       <div class="tool-subtitle">Antes de mostrar la propiedad, usa estas preguntas para saber si el interesado realmente puede y quiere comprar. Así no pierdes tiempo.</div></div>
     </div>
     ${badgesHerramienta('filtro-comprador')}

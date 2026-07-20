@@ -302,10 +302,15 @@ function toolMensajePostventa(){
     </div>
     <div class="form-row cols-2">
       <div class="form-group"><label>¿Cuánto tiempo pasó desde el cierre?</label>
-        <select id="pv-tiempo"><option>1 semana</option><option>1 mes</option><option>3 meses</option><option>6 meses</option></select>
+        <select id="pv-tiempo"><option>1 semana</option><option>1 mes</option><option>3 meses</option><option>6 meses</option><option>más de 1 año</option></select>
       </div>
       <div class="form-group"><label>Tipo de mensaje</label>
-        <select id="pv-msg"><option value="seguimiento">Preguntar cómo están</option><option value="referido">Pedir referidos</option><option value="aniversario">Aniversario de la operación</option></select>
+        <select id="pv-msg" onchange="pvToggleTono()"><option value="seguimiento">Preguntar cómo están</option><option value="referido">Pedir referidos</option><option value="aniversario">Aniversario de la operación</option><option value="reactivar_propietario">Reactivar propietario (ofrecerle vender/alquilar de nuevo)</option></select>
+      </div>
+    </div>
+    <div class="form-row cols-2" id="pv-tono-row" hidden>
+      <div class="form-group"><label>Tono del mensaje</label>
+        <select id="pv-tono"><option value="formal">Formal</option><option value="cercano">Cercano / amigable</option></select>
       </div>
     </div>
     <div class="btn-group">
@@ -324,18 +329,36 @@ function toolMensajePostventa(){
   </div>`;
 }
 
+function pvToggleTono(){
+  var row = $('pv-tono-row');
+  if(row) row.hidden = $('pv-msg').value !== 'referido';
+}
+
 function generarPostventa(){
   const nombre = $('pv-nombre').value.trim()||'el cliente';
   const tipo = $('pv-tipo').value;
   const tiempo = $('pv-tiempo').value;
   const msg = $('pv-msg').value;
+  const tono = $('pv-tono') ? $('pv-tono').value : 'formal';
   let texto = '';
   if(msg==='seguimiento'){
     texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Han pasado ${tiempo} desde que concretamos la ${tipo} y quería saber cómo están. Espero que todo haya ido excelente. Cualquier consulta que tengas sobre la propiedad, con gusto te ayudo.
 
 📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
   } else if(msg==='referido'){
-    texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conocen a alguien que esté buscando comprar, vender o alquilar en ${AGENTE.ciudad}, me alegra mucho si me recomiendan. El boca a boca es lo más valioso en este negocio.
+    if(tono==='cercano'){
+      texto = `Hola, ${nombre}! 😊 Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conocés a alguien que esté buscando comprar, vender o alquilar por ${AGENTE.ciudad}, me encantaría ayudarle — y te lo agradezco de corazón. 🙏
+
+${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+    } else {
+      texto = `Hola, ${nombre}. Soy ${AGENTE.nombre}. Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conocen a alguien que esté buscando comprar, vender o alquilar en ${AGENTE.ciudad}, me alegra mucho si me recomiendan. El boca a boca es lo más valioso en este negocio.
+
+📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
+    }
+  } else if(msg==='reactivar_propietario'){
+    texto = `Buenas, ${nombre}. Le saluda ${AGENTE.nombre}. Hace ${tiempo} tuvimos la oportunidad de trabajar juntos.
+
+Me comunico porque actualmente tengo clientes buscando propiedades en ${AGENTE.ciudad}. Si en algún momento piensa en vender, alquilar o hacer un anticrético, con mucho gusto le asesoro de nuevo.
 
 📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
   } else {

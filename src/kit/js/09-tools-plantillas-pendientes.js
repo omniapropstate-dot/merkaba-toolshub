@@ -5,22 +5,6 @@ function _scriptsPorCategoria(){
       {cat:'El propietario no contesta, insistís por WhatsApp', txt:`Hola, buenas, le escribe ${AGENTE.nombre}, agente inmobiliario en ${AGENTE.ciudad}. Le llamé hace un rato sobre su propiedad — cuando tenga un momento, me encantaría conversar sobre cómo puedo ayudarle a venderla al mejor precio. Quedo atento por este medio.`},
       {cat:'Después de la reunión, pedís la exclusiva', txt:`Fue un gusto conversar hoy. Para trabajar su propiedad con toda mi dedicación — publicación, filtro de interesados y negociación activa — le propongo trabajar en exclusiva por 60-90 días. Así evitamos que la propiedad se publique duplicada con precios distintos y perdamos seriedad frente a los compradores. ¿Le parece bien que preparemos el acuerdo?`},
     ],
-    'Primer contacto con un interesado': [
-      {cat:'Alguien pregunta el precio antes de darte sus datos', txt:`Hola! Con gusto te paso toda la información. El precio es $[precio]. Para enviarte la ficha completa con fotos y coordinar una visita si te interesa, ¿me confirmás tu nombre y si preferís que te contacte por acá o por WhatsApp?`},
-      {cat:'Consulta desde un portal (UltraCasas/InfoCasas) sin muchos datos', txt:`Hola, gracias por escribir. Soy ${AGENTE.nombre}. Te cuento que la propiedad sigue disponible — ¿querés que te comparta más fotos y detalles, o coordinamos directamente una visita?`},
-      {cat:'Respuesta a "ya tengo agente"', txt:`No hay problema, lo respeto. Solo le digo que si en algún momento la operación no avanza como espera, con gusto le muestro cómo trabajo. Aquí está mi número por si me necesita.`},
-    ],
-    'Seguimiento': [
-      {cat:'Cuando el cliente no contesta', txt:`Hola [nombre], soy ${AGENTE.nombre}. Te escribo brevemente — si ya tomaste una decisión sobre la propiedad, sin problema. Solo dime una palabra y no te molesto más. Si todavía estás evaluando, con gusto te ayudo a resolver dudas. ¡Saludos!`},
-      {cat:'Seguimiento a los 3 días de la visita', txt:`Hola [nombre], soy ${AGENTE.nombre}. Quería saber cómo quedaste pensando la propiedad que visitamos. ¿Tenés alguna duda que pueda ayudarte a resolver antes de que decidas?`},
-      {cat:'Reactivar a alguien que dijo "lo voy a pensar" hace semanas', txt:`Hola [nombre]! Sé que quedamos en que lo ibas a pensar hace un tiempo — no quería dejar de escribirte. ¿Seguís en la búsqueda? Si es así, tengo novedades que capaz te interesan.`},
-    ],
-    'Negociación y cierre': [
-      {cat:'Cuando el comprador pide descuento', txt:`Entiendo que quieres el mejor precio posible. Déjame ver qué puedo hacer — pero para conversarlo bien necesito saber: si el propietario acepta bajar el precio, ¿estás listo para avanzar esta semana?`},
-      {cat:'Cuando el vendedor quiere subir el precio', txt:`Le entiendo perfectamente. Sin embargo, el mercado en esta zona está pagando entre X y Y. Si salimos más alto, el inmueble va a estar meses en portales sin consultas, y eso lo perjudica a usted. ¿Probamos al precio de mercado por 60 días y ajustamos si hace falta?`},
-      {cat:'Cierre directo', txt:`Hemos visto todo, el precio está bien y el inmueble se ajusta a lo que buscas. ¿Qué necesitas para dar el siguiente paso hoy?`},
-      {cat:'Confirmar la cita de firma en notaría', txt:`Hola [nombre], le confirmo que la firma en notaría queda para el [fecha] a las [hora] en [dirección de la notaría]. Por favor lleve su cédula de identidad original. Cualquier duda antes, quedo a su disposición.`},
-    ],
   };
 }
 
@@ -53,8 +37,8 @@ function toolBancoScripts(){
   return `<div class="tool-section" id="tool-banco-scripts">
     <div class="tool-header">
       <div class="tool-icon">💬</div>
-      <div><div class="tool-title">Mensajes para cada momento</div>
-      <div class="tool-subtitle">Mensajes listos organizados por momento del proceso — desde captar al propietario hasta confirmar la firma. Copia el que necesites, ajústalo si hace falta y envía.</div></div>
+      <div><div class="tool-title">Scripts de captación</div>
+      <div class="tool-subtitle">Mensajes listos para captar un propietario nuevo — primera llamada, insistir por WhatsApp y pedir la exclusiva. Copia el que necesites, ajústalo si hace falta y envía.</div></div>
     </div>
     ${badgesHerramienta('banco-scripts')}
     ${cuerpo}

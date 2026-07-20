@@ -117,7 +117,7 @@ function buildComisionHTML(precio, pct, comUSD, comBs, neto, tc){
     +'</div></body></html>';
 }
 
-function buildAntictreticoHTML(capital, anos, comPct, tc, alquiler, capBs, comUSD, rendimiento){
+function buildAntictreticoHTML(capital, anos, comPct, tc, alquiler, capBs, comUSD, rendimiento, itPct, itUSD, notariales, capitalNeto){
   var rows = [
     ['Capital del antictretico','$ '+capital.toLocaleString('es-BO')],
     ['En bolivianos (TC Bs. '+tc+')','Bs. '+capBs.toLocaleString('es-BO',{maximumFractionDigits:0})],
@@ -125,6 +125,9 @@ function buildAntictreticoHTML(capital, anos, comPct, tc, alquiler, capBs, comUS
     ['Comision del agente ('+comPct+'%)','<strong style="color:var(--pdf-navy);">$ '+comUSD.toLocaleString('es-BO',{maximumFractionDigits:0})+'</strong>'],
     ['Alquiler mensual equiv.',alquiler?'$ '+alquiler.toLocaleString('es-BO')+'/mes':'No indicado'],
     ['Rendimiento implicito para propietario',rendimiento!=='—'?rendimiento+'% anual':'—'],
+    ['IT — Impuesto a la Transferencia ('+itPct+'%)','$ '+itUSD.toLocaleString('es-BO',{maximumFractionDigits:0})],
+    ['Gastos notariales estimados','$ '+notariales.toLocaleString('es-BO',{maximumFractionDigits:0})],
+    ['Capital neto (IT + notariales descontados)','<strong style="color:var(--pdf-navy);">$ '+capitalNeto.toLocaleString('es-BO',{maximumFractionDigits:0})+'</strong>'],
   ];
   var rowsHtml = rows.map(function(r,i){
     var bg = i%2===0?'#f8f9fc':'#fff';
@@ -321,12 +324,16 @@ async function generarPDFAntictretico(){
   var com = parseFloat($('anti-com').value)||3;
   var tc = parseFloat($('anti-tc').value)||10.5;
   var alquiler = parseFloat($('anti-alquiler').value)||0;
+  var itPct = parseFloat($('anti-it').value)||3;
+  var notariales = parseFloat($('anti-notariales').value)||0;
   if(!capital){ toast('Ingresa el capital del antictretico primero'); return; }
   var capBs = capital*tc;
   var comUSD = capital*(com/100);
   var rendimiento = alquiler>0?((alquiler*12)/capital*100).toFixed(1)+'%':'—';
+  var itUSD = capital*(itPct/100);
+  var capitalNeto = capital - itUSD - notariales;
   toast('Preparando PDF...');
-  try{ await _loadLibs(); await renderPDF(buildAntictreticoHTML(capital,anos,com,tc,alquiler,capBs,comUSD,rendimiento),'Resumen_Antictretico.pdf'); }
+  try{ await _loadLibs(); await renderPDF(buildAntictreticoHTML(capital,anos,com,tc,alquiler,capBs,comUSD,rendimiento,itPct,itUSD,notariales,capitalNeto),'Resumen_Antictretico.pdf'); }
   catch(e){ toast('Error: '+(e.message||'error')); }
 }
 
