@@ -814,8 +814,12 @@ function empezarHerramienta(){
   var m = _muestraActual;
   $('caratula-actual').hidden = true;
   var real = $('tool-real');
+  var waMsg = 'Hola! Quiero mi propio acceso al Kit del Agente Inmobiliario.';
+  var wa = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(waMsg);
   var nombreHtml = m.necesitaNombre
-    ? '<div class="nombre-box"><label>Tu nombre (aparece en el resultado)</label><input type="text" id="mk-nombre-input" placeholder="Ej: Juan Pérez" oninput="actualizarNombre()"/></div>'
+    ? '<div class="nombre-box"><label>Tu nombre (aparece en el resultado)</label><input type="text" id="mk-nombre-input" placeholder="Ej: Juan Pérez" oninput="actualizarNombre()"/>'
+      + '<p style="font-size:0.8rem;color:var(--gold);margin:10px 0 0;line-height:1.5;">¿Quieres agregar también tu foto, tu celular y tu correo? Eso ya es parte del Plan Esencial o Profesional. <a href="'+wa+'" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;">Escríbenos por WhatsApp</a></p>'
+      + '</div>'
     : '';
   real.innerHTML = nombreHtml + m.render();
   real.hidden = false;
