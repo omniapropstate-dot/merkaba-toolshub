@@ -9,6 +9,17 @@ function buildSidebar(){
     ph.innerHTML = `<button class="phase-btn" id="sidebar-phase-${fi}" onclick="showPhase(${fi})"><span class="phase-num">${f.num||'∞'}</span>${f.nombre}</button>`;
     container.appendChild(ph);
   });
+  container.appendChild(_sidebarBibliotecaRow());
+}
+
+// Biblioteca no pertenece a ninguna FASE ni TIPO — fila aparte, separada con un
+// divisor, al final de ambas listas (Por etapa y Por tipo) del sidebar.
+function _sidebarBibliotecaRow(){
+  const ph = document.createElement('div');
+  ph.className = 'sidebar-phase';
+  ph.style.cssText = 'margin-top:6px;padding-top:6px;border-top:1px solid var(--border);';
+  ph.innerHTML = `<button class="phase-btn" onclick="showBiblioteca()"><span class="phase-num">📚</span>Biblioteca</button>`;
+  return ph;
 }
 
 // ══════════════════════════════════════════════
@@ -134,7 +145,6 @@ function renderTool(id){
     case 'registro-comisiones-excel': return toolSheetExterno('registro-comisiones-excel','&#128176;','Registro de comisiones del mes','Cu&#225;nto ganaste, cu&#225;nto te deben &mdash; control mensual simple.','https://docs.google.com/spreadsheets/d/14K14F8ly5eft-XRGhZjlX8VH2-ah9J07/edit?usp=sharing');
     case 'acuerdo-trabajo': return toolAcuerdoTrabajo();
     case 'presentacion-personal-word': return toolPresentacionPersonal();
-    case 'biblioteca': return toolBiblioteca();
     default: return `<div class="tool-section"><p style="color:var(--text-muted);">Herramienta "${id}" en construcción.</p></div>`;
   }
 }

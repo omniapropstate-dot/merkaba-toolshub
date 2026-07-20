@@ -306,6 +306,7 @@ function filtrarClientes(q){
 function clienteRowHTML(c){
   const f=new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'});
   const plan=c.plan||'basico';
+  const regalos=c.regalos_pronto_pago||0;
   const id=c.id;
   const esDemo=id===DEMO_CLIENTE_ID;
   const meta=[c.ciudad,c.whatsapp].filter(Boolean).join(' · ')||'—';
@@ -334,6 +335,13 @@ function clienteRowHTML(c){
         +'<div class="cc-field"><span>Ciudad</span><b>'+esc(c.ciudad||'—')+'</b></div>'
         +'<div class="cc-field"><span>WhatsApp</span><b>'+esc(c.whatsapp||'—')+'</b></div>'
         +'<div class="cc-field"><span>Email</span><b>'+esc(c.email||'—')+'</b></div>'
+        +'<div class="cc-field"><span>Regalo pronto pago</span><b>'
+          +'<select data-id="'+id+'" onchange="cambiarRegalos(this)">'
+            +'<option value="0"'+(regalos===0?' selected':'')+'>Sin regalo</option>'
+            +'<option value="1"'+(regalos===1?' selected':'')+'>1 regalo</option>'
+            +'<option value="2"'+(regalos===2?' selected':'')+'>2 regalos</option>'
+          +'</select>'
+        +'</b></div>'
         +fotoHTML
         +'<div class="cc-since">Cliente desde '+f+'</div>'
         +'<div class="cc-actions">'
@@ -421,6 +429,12 @@ async function cambiarPlan(btn){
   if(error||!data||!data.ok) return;
   btn.className='plan-badge '+data.plan;
   btn.textContent=data.plan==='completo'?'Completo':'Basico';
+}
+
+async function cambiarRegalos(sel){
+  const cantidad=parseInt(sel.value,10);
+  const {data,error}=await sb.rpc('admin_set_regalos',{admin_pwd:APWD,p_id:sel.dataset.id,p_cantidad:cantidad});
+  if(error||!data||!data.ok){ alert('No se pudo guardar.'); return; }
 }
 
 async function toggleActivo(btn){

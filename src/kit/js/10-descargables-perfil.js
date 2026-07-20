@@ -175,6 +175,13 @@ function buildMobileContent(tab, btnEl){
     btn.onclick = function(){ setSidebarTab(tab); if(tab==='etapas') showPhase(i); else showTipo(i); toggleMobileMenu(); };
     listEl.appendChild(btn);
   });
+  // Biblioteca no pertenece a ninguna FASE ni TIPO — fila aparte, separada con
+  // un divisor, al final de las dos pestanas (Por etapa y Por tipo).
+  var bibBtn = document.createElement('button');
+  bibBtn.style.cssText = 'width:100%;text-align:left;padding:10px 20px;background:none;border:none;border-top:1px solid var(--border);cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--gold);';
+  bibBtn.innerHTML = '📚 Biblioteca';
+  bibBtn.onclick = function(){ showBiblioteca(); toggleMobileMenu(); };
+  listEl.appendChild(bibBtn);
 }
 
 

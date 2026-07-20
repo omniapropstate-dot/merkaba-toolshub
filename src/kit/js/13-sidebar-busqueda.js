@@ -41,6 +41,7 @@ function buildSidebarTipos(){
     ph.innerHTML = '<button class="phase-btn" id="sidebar-tipo-'+ti+'" onclick="showTipo('+ti+')"><span class="phase-num" style="font-size:0.9rem;">'+t.icon+'</span>'+t.nombre+'</button>';
     container.appendChild(ph);
   });
+  container.appendChild(_sidebarBibliotecaRow());
 }
 
 function showTipo(idx){

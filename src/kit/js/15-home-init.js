@@ -89,20 +89,15 @@ function initHome(){
   var ql = $('home-ql');
   if(ql){
     var tipoCards = TIPOS.map(function(t,i){
-      return '<button class="home-ql-card '+t.catClass+'" onclick="showTipo('+i+')">'
+      return '<button class="home-ql-card" onclick="showTipo('+i+')">'
         +'<span class="home-ql-icon">'+t.icon+'</span>'
         +'<span class="home-ql-count">'+t.tools.length+'</span>'
         +'<span class="home-ql-name">'+t.nombre+'</span>'
         +'</button>';
     }).join('');
-    tipoCards += '<button class="home-ql-card bib" onclick="showBiblioteca()">'
-      +'<span class="home-ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 12 3l8 3.5-8 3.5-8-3.5Z"/><path d="M4 12l8 3.5 8-3.5"/><path d="M4 17.5l8 3.5 8-3.5"/></svg></span>'
-      +'<span class="home-ql-count">33</span>'
-      +'<span class="home-ql-name">Biblioteca</span>'
-      +'</button>';
     var etapaCards = FASES.filter(function(f){ return f.id!=='transversal'; }).map(function(f){
       var fi = FASES.indexOf(f);
-      return '<button class="home-ql-card'+(f.color==='gold'?' gold':'')+'" onclick="showPhase('+fi+')">'                                                           
+      return '<button class="home-ql-card" onclick="showPhase('+fi+')">'
         +'<span class="home-ql-count" style="font-size:1rem;">'+f.num+'</span>'
         +'<span class="home-ql-name" style="font-weight:600;color:var(--text);">'+f.nombre+'</span>'
         +'<span class="home-ql-name">'+f.tools.length+' herr.</span>'
@@ -111,7 +106,7 @@ function initHome(){
     ql.innerHTML =
       '<p class="home-ql-title">¿Cómo querés ver las herramientas?</p>'
       +'<div class="home-acc">'
-      +'<button class="home-acc-hdr" onclick="homeAccToggle(\'acc-tipo\')">'                 
+      +'<button class="home-acc-hdr" onclick="homeAccToggle(\'acc-tipo\')">'
       +'<span>🔧 Por tipo de herramienta</span>'
       +'<span id="acc-tipo-arr" class="home-acc-arr">▼</span>'
       +'</button>'
@@ -125,7 +120,24 @@ function initHome(){
       +'</button>'
       +'<div id="acc-etapa" class="home-acc-body-wrap"><div class="home-acc-body"><div class="home-acc-body-inner">'
       +'<div class="home-ql-grid">'+etapaCards+'</div>'
-      +'</div></div></div></div>';
+      +'</div></div></div></div>'
+      +'<button class="home-acc-hdr" style="margin-top:10px;" onclick="showBiblioteca()">'
+      +'<span>📚 Biblioteca — 33 libros en PDF</span>'
+      +'</button>';
+  }
+
+  // regalos por pronto pago — no pertenecen a ninguna FASE/TIPO
+  var rg = $('home-regalos-section');
+  if(rg){
+    var nReg = AGENTE.regalosProntoPago || 0;
+    if(nReg <= 0){
+      rg.innerHTML = '';
+    } else {
+      var regCards = '';
+      if(nReg >= 1) regCards += '<button class="home-ql-card" onclick="showRegalo(1)"><span class="home-ql-icon">🛡️</span><span class="home-ql-name" style="font-weight:600;color:var(--text);">Defiende tu comisión</span></button>';
+      if(nReg >= 2) regCards += '<button class="home-ql-card" onclick="showRegalo(2)"><span class="home-ql-icon">📈</span><span class="home-ql-name" style="font-weight:600;color:var(--text);">¿Cuánto voy a ganar este mes?</span></button>';
+      rg.innerHTML = '<p class="home-ql-title">🎁 Tus regalos por pronto pago</p><div class="home-ql-grid">'+regCards+'</div>';
+    }
   }
 }
 

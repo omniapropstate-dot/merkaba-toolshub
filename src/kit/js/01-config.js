@@ -126,6 +126,7 @@ const AGENTE = {
   email: localStorage.getItem('mk_email') || '',
   plan: localStorage.getItem('mk_plan') || 'basico',
   tema: localStorage.getItem('mk_tema') || 'dorado',
+  regalosProntoPago: parseInt(localStorage.getItem('mk_regalos') || '0', 10),
   esDemo: localStorage.getItem('mk_id') === DEMO_CLIENTE_ID
 };
 document.getElementById('agent-badge').textContent = AGENTE.nombre;
@@ -150,19 +151,19 @@ const SOPORTE_WHATSAPP = '59169638816';
 // FASES Y HERRAMIENTAS
 // ══════════════════════════════════════════════
 const FASES = [
-  { id:'captacion', num:1, nombre:'Captación', desc:'Reunión con el propietario, precio de salida, acuerdo de trabajo', color:'navy', tools:['guia-captacion','propuesta-propietario','calc-comision','acuerdo-trabajo'] },
-  { id:'publicacion', num:2, nombre:'Publicación y marketing', desc:'Ficha de propiedad, canales, portales', color:'navy', tools:['ficha-propiedad','cartera-propiedades-excel'] },
-  { id:'interesados', num:3, nombre:'Atención de interesados', desc:'Primera respuesta, filtrar interesados, separar curiosos de compradores con intención real', color:'navy', tools:['respuesta-rapida','filtro-comprador'] },
-  { id:'visita', num:4, nombre:'La visita', desc:'Checklist antes de mostrar, leer señales de cierre', color:'navy', tools:['checklist-visita','diagnostico-comprador'] },
-  { id:'seguimiento', num:5, nombre:'Seguimiento post-visita', desc:'La mayoría de ventas se cierra después de 5 contactos o más. Aquí están las herramientas para no perder el hilo', color:'gold', tools:['generador-seguimiento','tablero-seguimientos','control-seguimientos-excel'] },
-  { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', color:'navy', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles'] },
-  { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', color:'navy', tools:['guia-legal','checklist-antictretico','calc-antictretico'] },
-  { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que la mayoría ignora. Un cliente satisfecho puede traerte 3 más', color:'gold', tools:['mensaje-postventa'] },
-  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, scripts de captación', color:'navy', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes','biblioteca'] },
+  { id:'captacion', num:1, nombre:'Captación', desc:'Reunión con el propietario, precio de salida, acuerdo de trabajo', tools:['guia-captacion','propuesta-propietario','calc-comision','acuerdo-trabajo'] },
+  { id:'publicacion', num:2, nombre:'Publicación y marketing', desc:'Ficha de propiedad, canales, portales', tools:['ficha-propiedad','cartera-propiedades-excel'] },
+  { id:'interesados', num:3, nombre:'Atención de interesados', desc:'Primera respuesta, filtrar interesados, separar curiosos de compradores con intención real', tools:['respuesta-rapida','filtro-comprador'] },
+  { id:'visita', num:4, nombre:'La visita', desc:'Checklist antes de mostrar, leer señales de cierre', tools:['checklist-visita','diagnostico-comprador'] },
+  { id:'seguimiento', num:5, nombre:'Seguimiento post-visita', desc:'La mayoría de ventas se cierra después de 5 contactos o más. Aquí están las herramientas para no perder el hilo', tools:['generador-seguimiento','tablero-seguimientos','control-seguimientos-excel'] },
+  { id:'negociacion', num:6, nombre:'Negociación y cierre', desc:'Objeciones, doble tipo de cambio, comparar inmuebles', tools:['manejador-objeciones','calc-tipo-cambio','comparador-inmuebles'] },
+  { id:'legal', num:7, nombre:'Proceso legal', desc:'Folio real, minuta, anticrético, documentos', tools:['guia-legal','checklist-antictretico','calc-antictretico'] },
+  { id:'postventa', num:8, nombre:'Post-venta y referidos', desc:'La etapa que la mayoría ignora. Un cliente satisfecho puede traerte 3 más', tools:['mensaje-postventa'] },
+  { id:'transversal', num:0, nombre:'Recursos transversales', desc:'Comisiones, presentación, scripts de captación', tools:['registro-comisiones-excel','presentacion-personal-word','banco-scripts','mis-plantillas','tablero-pendientes'] },
 ];
 
 // Iconos de linea propios (24x24, trazo 1.6, currentColor) — reemplazan los emoji
-// de TIPOS. catClass fija el color de la categoria via --cat-* en styles.css.
+// de TIPOS. Usan el color del tema del kit (--navy), no un color propio por categoria.
 const SVG_ICON_CALC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="4" rx="1"/><circle cx="7.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.5" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg>';
 const SVG_ICON_GEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
 const SVG_ICON_GUIA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5Z"/></svg>';
@@ -171,12 +172,12 @@ const SVG_ICON_EXCEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
 const SVG_ICON_ORG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="5" height="16" rx="1.3"/><rect x="9.7" y="4" width="5" height="10" rx="1.3"/><rect x="15.9" y="4" width="5" height="13" rx="1.3"/></svg>';
 
 const TIPOS = [
-  { id:'comisiones', icon:SVG_ICON_CALC, catClass:'cat-calc', nombre:'Calculadoras', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
-  { id:'mensajes', icon:SVG_ICON_GEN, catClass:'cat-gen', nombre:'Mensajes listos para enviar', tools:['respuesta-rapida','generador-seguimiento','mensaje-postventa','manejador-objeciones','banco-scripts'] },
-  { id:'documentos', icon:SVG_ICON_FORM, catClass:'cat-form', nombre:'Documentos listos para compartir', tools:['ficha-propiedad','comparador-inmuebles','propuesta-propietario','acuerdo-trabajo','presentacion-personal-word'] },
-  { id:'guias', icon:SVG_ICON_GUIA, catClass:'cat-guia', nombre:'Guías y evaluaciones rápidas', tools:['checklist-visita','checklist-antictretico','guia-captacion','guia-legal','filtro-comprador','diagnostico-comprador'] },
-  { id:'excel', icon:SVG_ICON_EXCEL, catClass:'cat-excel', nombre:'Planillas de Excel', tools:['cartera-propiedades-excel','control-seguimientos-excel','registro-comisiones-excel'] },
-  { id:'organizadores', icon:SVG_ICON_ORG, catClass:'cat-org', nombre:'Agendas y recordatorios', tools:['mis-plantillas','tablero-pendientes','tablero-seguimientos'] },
+  { id:'comisiones', icon:SVG_ICON_CALC, nombre:'Calculadoras', tools:['calc-comision','calc-tipo-cambio','calc-antictretico'] },
+  { id:'mensajes', icon:SVG_ICON_GEN, nombre:'Mensajes listos para enviar', tools:['respuesta-rapida','generador-seguimiento','mensaje-postventa','manejador-objeciones','banco-scripts'] },
+  { id:'documentos', icon:SVG_ICON_FORM, nombre:'Documentos listos para compartir', tools:['ficha-propiedad','comparador-inmuebles','propuesta-propietario','acuerdo-trabajo','presentacion-personal-word'] },
+  { id:'guias', icon:SVG_ICON_GUIA, nombre:'Guías y evaluaciones rápidas', tools:['checklist-visita','checklist-antictretico','guia-captacion','guia-legal','filtro-comprador','diagnostico-comprador'] },
+  { id:'excel', icon:SVG_ICON_EXCEL, nombre:'Planillas de Excel', tools:['cartera-propiedades-excel','control-seguimientos-excel','registro-comisiones-excel'] },
+  { id:'organizadores', icon:SVG_ICON_ORG, nombre:'Agendas y recordatorios', tools:['mis-plantillas','tablero-pendientes','tablero-seguimientos'] },
 ];
 
 // ══════════════════════════════════════════════
@@ -193,7 +194,7 @@ function badgesHerramienta(id){
   var fase = _faseDeHerramienta(id);
   if(!tipo && !fase) return '';
   var html = '<div class="tool-badges">';
-  if(tipo) html += '<span class="tool-badge badge-tipo" style="--tb-c:var(--'+tipo.catClass+')">'+tipo.nombre+'</span>';
+  if(tipo) html += '<span class="tool-badge badge-tipo">'+tipo.nombre+'</span>';
   if(fase) html += '<span class="tool-badge badge-etapa">'+(fase.num?'Etapa '+fase.num+' &middot; ':'')+fase.nombre+'</span>';
   html += '</div>';
   return html;

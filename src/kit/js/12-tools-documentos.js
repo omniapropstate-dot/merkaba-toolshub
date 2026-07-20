@@ -32,20 +32,6 @@ function toolAcuerdoTrabajo(){
 }
 
 // ══════════════════════════════════════════════
-// HERRAMIENTA: BIBLIOTECA
-// ══════════════════════════════════════════════
-function toolBiblioteca(){
-  return '<div class="tool-section" id="tool-biblioteca">'
-    +'<div class="tool-header"><div>'
-    +'<div class="tool-title">📚 Biblioteca</div>'
-    +'<div class="tool-subtitle">Libros y guías en PDF para agentes inmobiliarios.</div>'
-    +'</div></div>'
-    +'<a href="https://drive.google.com/drive/folders/1pAF74TtE_bpi2qybJ4az9k_gQaROsvt2" target="_blank" rel="noopener" '
-    +'class="btn btn-primary" style="display:inline-block;text-decoration:none;margin-top:4px;">Abrir biblioteca en Google Drive →</a>'
-    +'</div>';
-}
-
-// ══════════════════════════════════════════════
 // HERRAMIENTA: PRESENTACION PERSONAL
 // ══════════════════════════════════════════════
 function toolPresentacionPersonal(){
