@@ -68,12 +68,21 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .plan-toggle{width:100%;text-align:left;background:none;border:none;border-top:1px solid var(--border);padding:12px 0 0;margin-top:4px;color:var(--text-muted);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
 .plan-carrusel-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease;}
 .plan-carrusel-inner{overflow:hidden;}
-.plan-carrusel{display:flex;flex-wrap:wrap;gap:8px;padding-top:12px;}
-.tipo-bubble{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 6px;text-align:center;flex:1;min-width:76px;}
-.tipo-bubble-icon{color:var(--gold);display:inline-flex;margin-bottom:4px;}
-.tipo-bubble-icon svg{width:20px;height:20px;}
-.tipo-bubble-count{font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:0.95rem;}
-.tipo-bubble-nombre{font-size:0.6rem;color:var(--text-muted);line-height:1.2;margin-top:2px;}
+.plan-list{list-style:none;padding:10px 2px 2px;margin:0;display:flex;flex-direction:column;gap:7px;}
+.plan-list li{font-size:0.78rem;color:var(--text-muted);line-height:1.4;padding-left:19px;position:relative;}
+.plan-list li::before{content:'✓';position:absolute;left:0;top:0;color:var(--gold);font-weight:700;}
+.plan-list li.lead{font-style:italic;font-size:0.76rem;padding-left:0;}
+.plan-list li.lead::before{content:'';}
+/* carrusel de categorias — cinta continua que se desliza sola, mismo patron que el de la landing (mkt-marquee) */
+.mkt-marquee{position:relative;width:100%;overflow:hidden;padding:14px 0 2px;margin-top:6px;border-top:1px solid var(--border);}
+.mkt-track{display:flex;gap:10px;width:max-content;animation:mktScroll 20s linear infinite;}
+@keyframes mktScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.mkt-card{flex-shrink:0;width:96px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);text-align:center;}
+.mkt-ico{color:var(--gold);display:inline-flex;}
+.mkt-ico svg{width:18px;height:18px;}
+.mkt-count{font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:0.9rem;}
+.mkt-name{font-size:0.6rem;color:var(--text-muted);line-height:1.2;}
+@media(prefers-reduced-motion:reduce){.mkt-track{animation:none;}}
 .plan-btn{display:block;text-align:center;margin-top:16px;width:100%;}
 .whatsapp-caja{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-top:24px;}
 .whatsapp-caja .icono{font-size:1.6rem;flex-shrink:0;}
@@ -676,26 +685,53 @@ const DESGLOSE = {
   ]
 };
 
+// Listado de herramientas por plan — copiado tal cual de la seccion de planes de login.html,
+// misma fuente que ya esta aprobada, para no duplicar/desalinear el texto en dos lugares.
+const BULLETS_ESENCIAL = [
+  'Calculadora de comisión','Calculadora tipo de cambio','Respuesta rápida al lead',
+  'Generador de seguimiento','Mensaje post-venta','Checklist de visita','Checklist anticrético',
+  'Guía de captación','Guía del proceso legal','Scripts de captación','Ficha de propiedad',
+  'Filtro de comprador (antes de la visita)','Mis plantillas','Tablero de pendientes','Seguimientos activos'
+];
+const BULLETS_PROFESIONAL = [
+  'Propuesta al propietario','Acuerdo de trabajo','Manejador de objeciones','Comparador de inmuebles',
+  'Diagnóstico del comprador (durante la visita)','Presentación personal','Calculadora de anticrético',
+  'Planilla de cartera de propiedades','Planilla de control de seguimientos','Planilla de registro de comisiones'
+];
+
 function togglePlanAcc(id){
   var el = $(id);
   var open = el.style.gridTemplateRows === '1fr';
   el.style.gridTemplateRows = open ? '0fr' : '1fr';
 }
 
-function planCard(nombre, precio, destacado, desglose, mensajeWA){
-  var idAcc = 'acc-'+nombre.toLowerCase().replace(/[^a-z]/g,'');
-  var bubbles = desglose.map(function(d){
-    return '<div class="tipo-bubble"><div class="tipo-bubble-icon">'+TIPOS_ICONS[d.icon]+'</div><div class="tipo-bubble-count">'+d.count+'</div><div class="tipo-bubble-nombre">'+esc(d.nombre)+'</div></div>';
+function buildTrack(id, desglose){
+  var el = $(id);
+  if(!el) return;
+  var cardsHtml = desglose.map(function(d){
+    return '<div class="mkt-card"><span class="mkt-ico">'+TIPOS_ICONS[d.icon]+'</span><span class="mkt-count">'+d.count+'</span><span class="mkt-name">'+esc(d.nombre)+'</span></div>';
   }).join('');
+  el.innerHTML = cardsHtml + cardsHtml; // duplicado para que el loop no se corte
+}
+
+function planCard(nombre, precio, destacado, desglose, bullets, leadText, mensajeWA){
+  var slug = nombre.toLowerCase().replace(/[^a-z]/g,'');
+  var idAcc = 'acc-'+slug;
+  var idTrack = 'track-'+slug;
   var total = desglose.reduce(function(a,b){ return a+b.count; },0);
   var wa = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(mensajeWA);
+  var bulletsHtml = (leadText ? '<li class="lead">'+esc(leadText)+'</li>' : '')
+    + bullets.map(function(b){ return '<li>'+esc(b)+'</li>'; }).join('');
   return '<div class="plan-card'+(destacado?' destacado':'')+'">'
     + '<div class="plan-nombre">'+esc(nombre)+'</div>'
     + '<div class="plan-precio">Bs '+precio+'</div>'
     + '<div class="plan-badge">♾️ Pago único</div>'
     + '<a class="btn btn-gold plan-btn" href="'+wa+'" target="_blank" rel="noopener">Elegir '+esc(nombre)+'</a>'
     + '<button class="plan-toggle" onclick="togglePlanAcc(\''+idAcc+'\')">Ver las '+total+' herramientas incluidas ▾</button>'
-    + '<div class="plan-carrusel-wrap" id="'+idAcc+'"><div class="plan-carrusel-inner"><div class="plan-carrusel">'+bubbles+'</div></div></div>'
+    + '<div class="plan-carrusel-wrap" id="'+idAcc+'"><div class="plan-carrusel-inner">'
+    +   '<ul class="plan-list">'+bulletsHtml+'</ul>'
+    +   '<div class="mkt-marquee" aria-hidden="true"><div class="mkt-track" id="'+idTrack+'"></div></div>'
+    + '</div></div>'
     + '</div>';
 }
 
@@ -706,9 +742,11 @@ function renderPlanes(){
     '<div class="planes-title">¿Te gustó? Esto es solo 1 de las 25 herramientas del kit completo</div>'
     + '<div class="planes-sub">Pago único, sin mensualidades</div>'
     + '<div class="planes-grid">'
-    + planCard('Plan Profesional', '350', true, DESGLOSE.profesional, msgProfesional)
-    + planCard('Plan Esencial', '250', false, DESGLOSE.esencial, msgEsencial)
+    + planCard('Plan Profesional', '350', true, DESGLOSE.profesional, BULLETS_PROFESIONAL, 'Todo lo del plan Esencial, más:', msgProfesional)
+    + planCard('Plan Esencial', '250', false, DESGLOSE.esencial, BULLETS_ESENCIAL, '', msgEsencial)
     + '</div>';
+  buildTrack('track-planprofesional', DESGLOSE.profesional);
+  buildTrack('track-planesencial', DESGLOSE.esencial);
 }
 
 // ══════════════════════════════════════════════
