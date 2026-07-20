@@ -120,7 +120,7 @@ function toolBloqueada(id){
   var wa = SOPORTE_WHATSAPP ? 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(msg) : '#';
   return `<div class="tool-section tool-locked" id="tool-bloqueada-${id}">
     ${headerHtml}
-    <div class="tool-locked-msg">🔒 Esta herramienta es parte del <b>Plan Profesional</b>. Actualizá tu acceso para desbloquearla junto con el resto de las herramientas de ese plan.</div>
+    <div class="tool-locked-msg">🔒 Esta herramienta es parte del <b>Plan Profesional</b>. Actualiza tu acceso para desbloquearla junto con el resto de las herramientas de ese plan.</div>
     <div class="btn-group">
       <a class="btn btn-gold" href="${wa}" target="_blank" rel="noopener">💬 Quiero actualizar mi plan</a>
     </div>

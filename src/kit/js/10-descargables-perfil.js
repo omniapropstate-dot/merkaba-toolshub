@@ -77,6 +77,15 @@ function _normalizeAvatarPhoto(dataUrl, callback){
 function cargarFoto(input){
   const file = input.files[0];
   if(!file) return;
+  if(AGENTE.esDemo){
+    var waMsg = 'Hola! Quiero mi propio acceso al Kit del Agente Inmobiliario.';
+    var wa = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(waMsg);
+    var msg = $('perfil-msg');
+    msg.style.color = 'var(--gold)';
+    msg.innerHTML = 'Para guardar una foto de perfil necesitas el Plan Esencial o el Plan Profesional. <a href="'+wa+'" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;">Escríbenos por WhatsApp</a>';
+    input.value = '';
+    return;
+  }
   const reader = new FileReader();
   reader.onload = function(e){
     _normalizeAvatarPhoto(e.target.result, async function(fotoCircular){
@@ -87,7 +96,6 @@ function cargarFoto(input){
         return;
       }
       $('photo-ring-preview').innerHTML = '<img src="'+fotoCircular+'" alt="foto"/>';
-      if(AGENTE.esDemo) return;
       const id = localStorage.getItem('mk_id'); if(!id) return;
       try{ await fetch(SB_URL+'/rest/v1/rpc/client_update_profile',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_id:id,p_nombre:localStorage.getItem('mk_nombre')||''  ,p_ciudad:localStorage.getItem('mk_ciudad')||''  ,p_whatsapp:localStorage.getItem('mk_whatsapp')||''  ,p_email:localStorage.getItem('mk_email')||''  ,p_foto:fotoCircular})}); }catch(e){}
     });
@@ -96,11 +104,18 @@ function cargarFoto(input){
 }
 
 async function guardarPerfil(){
+  const msg = $('perfil-msg');
+  if(AGENTE.esDemo){
+    var waMsg = 'Hola! Quiero mi propio acceso al Kit del Agente Inmobiliario.';
+    var wa = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(waMsg);
+    msg.style.color = 'var(--gold)';
+    msg.innerHTML = 'Para guardar cambios de perfil necesitas el Plan Esencial o el Plan Profesional. <a href="'+wa+'" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;">Escríbenos por WhatsApp</a>';
+    return;
+  }
   const nombre = $('perfil-nombre').value.trim();
   const ciudad = $('perfil-ciudad').value.trim();
   const whatsapp = $('perfil-whatsapp').value.trim();
   const email = $('perfil-email').value.trim();
-  const msg = $('perfil-msg');
   if(!nombre){ msg.style.color='#c0392b'; msg.textContent='El nombre no puede estar vacio.'; return; }
   const id = localStorage.getItem('mk_id');
   const tema = _temaSeleccionado || AGENTE.tema;

@@ -109,7 +109,7 @@ function initHome(){
         +'</button>';
     }).join('');
     ql.innerHTML =
-      '<p class="home-ql-title">¿Cómo querés ver las herramientas?</p>'
+      '<p class="home-ql-title">¿Cómo quieres ver las herramientas?</p>'
       +'<div class="home-acc">'
       +'<button class="home-acc-hdr" onclick="homeAccToggle(\'acc-tipo\')">'
       +'<span>🔧 Por tipo de herramienta</span>'

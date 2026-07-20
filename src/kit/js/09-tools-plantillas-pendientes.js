@@ -2,8 +2,8 @@ function _scriptsPorCategoria(){
   return {
     'Captación': [
       {cat:'Primera llamada a un propietario', txt:`Hola, buenos días, le habla ${AGENTE.nombre}, soy agente inmobiliario en ${AGENTE.ciudad}. Vi su propiedad publicada y me gustaría reunirme con usted para presentarle cómo puedo ayudarle a venderla al mejor precio. ¿Tendría 20 minutos esta semana?`},
-      {cat:'El propietario no contesta, insistís por WhatsApp', txt:`Hola, buenas, le escribe ${AGENTE.nombre}, agente inmobiliario en ${AGENTE.ciudad}. Le llamé hace un rato sobre su propiedad — cuando tenga un momento, me encantaría conversar sobre cómo puedo ayudarle a venderla al mejor precio. Quedo atento por este medio.`},
-      {cat:'Después de la reunión, pedís la exclusiva', txt:`Fue un gusto conversar hoy. Para trabajar su propiedad con toda mi dedicación — publicación, filtro de interesados y negociación activa — le propongo trabajar en exclusiva por 60-90 días. Así evitamos que la propiedad se publique duplicada con precios distintos y perdamos seriedad frente a los compradores. ¿Le parece bien que preparemos el acuerdo?`},
+      {cat:'El propietario no contesta, insiste por WhatsApp', txt:`Hola, buenas, le escribe ${AGENTE.nombre}, agente inmobiliario en ${AGENTE.ciudad}. Le llamé hace un rato sobre su propiedad — cuando tenga un momento, me encantaría conversar sobre cómo puedo ayudarle a venderla al mejor precio. Quedo atento por este medio.`},
+      {cat:'Después de la reunión, pide la exclusiva', txt:`Fue un gusto conversar hoy. Para trabajar su propiedad con toda mi dedicación — publicación, filtro de interesados y negociación activa — le propongo trabajar en exclusiva por 60-90 días. Así evitamos que la propiedad se publique duplicada con precios distintos y perdamos seriedad frente a los compradores. ¿Le parece bien que preparemos el acuerdo?`},
     ],
   };
 }
@@ -63,11 +63,11 @@ function toolMisPlantillas(){
     ${badgesHerramienta('mis-plantillas')}
     <div style="display:grid;gap:10px;margin-bottom:20px;">
       <div class="form-group"><label>Título de la plantilla</label><input id="plt-titulo" type="text" placeholder="Ej: Seguimiento día 3, Respuesta a precio alto..."/></div>
-      <div class="form-group"><label>Mensaje</label><textarea id="plt-contenido" rows="3" placeholder="Escribí o pegá aquí el mensaje que querés guardar..."></textarea></div>
+      <div class="form-group"><label>Mensaje</label><textarea id="plt-contenido" rows="3" placeholder="Escribe o pega aquí el mensaje que quieres guardar..."></textarea></div>
       <button class="btn btn-primary" style="align-self:flex-start;" onclick="guardarNuevaPlantilla()">💾 Guardar plantilla</button>
     </div>
     <div id="plt-lista-container">
-      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tenés plantillas guardadas.</div>
+      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tienes plantillas guardadas.</div>
     </div>
   </div>`;
 }
@@ -78,7 +78,7 @@ function setPlantillas(arr){ localStorage.setItem('mk_plantillas', JSON.stringif
 function guardarNuevaPlantilla(){
   const titulo = ($('plt-titulo').value||'').trim();
   const contenido = ($('plt-contenido').value||'').trim();
-  if(!titulo||!contenido){ toast('Completá el título y el mensaje'); return; }
+  if(!titulo||!contenido){ toast('Completa el título y el mensaje'); return; }
   const arr = getPlantillas();
   arr.unshift({id: Date.now(), titulo, contenido});
   setPlantillas(arr);
@@ -98,7 +98,7 @@ function renderPlantillasLista(){
   if(!cont) return;
   const arr = getPlantillas();
   if(!arr.length){
-    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tenés plantillas guardadas.</div>';
+    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Aún no tienes plantillas guardadas.</div>';
     return;
   }
   cont.innerHTML = '<div style="display:grid;gap:10px;">' + arr.map(p => {
@@ -135,7 +135,7 @@ function toolTableroPendientes(){
       <button class="btn btn-primary" onclick="agregarPendiente()">+ Agregar</button>
     </div>
     <div id="pend-lista-container">
-      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agregá la primera!</div>
+      <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agrega la primera!</div>
     </div>
     <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
       <div id="pend-contador" style="font-size:0.8rem;color:var(--text-muted);"></div>
@@ -150,7 +150,7 @@ function setPendientes(arr){ localStorage.setItem('mk_pendientes', JSON.stringif
 function agregarPendiente(){
   const input = $('pend-nueva');
   const texto = (input.value||'').trim();
-  if(!texto){ toast('Escribí una tarea primero'); return; }
+  if(!texto){ toast('Escribe una tarea primero'); return; }
   const arr = getPendientes();
   arr.push({id: Date.now(), texto, hecho: false});
   setPendientes(arr);
@@ -184,7 +184,7 @@ function renderPendientesLista(){
   if(!cont) return;
   const arr = getPendientes();
   if(!arr.length){
-    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agregá la primera!</div>';
+    cont.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">No hay tareas. ¡Agrega la primera!</div>';
     if(counter) counter.textContent='';
     return;
   }
@@ -209,7 +209,7 @@ function toolTableroSeguimientos(){
       <div class="tool-icon gold">🎯</div>
       <div>
         <div class="tool-title">Seguimientos activos</div>
-        <div class="tool-subtitle">La mayoría de leads se pierde por falta de seguimiento, no por mala calidad. Cargá a quién le debés seguir y el kit te avisa cuándo te toca. Tu plan permite hasta ${LIMITE_SEGUIMIENTOS} seguimientos activos.</div>
+        <div class="tool-subtitle">La mayoría de leads se pierde por falta de seguimiento, no por mala calidad. Carga a quién le debes seguir y el kit te avisa cuándo te toca. Tu plan permite hasta ${LIMITE_SEGUIMIENTOS} seguimientos activos.</div>
       </div>
     </div>
     ${badgesHerramienta('tablero-seguimientos')}
@@ -262,10 +262,10 @@ function _diasEntre(fechaISO){
 
 function agregarSeguimiento(){
   var nombre = ($('sg-nombre').value||'').trim();
-  if(!nombre){ toast('Escribí el nombre del cliente'); return; }
+  if(!nombre){ toast('Escribe el nombre del cliente'); return; }
   var arr = getSeguimientos();
   if(arr.length >= LIMITE_SEGUIMIENTOS){
-    toast('Llegaste al máximo de tu plan ('+LIMITE_SEGUIMIENTOS+'). Eliminá uno para agregar otro.');
+    toast('Llegaste al máximo de tu plan ('+LIMITE_SEGUIMIENTOS+'). Elimina uno para agregar otro.');
     return;
   }
   var propiedad = ($('sg-propiedad').value||'').trim();

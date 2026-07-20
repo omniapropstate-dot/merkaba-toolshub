@@ -283,7 +283,7 @@ function buildPresentacionHTML(especialidad, anos, zona, valor){
     +'<span style="background:#eef1f6;color:var(--pdf-navy);padding:6px 14px;border-radius:999px;font-size:0.8rem;font-weight:600;">Acompanamiento legal</span>'
     +'</div>'
     +(contacto.length?'<div style="background:linear-gradient(135deg,var(--pdf-navy),var(--pdf-navy-2));border-radius:12px;padding:20px 24px;color:#fff;">'
-    +'<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;">Contactame</div>'
+    +'<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;">Contacto</div>'
     +'<div style="display:flex;flex-direction:column;gap:6px;">'+contacto.map(function(c){ return '<div style="font-size:0.88rem;">'+c+'</div>'; }).join('')+'</div>'
     +'</div>':'')
     +'</div></body></html>';

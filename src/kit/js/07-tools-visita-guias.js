@@ -13,7 +13,7 @@ function toolChecklistVisita(){
       {txt:'Identificar señales positivas: preguntas sobre mudanza, medidas, vecinos',tag:''},
       {txt:'Preguntar: "¿Hay algo que te gustaría que fuera diferente?"',tag:'importante'},
       {txt:'Si toca las paredes, abre armarios o mide con el celular → señal de interés real',tag:''},
-      {txt:'Si dice "el precio está un poco alto" → no lo defiendas ahora, anotá y seguí mostrando',tag:'importante'},
+      {txt:'Si dice "el precio está un poco alto" → no lo defiendas ahora, anota y sigue mostrando',tag:'importante'},
     ]},
     {t:'Al finalizar la visita', items:[
       {txt:'Preguntar directamente: "¿Te interesa avanzar?"',tag:'obligatorio'},

@@ -20,33 +20,33 @@ const OBJECIONES_COMPRADOR = [
   ]},
   { situacion:'"Ya tengo otro agente / ya vi con otra inmobiliaria"', respuestas:[
     'No hay problema, valoro que ya estés viendo opciones. ¿Puedo preguntarte qué es lo que más te gustó de lo que viste? Así te muestro si esta propiedad cubre eso también.',
-    'Perfecto, comparar es lo más sano. Te dejo mi número — si en algún momento esa opción no avanza o querés otra alternativa, seguimos en contacto.',
+    'Perfecto, comparar es lo más sano. Te dejo mi número — si en algún momento esa opción no avanza o quieres otra alternativa, seguimos en contacto.',
     'Entiendo. Solo te cuento que esta propiedad tiene [diferencial]. Si eso te interesa, avísame y coordinamos otra visita.'
   ]},
   { situacion:'"Prefiero esperar a que baje el precio / el dólar"', respuestas:[
     'Entiendo la lógica, pero en este mercado las propiedades bien ubicadas no bajan de precio — con la inflación tienden más bien a subir. Esperar puede salirte más caro que decidir ahora.',
-    '¿Qué señal esperás para decidir que bajó lo suficiente? A veces esperar el momento perfecto hace que se pierda la propiedad que sí te convenía.',
+    '¿Qué señal esperas para decidir que bajó lo suficiente? A veces esperar el momento perfecto hace que se pierda la propiedad que sí te convenía.',
     'Si el tema es el tipo de cambio, podemos conversar con el propietario alguna alternativa de pago que te dé más margen.'
   ]},
   { situacion:'"Quiero consultarlo con mi pareja/familia primero"', respuestas:[
-    'Totalmente entendible, es una decisión importante. ¿Querés que coordinemos una segunda visita con ellos para que la vean juntos?',
+    'Totalmente entendible, es una decisión importante. ¿Quieres que coordinemos una segunda visita con ellos para que la vean juntos?',
     'Te armo un resumen con fotos, precio y detalles para que se lo compartas y lo conversen con toda la información a mano.',
-    '¿Hay algo puntual que creés que a ellos les puede generar dudas? Así te ayudo a tener la respuesta lista.'
+    '¿Hay algo puntual que crees que a ellos les puede generar dudas? Así te ayudo a tener la respuesta lista.'
   ]},
   { situacion:'"Me gusta todo menos la zona"', respuestas:[
     'Entiendo, la zona es clave. ¿Qué es específicamente lo que te preocupa — seguridad, distancia, servicios? Así te muestro alternativas similares en otra zona o te doy más info de esta.',
     'Te cuento que [dato positivo de la zona: crecimiento, nuevos accesos, seguridad]. A veces con más información la percepción cambia.',
-    'Si la zona es un tema cerrado para vos, avisame y te busco opciones parecidas en otro sector.'
+    'Si la zona es un tema cerrado para ti, avísame y te busco opciones parecidas en otro sector.'
   ]},
   { situacion:'"Quiero descuento por pago al contado"', respuestas:[
     'Buena pregunta. Le consulto al propietario si tiene margen por pago al contado y te confirmo en breve.',
-    'El pago al contado sí le da tranquilidad al propietario, así que puede haber algo de flexibilidad. Dejame planteárselo y vuelvo con una respuesta concreta.',
+    'El pago al contado sí le da tranquilidad al propietario, así que puede haber algo de flexibilidad. Déjame planteárselo y vuelvo con una respuesta concreta.',
     'Antes de hablar de descuento, ¿cuál sería el monto o porcentaje que tenías en mente? Así negocio algo realista con el propietario.'
   ]},
   { situacion:'"Me preocupa la parte legal / los papeles"', respuestas:[
     'Es una preocupación válida y muy común. Yo te acompaño en todo el proceso — verificación de folio real, minuta, notaría — para que no estés solo en eso.',
     'Antes de avanzar revisamos juntos que la propiedad no tenga gravámenes ni problemas registrados. Esa verificación es parte de mi trabajo.',
-    'Si querés, podemos sumar a un abogado de confianza para que revise la documentación antes de firmar nada. La idea es que avances con tranquilidad.'
+    'Si quieres, podemos sumar a un abogado de confianza para que revise la documentación antes de firmar nada. La idea es que avances con tranquilidad.'
   ]},
 ];
 
@@ -58,23 +58,23 @@ const OBJECIONES_PROPIETARIO = [
   ]},
   { situacion:'"No quiero dar exclusiva, prefiero repartir con varias inmobiliarias"', respuestas:[
     'Entiendo la lógica de "más agencias, más posibilidades" — pero en la práctica pasa lo contrario: la propiedad aparece publicada varias veces con precios distintos, genera desconfianza en el comprador y se "quema". Con exclusiva, controlo el mensaje y el precio, y te dedico más esfuerzo real.',
-    'Te propongo probar la exclusiva por 60-90 días. Si en ese plazo no tenés resultados, revisamos juntos la estrategia.',
+    'Te propongo probar la exclusiva por 60-90 días. Si en ese plazo no tienes resultados, revisamos juntos la estrategia.',
     'Cuando reparto una propiedad con otras agencias, no le doy prioridad porque no sé si voy a cerrarla yo. Con exclusiva, es mi prioridad.'
   ]},
   { situacion:'"Mi vecino vendió en tal precio, yo quiero ese mismo"', respuestas:[
-    'Cada propiedad es distinta — antigüedad, acabados, orientación, si tiene parqueo o no. ¿Sabés en qué condiciones vendió tu vecino? Puede que no sea una comparación directa.',
+    'Cada propiedad es distinta — antigüedad, acabados, orientación, si tiene parqueo o no. ¿Sabes en qué condiciones vendió tu vecino? Puede que no sea una comparación directa.',
     'Te armo una comparación real con propiedades similares que están publicadas hoy en la zona, así decidimos el precio con datos, no solo con el rumor del vecino.',
-    'Si salimos al precio de tu vecino sin justificación, el riesgo es que la propiedad quede meses sin consultas — y ahí sí perdés tiempo y valor.'
+    'Si salimos al precio de tu vecino sin justificación, el riesgo es que la propiedad quede meses sin consultas — y ahí sí pierdes tiempo y valor.'
   ]},
   { situacion:'"No tengo apuro en bajar el precio, prefiero esperar"', respuestas:[
     'Está perfecto, no hay que apurarse. Eso sí, te cuento que cuanto más tiempo lleva publicada sin ajustes, los compradores empiezan a pensar "algo tiene" — aunque no sea cierto.',
     'Probemos 30 días más al precio actual. Si no hay consultas serias, revisamos juntos si conviene un ajuste.',
-    '¿Hay alguna razón puntual para no tener apuro — no necesitás la plata ahora, o esperás algo del mercado? Así ajusto mejor la estrategia.'
+    '¿Hay alguna razón puntual para no tener apuro — no necesitas la plata ahora, o esperas algo del mercado? Así ajusto mejor la estrategia.'
   ]},
   { situacion:'"¿Por qué te pago si puedo vender directo yo mismo?"', respuestas:[
     'Totalmente válido preguntarlo. Yo filtro a los curiosos de los compradores reales, negocio en tu nombre, me encargo de la parte legal y de que el precio no se caiga en la negociación — eso normalmente cubre mi comisión y más.',
-    'Vender directo funciona, pero también significa que vos atendés cada llamada, coordinás cada visita y negociás solo. Yo hago ese trabajo para que vos no pierdas tiempo.',
-    'Mi comisión se paga solo si la venta se concreta. Si no vendo, no cobro — el riesgo de que no funcione lo asumo yo, no vos.'
+    'Vender directo funciona, pero también significa que tú atiendes cada llamada, coordinas cada visita y negocias solo. Yo hago ese trabajo para que no pierdas tiempo.',
+    'Mi comisión se paga solo si la venta se concreta. Si no vendo, no cobro — el riesgo de que no funcione lo asumo yo, no tú.'
   ]},
   { situacion:'"Otro agente me ofreció venderlo más caro"', respuestas:[
     'Es una estrategia común para captar la propiedad: prometer un precio alto, y después de unas semanas sin consultas, presionarte para bajarlo. Prefiero ser honesto desde el inicio con un precio que sí tenga demanda real.',
@@ -86,10 +86,10 @@ const OBJECIONES_PROPIETARIO = [
     'Podemos coordinar un horario fijo (ej. sábados por la tarde) para concentrar las visitas en un solo momento de la semana.',
     'Cuantas menos visitas de calidad tengamos, más tiempo tarda la venta. Te prometo que cada visita que coordine va a tener sentido.'
   ]},
-  { situacion:'"Quiero poner yo el precio, vos solo publicá"', respuestas:[
+  { situacion:'"Quiero poner yo el precio, tú solo publica"', respuestas:[
     'Puedo publicarlo al precio que quieras, pero te aviso desde ahora: si está sobrevalorado, es probable que no tengamos consultas y perdamos tiempo los dos. ¿Probamos con datos de mercado antes de decidir?',
-    'Te armo una comparación de precios reales de la zona. Si después de verla igual preferís tu precio, lo respeto — pero prefiero que decidas con esa información.',
-    'El precio inicial es la decisión más importante de todo el proceso. Si querés, lo revisamos juntos antes de publicar.'
+    'Te armo una comparación de precios reales de la zona. Si después de verla igual prefieres tu precio, lo respeto — pero prefiero que decidas con esa información.',
+    'El precio inicial es la decisión más importante de todo el proceso. Si quieres, lo revisamos juntos antes de publicar.'
   ]},
 ];
 
@@ -347,7 +347,7 @@ function generarPostventa(){
 📱 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
   } else if(msg==='referido'){
     if(tono==='cercano'){
-      texto = `Hola, ${nombre}! 😊 Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conocés a alguien que esté buscando comprar, vender o alquilar por ${AGENTE.ciudad}, me encantaría ayudarle — y te lo agradezco de corazón. 🙏
+      texto = `Hola, ${nombre}! 😊 Espero que estén muy contentos con su ${tipo.includes('compra')?'nueva propiedad':'operación'}. Si conoces a alguien que esté buscando comprar, vender o alquilar por ${AGENTE.ciudad}, me encantaría ayudarle — y te lo agradezco de corazón. 🙏
 
 ${AGENTE.nombre} — ${AGENTE.whatsapp}`;
     } else {

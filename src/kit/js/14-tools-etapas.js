@@ -4,7 +4,7 @@ function toolDiagnosticoComprador(){
       <div class="tool-icon gold">🔍</div>
       <div>
         <div class="tool-title">Diagnóstico del comprador (durante la visita)</div>
-        <div class="tool-subtitle">Respondé 6 preguntas rápidas y te dice si el visitante es un comprador real o un mirón.</div>
+        <div class="tool-subtitle">Responde 6 preguntas rápidas y te dice si el visitante es un comprador real o un mirón.</div>
       </div>
     </div>
     ${badgesHerramienta('diagnostico-comprador')}
@@ -51,18 +51,18 @@ function diagnosticarComprador(){
     const sel = document.querySelector('input[name="'+q+'"]:checked');
     if(sel){ puntaje += parseInt(sel.value); respondidas++; }
   });
-  if(respondidas < 6){ toast('Respondé todas las preguntas para ver el diagnóstico.'); return; }
+  if(respondidas < 6){ toast('Responde todas las preguntas para ver el diagnóstico.'); return; }
 
   let titulo, texto;
   if(puntaje >= 5){
-    titulo = '🟢 Comprador serio — actuá rápido';
-    texto  = 'Todas las señales indican que tiene intención y capacidad real. No dejes pasar más de 24 horas sin contacto. Proponé una reunión concreta para avanzar con los números y la documentación.';
+    titulo = '🟢 Comprador serio — actúa rápido';
+    texto  = 'Todas las señales indican que tiene intención y capacidad real. No dejes pasar más de 24 horas sin contacto. Propón una reunión concreta para avanzar con los números y la documentación.';
   } else if(puntaje >= 3){
     titulo = '🟡 Interesado con dudas — necesita empuje';
-    texto  = 'Hay interés pero algo frenó la decisión. Puede ser el precio, la aprobación familiar o inseguridad financiera. Tu próximo paso: descubrí exactamente qué le falta y atacá ese punto. No esperes a que te llame.';
+    texto  = 'Hay interés pero algo frenó la decisión. Puede ser el precio, la aprobación familiar o inseguridad financiera. Tu próximo paso: descubre exactamente qué le falta y ataca ese punto. No esperes a que te llame.';
   } else {
     titulo = '🔴 Mirón — no inviertas más tiempo por ahora';
-    texto  = 'Las señales apuntan a que no tiene capacidad real o urgencia. No lo persigás con seguimientos intensivos. Un mensaje en 30 días está bien. Enfocá tu energía en prospectos con más señales.';
+    texto  = 'Las señales apuntan a que no tiene capacidad real o urgencia. No lo persigas con seguimientos intensivos. Un mensaje en 30 días está bien. Enfoca tu energía en prospectos con más señales.';
   }
 
   $('dc-titulo').textContent = titulo;

@@ -32,8 +32,8 @@ function toolRegalo1(){
       <div style="font-size:2.6rem;margin-bottom:12px;">🛡️</div>
       <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;color:var(--navy);margin:0 0 14px;">Defiende tu comisión</h2>
       <p style="font-size:0.92rem;line-height:1.65;color:var(--text-muted);max-width:480px;margin:0 auto 10px;">
-        Cada vez que negociás — tu propia comisión con un propietario, o el precio de venta con un comprador — ceder "solo un poquito" se siente inofensivo en el momento. Pero esa cesión sale de tu bolsillo, en plata real.<br/><br/>
-        Esta herramienta te muestra exactamente cuánto perdés: en dólares, en bolivianos y en horas de tu propio trabajo. Para que la próxima vez que te pidan "un poquito más", decidas con el número real delante, no a ciegas.
+        Cada vez que negocias — tu propia comisión con un propietario, o el precio de venta con un comprador — ceder "solo un poquito" se siente inofensivo en el momento. Pero esa cesión sale de tu bolsillo, en plata real.<br/><br/>
+        Esta herramienta te muestra exactamente cuánto pierdes: en dólares, en bolivianos y en horas de tu propio trabajo. Para que la próxima vez que te pidan "un poquito más", decidas con el número real delante, no a ciegas.
       </p>
       <p style="font-size:0.78rem;color:var(--gold);font-weight:700;margin:0 0 22px;">🎁 Regalo por pagar dentro de las primeras 48 horas</p>
       <button class="btn btn-gold" onclick="regaloAbrir(1)">Empezar →</button>
@@ -43,7 +43,7 @@ function toolRegalo1(){
     <div class="tool-header">
       <div class="tool-icon gold">🛡️</div>
       <div><div class="tool-title">Defiende tu comisión</div>
-      <div class="tool-subtitle">Calculá cuánto perdés en plata y en horas de trabajo cada vez que cedés.</div></div>
+      <div class="tool-subtitle">Calcula cuánto pierdes en plata y en horas de trabajo cada vez que cedes.</div></div>
     </div>
     <div class="sidebar-tabs" style="margin-bottom:18px;">
       <button class="sidebar-tab active" id="rg1-modo-comision" onclick="regalo1Modo('comision')">Me piden bajar mi comisión</button>
@@ -59,7 +59,7 @@ function toolRegalo1(){
         <input type="range" id="rg1-puntos-slider" min="0" max="5" step="0.1" value="1" style="flex:1;" oninput="$('rg1-puntos-numero').value=this.value;regalo1Calcular();"/>
         <input type="number" id="rg1-puntos-numero" min="0" max="5" step="0.1" value="1" style="width:64px;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-2);color:var(--text);" oninput="$('rg1-puntos-slider').value=this.value;regalo1Calcular();"/>
       </div>
-      <div style="font-size:0.76rem;color:var(--text-muted);margin-top:4px;">Ej: si tu comisión es 3% y te piden bajarla a 2.5%, acá ponés 0.5.</div>
+      <div style="font-size:0.76rem;color:var(--text-muted);margin-top:4px;">Ej: si tu comisión es 3% y te piden bajarla a 2.5%, aquí pones 0.5.</div>
     </div>
     <div class="form-group" id="rg1-grupo-precio" style="margin-bottom:16px;" hidden>
       <label>¿Qué % de descuento le piden al precio de venta?</label>
@@ -144,7 +144,7 @@ function toolRegalo2(){
       <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;color:var(--navy);margin:0 0 14px;">¿Cuánto voy a ganar este mes?</h2>
       <p style="font-size:0.92rem;line-height:1.65;color:var(--text-muted);max-width:480px;margin:0 auto 10px;">
         La mayoría de los agentes no sabe cuánto va a ganar este mes hasta que ya terminó.<br/><br/>
-        Con los datos de tu cartera actual — cuántos interesados tenés en cada etapa, y qué tan probable es que cada uno cierre — esta herramienta te da una proyección real de tu ingreso, y te muestra en qué etapa te conviene enfocarte para mejorarla.
+        Con los datos de tu cartera actual — cuántos interesados tienes en cada etapa, y qué tan probable es que cada uno cierre — esta herramienta te da una proyección real de tu ingreso, y te muestra en qué etapa te conviene enfocarte para mejorarla.
       </p>
       <p style="font-size:0.78rem;color:var(--gold);font-weight:700;margin:0 0 22px;">🎁 Regalo por pagar dentro de las primeras 48 horas</p>
       <button class="btn btn-gold" onclick="regaloAbrir(2)">Empezar →</button>
@@ -154,18 +154,18 @@ function toolRegalo2(){
     <div class="tool-header">
       <div class="tool-icon gold">📈</div>
       <div><div class="tool-title">¿Cuánto voy a ganar este mes?</div>
-      <div class="tool-subtitle">Proyectá tu ingreso según cuántos contactos tenés en cada etapa del proceso.</div></div>
+      <div class="tool-subtitle">Proyecta tu ingreso según cuántos contactos tienes en cada etapa del proceso.</div></div>
     </div>
     <div id="rg2-etapas"></div>
     <div class="form-row cols-2">
-      <div class="form-group"><label>Comisión promedio que ganás por venta (USD)</label><input id="rg2-comision" type="number" placeholder="2500" oninput="regalo2Calcular()"/></div>
+      <div class="form-group"><label>Comisión promedio que ganas por venta (USD)</label><input id="rg2-comision" type="number" placeholder="2500" oninput="regalo2Calcular()"/></div>
       <div class="form-group"><label>Tipo de cambio hoy (Bs. por USD)</label><input id="rg2-tc" type="number" placeholder="9.73" step="0.01" oninput="regalo2Calcular()"/></div>
     </div>
     <div class="result-hero">
       <div class="result-hero-label">Tu proyección de este mes</div>
       <div class="result-hero-num" id="rg2-total-usd">$ 0</div>
       <div class="result-hero-sub" id="rg2-total-bs">Bs. 0</div>
-      <div class="result-hero-sub" id="rg2-consejo" style="margin-top:8px;">Completá los datos de tu cartera para ver la proyección.</div>
+      <div class="result-hero-sub" id="rg2-consejo" style="margin-top:8px;">Completa los datos de tu cartera para ver la proyección.</div>
     </div>
   </div>`;
 }
@@ -185,7 +185,7 @@ function regalo2Etapas(){
       +   '<span>'+e.nombre+'</span><span style="font-family:\'IBM Plex Mono\',monospace;color:var(--gold);" id="rg2-aporte-'+e.id+'">$ 0</span>'
       + '</div>'
       + '<div class="form-row cols-2" style="margin-bottom:0;">'
-      +   '<div class="form-group"><label>¿Cuántos tenés en esta etapa?</label><input type="number" id="rg2-cant-'+e.id+'" placeholder="0" oninput="regalo2Calcular()"/></div>'
+      +   '<div class="form-group"><label>¿Cuántos tienes en esta etapa?</label><input type="number" id="rg2-cant-'+e.id+'" placeholder="0" oninput="regalo2Calcular()"/></div>'
       +   '<div class="form-group"><label>% de probabilidad de cierre</label>'
       +     '<div style="display:flex;gap:10px;align-items:center;">'
       +       '<input type="range" id="rg2-prob-'+e.id+'-slider" min="0" max="100" step="1" value="'+e.probDefault+'" style="flex:1;" oninput="$(\'rg2-prob-'+e.id+'-numero\').value=this.value;regalo2Calcular();"/>'
@@ -221,8 +221,8 @@ function regalo2Calcular(){
     var masDebil = aportes.reduce(function(a,b){ return a.aporte < b.aporte ? a : b; });
     $('rg2-consejo').textContent = 'La etapa que menos te está aportando ahora es "'+masDebil.nombre+'" ($'
       + masDebil.aporte.toLocaleString('es-BO',{maximumFractionDigits:0})
-      + '). Reforzarla ahí es donde más rápido podés subir tu proyección.';
+      + '). Reforzarla ahí es donde más rápido puedes subir tu proyección.';
   } else {
-    $('rg2-consejo').textContent = 'Completá los datos de tu cartera para ver la proyección.';
+    $('rg2-consejo').textContent = 'Completa los datos de tu cartera para ver la proyección.';
   }
 }
