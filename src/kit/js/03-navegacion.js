@@ -88,27 +88,39 @@ function renderFase(fase, idx){
       </div>
     </div>
   `;
-  fase.tools.forEach(tid => { html += renderTool(tid); });
+  // Esencial primero, Profesional despues — mismo orden dentro de cada grupo.
+  var tools = fase.tools.slice().sort(function(a,b){
+    var aT2 = HERRAMIENTAS_TIER2.indexOf(a) !== -1 ? 1 : 0;
+    var bT2 = HERRAMIENTAS_TIER2.indexOf(b) !== -1 ? 1 : 0;
+    return aT2 - bT2;
+  });
+  tools.forEach(tid => { html += renderTool(tid); });
   return html;
 }
 
 // ══════════════════════════════════════════════
 // HERRAMIENTAS
 // ══════════════════════════════════════════════
+// Cartel de una herramienta del plan Profesional vista por alguien del
+// Esencial: reusa el header REAL de la herramienta (icono/titulo/subtitulo,
+// tal cual los vería un cliente Profesional) en vez de repetir ese texto a
+// mano — asi si se edita la descripcion de la herramienta, el cartel de
+// bloqueo se actualiza solo. El cuerpo (mensaje + boton) queda como
+// hermano del header, asi initCollapsibles() ya lo hace desplegable con el
+// mismo click de "abrir herramienta" que usa cualquier otra, sin logica
+// nueva por boton.
 function toolBloqueada(id){
+  var div = document.createElement('div');
+  div.innerHTML = _renderToolInner(id);
+  var headerEl = div.querySelector('.tool-header');
+  var headerHtml = headerEl ? headerEl.outerHTML : '';
   var info = SEARCH_INDEX.find(function(t){ return t.id === id; });
-  var nombre = info ? info.nombre : 'Esta herramienta';
-  var icon = info ? info.icon : '🔒';
-  var msg = 'Hola! Quiero actualizar mi plan a Completo en el Kit del Agente Inmobiliario.';
+  var nombre = info ? info.nombre : 'esta herramienta';
+  var msg = 'Hola! Quiero actualizar mi plan a Profesional en el Kit del Agente Inmobiliario para usar '+nombre+'.';
   var wa = SOPORTE_WHATSAPP ? 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(msg) : '#';
-  return `<div class="tool-section" id="tool-bloqueada-${id}">
-    <div class="tool-header">
-      <div class="tool-icon">🔒</div>
-      <div>
-        <div class="tool-title">${icon} ${esc(nombre)}</div>
-        <div class="tool-subtitle">Esta herramienta es parte del plan Completo. Actualizá tu acceso para desbloquearla junto con el resto de las herramientas de ese plan.</div>
-      </div>
-    </div>
+  return `<div class="tool-section tool-locked" id="tool-bloqueada-${id}">
+    ${headerHtml}
+    <div class="tool-locked-msg">🔒 Esta herramienta es parte del <b>Plan Profesional</b>. Actualizá tu acceso para desbloquearla junto con el resto de las herramientas de ese plan.</div>
     <div class="btn-group">
       <a class="btn btn-gold" href="${wa}" target="_blank" rel="noopener">💬 Quiero actualizar mi plan</a>
     </div>
@@ -119,6 +131,10 @@ function renderTool(id){
   if(HERRAMIENTAS_TIER2.indexOf(id) !== -1 && AGENTE.plan !== 'completo'){
     return toolBloqueada(id);
   }
+  return _renderToolInner(id);
+}
+
+function _renderToolInner(id){
   switch(id){
     case 'generador-seguimiento': return toolGeneradorSeguimiento();
     case 'calc-comision': return toolCalculadoraComision();

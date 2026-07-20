@@ -46,6 +46,9 @@ function cerrarPerfil(){
   $('perfil-modal').classList.remove('open');
 }
 
+function abrirModalDemo(){ $('demo-info-modal').classList.add('open'); }
+function cerrarModalDemo(){ $('demo-info-modal').classList.remove('open'); }
+
 // Comprime la foto a 320x320 y la recorta en circulo directamente sobre
 // los pixeles. Antes se guardaba la foto tal cual la subia el celular
 // (varios MB en base64), y localStorage tiene un limite de ~5-6MB por

@@ -134,7 +134,7 @@ aplicarTema(AGENTE.tema);
 const LIMITE_SEGUIMIENTOS = AGENTE.plan === 'completo' ? 50 : 20;
 
 // ══════════════════════════════════════════════
-// TIERS — herramientas exclusivas del plan Completo
+// TIERS — herramientas exclusivas del plan Profesional
 // ══════════════════════════════════════════════
 const HERRAMIENTAS_TIER2 = [
   'propuesta-propietario','acuerdo-trabajo',

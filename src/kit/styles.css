@@ -144,7 +144,12 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .tool-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;}
 .badge-tipo{background:color-mix(in srgb, var(--navy) 18%, transparent);color:var(--navy);}
 .badge-etapa{background:var(--surface-2);color:var(--text-muted);border:1px solid var(--border);}
-.demo-badge{display:inline-block;padding:2px 10px;border-radius:999px;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.02em;vertical-align:middle;background:var(--gold-soft);color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.35);}
+.demo-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:999px;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.02em;vertical-align:middle;background:var(--gold-soft);color:var(--gold);border:1px solid rgba(var(--gold-rgb),0.35);cursor:pointer;transition:background .15s;}
+.demo-badge:hover{background:rgba(var(--gold-rgb),0.28);}
+
+/* Herramientas del plan Profesional vistas por un cliente Esencial */
+.tool-section.tool-locked{border-color:var(--gold);}
+.tool-locked-msg{background:var(--gold-soft);border:1px solid rgba(var(--gold-rgb),0.3);border-radius:var(--radius-sm);padding:14px 16px;font-size:0.85rem;line-height:1.5;color:var(--text);margin-bottom:14px;}
 
 /* ── FORMULARIO ── */
 .form-row{display:grid;gap:12px;margin-bottom:16px;}

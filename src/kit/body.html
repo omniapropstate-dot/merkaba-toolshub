@@ -21,7 +21,7 @@
     <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.9rem;color:var(--navy);">Herramientas</div>
     <button class="mobile-close-btn" onclick="toggleMobileMenu()">&#10005;</button>
   </div>
-  <div id="mobile-sidebar-phases"></div><div style="padding:10px 20px;border-top:1px solid var(--border);"><button id="install-wrap" onclick="instalarApp();toggleMobileMenu();" style="width:100%;text-align:left;padding:10px 0;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);">&#128242; Instalar App en mi celular</button></div>
+  <div id="mobile-sidebar-phases"></div><div style="padding:10px 20px;border-top:1px solid var(--border);"><button id="install-wrap" onclick="instalarApp();toggleMobileMenu();" style="width:100%;text-align:left;padding:10px 0;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);">&#128242; Instalar App en mi celular</button><button onclick="abrirSoporte();toggleMobileMenu();" style="width:100%;text-align:left;padding:10px 0;background:none;border:none;cursor:pointer;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;color:var(--navy);">&#128172; Soporte</button></div>
 </div>
 
 <!-- PERFIL MODAL -->
@@ -63,6 +63,24 @@
       <button class="btn btn-outline" onclick="cerrarPerfil()">Cancelar</button>
     </div>
     <div id="perfil-msg" style="font-size:0.82rem;margin-top:10px;min-height:1em;"></div>
+  </div>
+</div>
+
+<!-- MODAL: QUE ES LA CUENTA DEMO -->
+<div class="modal-bg" id="demo-info-modal">
+  <div class="modal-box">
+    <h2>⚠️ Estás usando una cuenta demo</h2>
+    <p class="modal-sub" style="margin-bottom:14px;">Para que puedas probar el kit completo sin compromiso, con algunas diferencias importantes.</p>
+    <p style="font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:14px;">
+      Nada de lo que hagas acá queda guardado: ni tu nombre, foto o WhatsApp de perfil, ni tus plantillas, pendientes o recordatorios de seguimiento. Podés usar cualquier herramienta y generar documentos con tus propios datos, pero apenas cierres esta sesión, todo se pierde.
+    </p>
+    <p style="font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:20px;">
+      Solo con un acceso propio (Plan Esencial o Profesional) todo eso se guarda de verdad, ligado a tu cuenta, para siempre.
+    </p>
+    <div style="display:flex;gap:10px;">
+      <a class="btn btn-gold" style="flex:1;text-align:center;text-decoration:none;" href="#" onclick="abrirSoporte();return false;">💬 Quiero mi propio acceso</a>
+      <button class="btn btn-outline" onclick="cerrarModalDemo()">Entendido</button>
+    </div>
   </div>
 </div>
 

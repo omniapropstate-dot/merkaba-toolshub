@@ -7,12 +7,17 @@ function agregarPendienteHome(){
   initHome();
 }
 
+var _demoModalMostrado = false;
 function initHome(){
   var hora = new Date().getHours();
   var saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
   var greetHtml = saludo + ', ' + esc(AGENTE.nombre || 'Agente');
-  if(AGENTE.esDemo) greetHtml += ' <span class="demo-badge">⚠️ Cuenta Demo</span>';
+  if(AGENTE.esDemo) greetHtml += ' <button class="demo-badge" onclick="abrirModalDemo()">⚠️ Cuenta Demo <span style="opacity:0.75;">ⓘ</span></button>';
   $('home-greeting').innerHTML = greetHtml;
+  if(AGENTE.esDemo && !_demoModalMostrado){
+    _demoModalMostrado = true;
+    setTimeout(abrirModalDemo, 500);
+  }
   var ciudad = AGENTE.ciudad || '';
   var pendientes = JSON.parse(localStorage.getItem('mk_pendientes') || '[]');
   var sinResolver = pendientes.filter(function(p){ return !p.hecho; });

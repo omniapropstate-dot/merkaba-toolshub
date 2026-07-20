@@ -8,6 +8,11 @@ function abrirWhatsApp(texto){
   window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');
 }
 
+function abrirSoporte(){
+  var msg = 'Hola! Necesito ayuda con el Kit del Agente Inmobiliario.';
+  window.open('https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(msg), '_blank');
+}
+
 function $(id){ return document.getElementById(id); }
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
