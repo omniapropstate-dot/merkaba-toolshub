@@ -285,7 +285,7 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .back-link:hover{color:var(--text);}
 .pay-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text);margin-bottom:3px;}
 .pay-sub{font-size:0.78rem;color:var(--text-muted);margin-bottom:18px;}
-.qr-frame{width:190px;margin:0 auto 8px;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--border);cursor:zoom-in;padding:0;overflow:hidden;background:#fff;}
+.qr-frame{width:150px;margin:0 auto 8px;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--border);cursor:zoom-in;padding:0;overflow:hidden;background:#fff;}
 .qr-frame img{width:100%;height:auto;display:block;}
 .qr-descarga{display:block;text-align:center;font-size:0.72rem;color:var(--text-muted);text-decoration:underline;text-underline-offset:2px;margin:0 0 14px;font-family:'Inter',sans-serif;background:none;border:none;cursor:pointer;width:100%;}
 .qr-descarga:hover{color:var(--text);}
