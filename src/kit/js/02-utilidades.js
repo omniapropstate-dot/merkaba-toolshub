@@ -13,6 +13,10 @@ function abrirSoporte(){
   window.open('https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(msg), '_blank');
 }
 
+function abrirVideoInstalacion(){
+  window.open('https://drive.google.com/file/d/1Ezm1nMeXzAbyarVxQpmN198w_sXKYDXh/view?usp=sharing', '_blank');
+}
+
 function $(id){ return document.getElementById(id); }
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
