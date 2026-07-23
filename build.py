@@ -41,6 +41,8 @@ kit_b64     = b64(kit_html)
 admin_b64   = b64(read_text('src/admin.html'))
 icon192_b64 = encode_bin('icons/logo-192.png')
 icon512_b64 = encode_bin('icons/logo-512.png')
+qr_esencial_b64 = encode_bin('icons/qr-esencial.jpg')
+qr_profesional_b64 = encode_bin('icons/qr-profesional.jpg')
 
 manifest = '{"name":"Kit Inmobiliario Bolivia","short_name":"Merkaba Kit","start_url":"/kit-inmobiliario","display":"standalone","background_color":"#0a1628","theme_color":"#0a1628","icons":[{"src":"/icons/logo-192.png","sizes":"192x192","type":"image/png"},{"src":"/icons/logo-512.png","sizes":"512x512","type":"image/png"}]}'
 
@@ -53,12 +55,15 @@ worker = '\n'.join([
     'const ADMIN="'   + admin_b64   + '";',
     'const ICON192="' + icon192_b64 + '";',
     'const ICON512="' + icon512_b64 + '";',
+    'const QRESENCIAL="' + qr_esencial_b64 + '";',
+    'const QRPROFESIONAL="' + qr_profesional_b64 + '";',
     'const MANIFEST="' + manifest.replace('"', '\\"') + '";',
     'const SW=`'      + sw          + '`;',
     '',
     'function b64ToBytes(b64){const bin=atob(b64);const len=bin.length;const bytes=new Uint8Array(len);for(let i=0;i<len;i++){bytes[i]=bin.charCodeAt(i);}return bytes;}',
     'function serve(b64){const html=new TextDecoder("utf-8").decode(b64ToBytes(b64));return new Response(html,{headers:{"Content-Type":"text/html; charset=UTF-8"}});}',
     'function serveIcon(b64){return new Response(b64ToBytes(b64),{headers:{"Content-Type":"image/png","Cache-Control":"public, max-age=86400"}});}',
+    'function serveJpeg(b64){return new Response(b64ToBytes(b64),{headers:{"Content-Type":"image/jpeg","Cache-Control":"public, max-age=86400"}});}',
     '',
     'export default {',
     '  async fetch(request) {',
@@ -70,6 +75,8 @@ worker = '\n'.join([
     '    if(path==="/sw.js") return new Response(SW,{headers:{"Content-Type":"application/javascript"}});',
     '    if(path==="/icons/logo-192.png") return serveIcon(ICON192);',
     '    if(path==="/icons/logo-512.png") return serveIcon(ICON512);',
+    '    if(path==="/icons/qr-esencial.jpg") return serveJpeg(QRESENCIAL);',
+    '    if(path==="/icons/qr-profesional.jpg") return serveJpeg(QRPROFESIONAL);',
     '    return new Response("Not found",{status:404});',
     '  }',
     '}',

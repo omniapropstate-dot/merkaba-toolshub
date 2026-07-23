@@ -147,8 +147,40 @@ input[type="password"]::placeholder{color:var(--t4);letter-spacing:0.02em;}
 .plan-list li::before{content:'✓';position:absolute;left:0;top:0;color:var(--gold);font-weight:700;}
 .plan-list li.lead{color:var(--t3);font-style:italic;font-size:0.76rem;padding-left:0;}
 .plan-list li.lead::before{content:'';}
-.plan-btn{display:block;text-align:center;margin-top:18px;padding:11px;border-radius:9px;border:1px solid var(--border-gold-md);background:rgba(239,174,60,0.06);color:var(--gold);font-family:var(--ff-d);font-weight:600;font-size:0.85rem;text-decoration:none;}
+.plan-actions{display:flex;gap:10px;margin-top:18px;}
+.plan-btn{display:block;flex:1;text-align:center;margin-top:0;padding:11px;border-radius:9px;border:1px solid var(--border-gold-md);background:rgba(239,174,60,0.06);color:var(--gold);font-family:var(--ff-d);font-weight:600;font-size:0.85rem;text-decoration:none;}
 .plan-btn:hover{background:var(--gold-glow-md);}
+.plan-btn-qr{flex:1;display:block;text-align:center;padding:11px;border-radius:9px;border:none;background:var(--gold);color:#0B1422;font-family:var(--ff-d);font-weight:700;font-size:0.85rem;text-decoration:none;cursor:pointer;transition:filter .2s var(--ease-out);}
+.plan-btn-qr:hover{filter:brightness(1.08);}
+@media(max-width:420px){.plan-actions{flex-direction:column;}}
+
+/* PAGO CON QR */
+.qr-modal-bg{position:fixed;inset:0;background:rgba(5,9,16,0.72);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:20px;z-index:80;}
+.qr-modal-bg.open{display:flex;}
+.qr-modal-box{background:var(--surface);border:1px solid var(--border-md);border-radius:18px;max-width:380px;width:100%;padding:26px 26px 24px;position:relative;}
+.qr-modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--t3);font-size:1.1rem;cursor:pointer;line-height:1;padding:4px;}
+.qr-modal-close:hover{color:var(--t1);}
+.qr-modal-box h3{font-family:var(--ff-d);font-size:1.05rem;color:var(--t1);margin:0 0 3px;padding-right:20px;}
+.qr-modal-sub{font-size:0.78rem;color:var(--t3);margin:0 0 18px;}
+.qr-frame{width:190px;margin:0 auto 8px;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--border);cursor:zoom-in;padding:0;overflow:hidden;background:#fff;}
+.qr-frame img{width:100%;height:auto;display:block;}
+.qr-descarga{display:block;text-align:center;font-size:0.72rem;color:var(--t3);text-decoration:underline;text-underline-offset:2px;margin:0 0 14px;font-family:var(--ff-b);}
+.qr-descarga:hover{color:var(--t1);}
+.qr-monto-chip{display:block;text-align:center;font-family:var(--ff-d);font-weight:700;font-size:1.3rem;color:var(--gold);margin:2px 0 18px;}
+.qr-steps{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:12px;}
+.qr-steps li{display:flex;gap:10px;align-items:flex-start;font-size:0.83rem;line-height:1.5;color:var(--t1);}
+.qr-step-num{flex:none;width:20px;height:20px;border-radius:50%;background:var(--gold-glow);color:var(--gold);font-family:var(--ff-d);font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.qr-datos-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:5px;}
+.qr-datos-list li{font-size:0.8rem;color:var(--t2);padding-left:14px;position:relative;}
+.qr-datos-list li::before{content:'·';position:absolute;left:2px;color:var(--gold);}
+.qr-modal-box .plan-btn-qr{width:100%;}
+.qr-support-link{display:block;text-align:center;font-size:0.76rem;color:var(--t3);margin-top:14px;text-decoration:underline;text-underline-offset:2px;}
+.qr-support-link:hover{color:var(--t1);}
+.qr-zoom-bg{position:fixed;inset:0;background:rgba(5,9,16,0.88);display:none;align-items:center;justify-content:center;padding:32px;z-index:90;cursor:zoom-out;}
+.qr-zoom-bg.open{display:flex;}
+.qr-zoom-frame{width:min(84vw,380px);background:#fff;border-radius:14px;overflow:hidden;}
+.qr-zoom-frame img{width:100%;height:auto;display:block;}
+.qr-zoom-hint{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-size:0.78rem;color:var(--t3);}
 
 /* FOOTER */
 footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
@@ -256,7 +288,10 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
             </ul>
           </div>
         </div>
-        <a class="plan-btn" href="https://wa.me/59169638816?text=Hola!%20Quiero%20el%20plan%20Profesional%20del%20kit%20del%20agente%20inmobiliario." target="_blank" rel="noopener">Elegir Profesional →</a>
+        <div class="plan-actions">
+          <a class="plan-btn" href="https://wa.me/59169638816?text=Hola!%20Quiero%20el%20plan%20Profesional%20del%20kit%20del%20agente%20inmobiliario." target="_blank" rel="noopener">Elegir Profesional →</a>
+          <button class="plan-btn-qr" onclick="abrirQR('Profesional','Bs 350')">📲 Pagar con QR</button>
+        </div>
       </div>
       <div class="plan-card">
         <div class="plan-name">Plan Esencial</div>
@@ -285,10 +320,45 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
             </ul>
           </div>
         </div>
-        <a class="plan-btn" href="https://wa.me/59169638816?text=Hola!%20Quiero%20el%20plan%20Esencial%20del%20kit%20del%20agente%20inmobiliario." target="_blank" rel="noopener">Elegir Esencial →</a>
+        <div class="plan-actions">
+          <a class="plan-btn" href="https://wa.me/59169638816?text=Hola!%20Quiero%20el%20plan%20Esencial%20del%20kit%20del%20agente%20inmobiliario." target="_blank" rel="noopener">Elegir Esencial →</a>
+          <button class="plan-btn-qr" onclick="abrirQR('Esencial','Bs 250')">📲 Pagar con QR</button>
+        </div>
       </div>
     </div>
   </section>
+
+  <div class="qr-modal-bg" id="qr-modal" onclick="if(event.target===this) cerrarQR();">
+    <div class="qr-modal-box">
+      <button class="qr-modal-close" onclick="cerrarQR()" aria-label="Cerrar">✕</button>
+      <h3 id="qr-titulo">Pagá el Plan Esencial</h3>
+      <p class="qr-modal-sub">Escaneá, pagá, y mandanos el comprobante.</p>
+      <div class="qr-frame" onclick="abrirZoom()" title="Tocar para agrandar"><img id="qr-img" src="" alt="Código QR de pago"></div>
+      <a class="qr-descarga" id="qr-descarga-link" href="#" download="qr-pago.jpg">⬇️ Descargar QR</a>
+      <span class="qr-monto-chip" id="qr-monto">Bs 250</span>
+      <ol class="qr-steps">
+        <li><span class="qr-step-num">1</span> Escaneá el código con la app de tu banco y pagá.</li>
+        <li>
+          <span class="qr-step-num">2</span>
+          <div>
+            Apretá "Ya pagué, enviar comprobante" y mandanos la captura junto con:
+            <ul class="qr-datos-list">
+              <li>Nombre completo</li>
+              <li>Ciudad</li>
+              <li>Email</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      <a class="plan-btn-qr" href="#" id="qr-whatsapp-link" target="_blank" rel="noopener">✅ Ya pagué, enviar comprobante</a>
+      <a class="qr-support-link" href="https://wa.me/59169638816?text=Hola!%20Tengo%20una%20duda%20antes%20de%20pagar%20el%20kit%20del%20agente%20inmobiliario." target="_blank" rel="noopener">¿Dudas antes de pagar? Escríbenos</a>
+    </div>
+  </div>
+
+  <div class="qr-zoom-bg" id="qr-zoom-modal" onclick="cerrarZoom()">
+    <div class="qr-zoom-frame"><img id="qr-img-zoom" src="" alt="Código QR de pago, ampliado"></div>
+    <div class="qr-zoom-hint">Tocá en cualquier lado para cerrar</div>
+  </div>
 
   <footer>
     <span class="ftr-text">© 2026 Merkaba Consulting Group</span>
@@ -380,6 +450,38 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
 
   document.getElementById('pw-input').addEventListener('keydown', function(e){
     if(e.key === 'Enter') verificar();
+  });
+
+  var QR_SRC = {
+    'Esencial': '/icons/qr-esencial.jpg',
+    'Profesional': '/icons/qr-profesional.jpg'
+  };
+  var QR_WA_MSG = {
+    'Esencial': 'Hola! Ya pagué el Plan Esencial (Bs 250) del kit del agente inmobiliario. Te mando el comprobante.',
+    'Profesional': 'Hola! Ya pagué el Plan Profesional (Bs 350) del kit del agente inmobiliario. Te mando el comprobante.'
+  };
+  function abrirQR(plan, monto){
+    document.getElementById('qr-titulo').textContent = 'Pagá el Plan ' + plan;
+    document.getElementById('qr-monto').textContent = monto;
+    document.getElementById('qr-img').src = QR_SRC[plan];
+    document.getElementById('qr-img-zoom').src = QR_SRC[plan];
+    var link = document.getElementById('qr-descarga-link');
+    link.href = QR_SRC[plan];
+    link.setAttribute('download', 'qr-plan-' + plan.toLowerCase() + '.jpg');
+    document.getElementById('qr-whatsapp-link').href = 'https://wa.me/59169638816?text=' + encodeURIComponent(QR_WA_MSG[plan]);
+    document.getElementById('qr-modal').classList.add('open');
+  }
+  function cerrarQR(){
+    document.getElementById('qr-modal').classList.remove('open');
+  }
+  function abrirZoom(){
+    document.getElementById('qr-zoom-modal').classList.add('open');
+  }
+  function cerrarZoom(){
+    document.getElementById('qr-zoom-modal').classList.remove('open');
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ cerrarZoom(); cerrarQR(); }
   });
 </script>
 </body>
