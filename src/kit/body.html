@@ -27,6 +27,7 @@
 <!-- PERFIL MODAL -->
 <div class="modal-bg" id="perfil-modal">
   <div class="modal-box">
+    <div class="modal-top-close"><button onclick="cerrarPerfil()">Cerrar</button></div>
     <h2>Mi perfil</h2>
     <p class="modal-sub">Tu informacion aparece en todos los textos y documentos generados.</p>
     <div class="photo-wrap">
@@ -69,6 +70,7 @@
 <!-- MODAL: QUE ES LA CUENTA DEMO -->
 <div class="modal-bg" id="demo-info-modal">
   <div class="modal-box">
+    <div class="modal-top-close"><button onclick="cerrarModalDemo()">Cerrar</button></div>
     <h2>⚠️ Estás usando una cuenta demo</h2>
     <p style="font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:14px;">
       Esta es una cuenta demo: nada de lo que hagas acá queda guardado. Puedes usar las herramientas disponibles con libertad.
@@ -77,11 +79,11 @@
       Solo con un acceso propio (Plan Esencial o Profesional) todo se guarda de verdad, ligado a tu cuenta, para siempre.
     </p>
     <div class="plan-cta-row" style="margin-bottom:10px;">
-      <button class="plan-cta" onclick="cerrarModalDemo();abrirPlanModal('Esencial');">
+      <button class="plan-cta" onclick="document.getElementById('demo-info-modal').classList.remove('open');abrirPlanModal('Esencial');">
         <div class="plan-cta-lbl">Ver y pagar</div>
         <div class="plan-cta-name">Esencial <span class="plan-cta-price">· Bs 250</span></div>
       </button>
-      <button class="plan-cta" onclick="cerrarModalDemo();abrirPlanModal('Profesional');">
+      <button class="plan-cta" onclick="document.getElementById('demo-info-modal').classList.remove('open');abrirPlanModal('Profesional');">
         <div class="plan-cta-lbl">Ver y pagar</div>
         <div class="plan-cta-name">Profesional <span class="plan-cta-price">· Bs 350</span></div>
       </button>
@@ -93,6 +95,7 @@
 <!-- MODAL: VER PLAN + PAGAR CON QR -->
 <div class="modal-bg" id="plan-modal">
   <div class="modal-box">
+    <div class="modal-top-close"><button onclick="cerrarPlanModal()">Cerrar</button></div>
     <div id="view-features">
       <div class="mp-header">
         <div>
@@ -102,7 +105,6 @@
         <button class="btn-pay-header" onclick="irAPagarPlan()">📲 Pagar con QR</button>
       </div>
       <ul class="feature-list" id="mp-list"></ul>
-      <div style="margin-top:18px;"><button class="btn btn-outline" style="width:100%;" onclick="cerrarPlanModal()">Cerrar</button></div>
     </div>
     <div id="view-pay" hidden>
       <button class="back-link" onclick="volverAFeaturesPlan()">← Volver a ver qué incluye</button>

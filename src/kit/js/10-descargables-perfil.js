@@ -19,6 +19,7 @@ function abrirPerfil(){
   _temaOriginal = AGENTE.tema;
   buildTemaPicker();
   $('perfil-modal').classList.add('open');
+  _mkPushHistoryIfNeeded();
 }
 
 function buildTemaPicker(){
@@ -40,14 +41,28 @@ function buildTemaPicker(){
   });
 }
 
-function cerrarPerfil(){
+// Solo la parte visual (sin tocar el historial) - la usa mostrarBloqueoPerfil()
+// para pasar directo al modal de plan sin encimar un history.back() con el
+// pushState que hace abrirPlanModal() en el mismo click.
+function _cerrarPerfilUI(){
   // Si cancela sin guardar, restaura el tema que estaba activo antes de abrir el modal.
   if(_temaOriginal){ aplicarTema(_temaOriginal); }
   $('perfil-modal').classList.remove('open');
 }
 
-function abrirModalDemo(){ $('demo-info-modal').classList.add('open'); }
-function cerrarModalDemo(){ $('demo-info-modal').classList.remove('open'); }
+function cerrarPerfil(){
+  _cerrarPerfilUI();
+  _mkPopHistoryIfNeeded();
+}
+
+function abrirModalDemo(){
+  $('demo-info-modal').classList.add('open');
+  _mkPushHistoryIfNeeded();
+}
+function cerrarModalDemo(){
+  $('demo-info-modal').classList.remove('open');
+  _mkPopHistoryIfNeeded();
+}
 
 // Comprime la foto a 320x320 y la recorta en circulo directamente sobre
 // los pixeles. Antes se guardaba la foto tal cual la subia el celular

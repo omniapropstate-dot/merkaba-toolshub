@@ -265,6 +265,9 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .modal-bg.open{display:flex;}
 .modal-box{background:var(--surface);border-radius:var(--radius);padding:28px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.2);}
 .modal-box h2{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.modal-top-close{text-align:right;margin:-10px -10px 10px 0;}
+.modal-top-close button{background:none;border:none;color:var(--text-muted);font-size:0.8rem;font-family:'Inter',sans-serif;cursor:pointer;padding:6px 8px;text-decoration:underline;text-underline-offset:2px;}
+.modal-top-close button:hover{color:var(--text);}
 
 /* VER PLAN + PAGAR CON QR (candado, perfil demo, home demo, modal "que es la demo") */
 .mp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px;}

@@ -158,9 +158,10 @@ input[type="password"]::placeholder{color:var(--t4);letter-spacing:0.02em;}
 .qr-modal-bg{position:fixed;inset:0;background:rgba(5,9,16,0.72);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:20px;z-index:80;}
 .qr-modal-bg.open{display:flex;}
 .qr-modal-box{background:var(--surface);border:1px solid var(--border-md);border-radius:18px;max-width:380px;width:100%;padding:26px 26px 24px;position:relative;}
-.qr-modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--t3);font-size:1.1rem;cursor:pointer;line-height:1;padding:4px;}
-.qr-modal-close:hover{color:var(--t1);}
-.qr-modal-box h3{font-family:var(--ff-d);font-size:1.05rem;color:var(--t1);margin:0 0 3px;padding-right:20px;}
+.qr-modal-top-close{text-align:right;margin:-10px -10px 10px 0;}
+.qr-modal-top-close button{background:none;border:none;color:var(--t3);font-size:0.8rem;font-family:var(--ff-b);cursor:pointer;padding:6px 8px;text-decoration:underline;text-underline-offset:2px;}
+.qr-modal-top-close button:hover{color:var(--t1);}
+.qr-modal-box h3{font-family:var(--ff-d);font-size:1.05rem;color:var(--t1);margin:0 0 3px;}
 .qr-modal-sub{font-size:0.78rem;color:var(--t3);margin:0 0 18px;}
 .qr-frame{width:190px;margin:0 auto 8px;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--border);cursor:zoom-in;padding:0;overflow:hidden;background:#fff;}
 .qr-frame img{width:100%;height:auto;display:block;}
@@ -330,7 +331,7 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
 
   <div class="qr-modal-bg" id="qr-modal" onclick="if(event.target===this) cerrarQR();">
     <div class="qr-modal-box">
-      <button class="qr-modal-close" onclick="cerrarQR()" aria-label="Cerrar">✕</button>
+      <div class="qr-modal-top-close"><button onclick="cerrarQR()">Cerrar</button></div>
       <h3 id="qr-titulo">Pagá el Plan Esencial</h3>
       <p class="qr-modal-sub">Escaneá, pagá, y mandanos el comprobante.</p>
       <div class="qr-frame" onclick="abrirZoom()" title="Tocar para agrandar"><img id="qr-img" src="" alt="Código QR de pago"></div>
