@@ -33,6 +33,7 @@ var QR_WA_MSG_KIT = {
   'Profesional': 'Hola! Ya pagué el Plan Profesional (Bs 350) del kit del agente inmobiliario. Te mando el comprobante.'
 };
 var _planActualPago = 'Esencial';
+var _mkPlanModalOpen = false;
 
 function abrirPlanModal(plan){
   _planActualPago = plan;
@@ -46,11 +47,31 @@ function abrirPlanModal(plan){
   $('view-features').hidden = false;
   $('view-pay').hidden = true;
   $('plan-modal').classList.add('open');
+  if(!_mkPlanModalOpen){
+    history.pushState({mkPlanModal:true}, '', location.href);
+    _mkPlanModalOpen = true;
+  }
 }
 
 function cerrarPlanModal(){
   $('plan-modal').classList.remove('open');
+  $('zoom-modal').classList.remove('open');
+  if(_mkPlanModalOpen){
+    _mkPlanModalOpen = false;
+    history.back();
+  }
 }
+
+// La flecha atras del celular no debe sacar del kit mientras este modal esta
+// abierto - lo cierra en su lugar. Coexiste con el popstate de 03-navegacion.js
+// (cada uno chequea su propio estado, no se pisan).
+window.addEventListener('popstate', function(){
+  if(_mkPlanModalOpen){
+    $('plan-modal').classList.remove('open');
+    $('zoom-modal').classList.remove('open');
+    _mkPlanModalOpen = false;
+  }
+});
 
 function irAPagarPlan(){
   var plan = _planActualPago;

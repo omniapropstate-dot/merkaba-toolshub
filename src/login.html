@@ -460,6 +460,7 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
     'Esencial': 'Hola! Ya pagué el Plan Esencial (Bs 250) del kit del agente inmobiliario. Te mando el comprobante.',
     'Profesional': 'Hola! Ya pagué el Plan Profesional (Bs 350) del kit del agente inmobiliario. Te mando el comprobante.'
   };
+  var _mkModalOpen = false;
   function abrirQR(plan, monto){
     document.getElementById('qr-titulo').textContent = 'Pagá el Plan ' + plan;
     document.getElementById('qr-monto').textContent = monto;
@@ -470,9 +471,18 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
     link.setAttribute('download', 'qr-plan-' + plan.toLowerCase() + '.jpg');
     document.getElementById('qr-whatsapp-link').href = 'https://wa.me/59169638816?text=' + encodeURIComponent(QR_WA_MSG[plan]);
     document.getElementById('qr-modal').classList.add('open');
+    if(!_mkModalOpen){
+      history.pushState({mkModal:true}, '', location.href);
+      _mkModalOpen = true;
+    }
   }
   function cerrarQR(){
     document.getElementById('qr-modal').classList.remove('open');
+    document.getElementById('qr-zoom-modal').classList.remove('open');
+    if(_mkModalOpen){
+      _mkModalOpen = false;
+      history.back();
+    }
   }
   function abrirZoom(){
     document.getElementById('qr-zoom-modal').classList.add('open');
@@ -482,6 +492,16 @@ footer{padding:18px clamp(20px,5vw,60px);border-top:1px solid var(--border);disp
   }
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape'){ cerrarZoom(); cerrarQR(); }
+  });
+  // La flecha atras del celular (o el gesto de volver) no debe sacar de la
+  // pagina mientras el modal esta abierto - lo cierra en su lugar, mismo
+  // patron que ya usa el kit para su propia navegacion (ver 03-navegacion.js).
+  window.addEventListener('popstate', function(){
+    if(_mkModalOpen){
+      document.getElementById('qr-modal').classList.remove('open');
+      document.getElementById('qr-zoom-modal').classList.remove('open');
+      _mkModalOpen = false;
+    }
   });
 </script>
 </body>
