@@ -127,7 +127,9 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .zoom-bg.open{display:flex;}
 .zoom-frame{width:min(84vw,380px);background:#fff;border-radius:14px;overflow:hidden;}
 .zoom-frame img{width:100%;height:auto;display:block;}
-.zoom-hint{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-size:0.78rem;color:var(--text-muted);}
+.zoom-hint{position:absolute;bottom:26px;left:0;right:0;text-align:center;}
+.zoom-hint button{background:none;border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:0.78rem;font-family:'Inter',sans-serif;padding:8px 20px;border-radius:999px;cursor:pointer;}
+.zoom-hint button:hover{background:rgba(255,255,255,0.1);}
 .plan-cta-row{display:flex;gap:10px;}
 .plan-cta{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 14px;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;color:var(--text);transition:border-color .15s, transform .15s;}
 .plan-cta:hover{border-color:var(--gold); transform:translateY(-1px);}
@@ -218,7 +220,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 
 <div class="zoom-bg" id="zoom-modal" onclick="cerrarZoomQR()">
   <div class="zoom-frame"><img id="qr-img-zoom" src="" alt="Codigo QR de pago, ampliado"></div>
-  <div class="zoom-hint">Tocá en cualquier lado para cerrar</div>
+  <div class="zoom-hint"><button onclick="cerrarZoomQR()">Cerrar</button></div>
 </div>
 
 <div class="mk-toast" id="mk-toast" hidden></div>
