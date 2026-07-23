@@ -114,15 +114,11 @@ function toolBloqueada(id){
   div.innerHTML = _renderToolInner(id);
   var headerEl = div.querySelector('.tool-header');
   var headerHtml = headerEl ? headerEl.outerHTML : '';
-  var info = SEARCH_INDEX.find(function(t){ return t.id === id; });
-  var nombre = info ? info.nombre : 'esta herramienta';
-  var msg = 'Hola! Quiero actualizar mi plan a Profesional en el Kit del Agente Inmobiliario para usar '+nombre+'.';
-  var wa = SOPORTE_WHATSAPP ? 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(msg) : '#';
   return `<div class="tool-section tool-locked" id="tool-bloqueada-${id}">
     ${headerHtml}
     <div class="tool-locked-msg">🔒 Esta herramienta es parte del <b>Plan Profesional</b>. Actualiza tu acceso para desbloquearla junto con el resto de las herramientas de ese plan.</div>
     <div class="btn-group">
-      <a class="btn btn-gold" href="${wa}" target="_blank" rel="noopener">💬 Quiero actualizar mi plan</a>
+      <button class="btn btn-gold" onclick="abrirPlanModal('Profesional')">📲 Ver el Plan Profesional y pagar</button>
     </div>
   </div>`;
 }

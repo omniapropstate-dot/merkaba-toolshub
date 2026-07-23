@@ -86,6 +86,52 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 @media(prefers-reduced-motion:reduce){.mkt-track{animation:none;}}
 .plan-btn{display:block;text-align:center;margin-top:16px;width:100%;}
 .whatsapp-caja{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-top:24px;}
+
+/* PLAN + PAGO CON QR */
+.plan-actions{display:flex;gap:10px;margin-top:18px;}
+.btn-qr{flex:1;background:var(--gold);color:var(--text-on-gold);border:none;border-radius:9px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.85rem;padding:11px;cursor:pointer;}
+.btn-qr:hover{filter:brightness(1.08);}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px 26px 24px;width:100%;max-width:400px;max-height:88vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.35);position:relative;}
+.mp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.mp-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text);}
+.mp-price{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;color:var(--gold);margin-top:2px;}
+.mp-price span{font-size:0.7rem;color:var(--text-muted);font-weight:500;margin-left:3px;}
+.feature-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;max-height:340px;overflow-y:auto;}
+.feature-list li{font-size:0.82rem;color:var(--text-muted);line-height:1.4;padding-left:19px;position:relative;}
+.feature-list li::before{content:'✓';position:absolute;left:0;top:0;color:var(--gold);font-weight:700;}
+.feature-list li.lead{color:var(--navy);font-style:italic;font-size:0.78rem;padding-left:0;font-weight:600;}
+.feature-list li.lead::before{content:'';}
+.back-link{background:none;border:none;color:var(--text-muted);font-size:0.78rem;cursor:pointer;padding:0;margin-bottom:16px;text-decoration:underline;text-underline-offset:2px;font-family:'Inter',sans-serif;}
+.back-link:hover{color:var(--text);}
+.pay-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text);margin-bottom:3px;}
+.pay-sub{font-size:0.78rem;color:var(--text-muted);margin-bottom:18px;}
+.qr-frame{width:190px;margin:0 auto 8px;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--border);cursor:zoom-in;padding:0;overflow:hidden;background:#fff;}
+.qr-frame img{width:100%;height:auto;display:block;}
+.qr-descarga{display:block;text-align:center;font-size:0.72rem;color:var(--text-muted);text-decoration:underline;text-underline-offset:2px;margin:0 0 14px;font-family:'Inter',sans-serif;background:none;border:none;cursor:pointer;width:100%;}
+.qr-descarga:hover{color:var(--text);}
+.monto-chip{display:block;text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.3rem;color:var(--gold);margin:2px 0 18px;}
+.steps{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:12px;}
+.steps li{display:flex;gap:10px;align-items:flex-start;font-size:0.82rem;line-height:1.5;color:var(--text);}
+.step-num{flex:none;width:20px;height:20px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.datos-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:5px;}
+.datos-list li{font-size:0.8rem;color:var(--text-muted);padding-left:14px;position:relative;}
+.datos-list li::before{content:'·';position:absolute;left:2px;color:var(--gold);}
+.support-link{display:block;text-align:center;font-size:0.76rem;color:var(--text-muted);margin-top:14px;text-decoration:underline;text-underline-offset:2px;}
+.support-link:hover{color:var(--text);}
+.zoom-bg{position:fixed;inset:0;background:rgba(5,9,16,0.88);display:none;align-items:center;justify-content:center;padding:32px;z-index:400;cursor:zoom-out;}
+.zoom-bg.open{display:flex;}
+.zoom-frame{width:min(84vw,380px);background:#fff;border-radius:14px;overflow:hidden;}
+.zoom-frame img{width:100%;height:auto;display:block;}
+.zoom-hint{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-size:0.78rem;color:var(--text-muted);}
+.plan-cta-row{display:flex;gap:10px;}
+.plan-cta{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 14px;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;color:var(--text);transition:border-color .15s, transform .15s;}
+.plan-cta:hover{border-color:var(--gold); transform:translateY(-1px);}
+.plan-cta-lbl{font-size:0.66rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;}
+.plan-cta-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.88rem;}
+.plan-cta-price{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.88rem;color:var(--gold);}
+@media(max-width:460px){.plan-cta-row{flex-direction:column;}}
 .whatsapp-caja .icono{font-size:1.6rem;flex-shrink:0;}
 .whatsapp-texto{flex:1;font-size:0.82rem;color:var(--text);line-height:1.5;}
 .whatsapp-texto b{display:block;color:#fff;}
@@ -125,6 +171,51 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
     <div class="whatsapp-texto"><b>¿Tienes dudas?</b>Escríbenos directo por WhatsApp.</div>
     <a class="btn-whatsapp" href="#" onclick="abrirSoporteWA();return false;">💬 WhatsApp</a>
   </div>
+</div>
+
+<div class="modal-bg" id="plan-modal">
+  <div class="modal-box">
+    <div id="view-features">
+      <div class="mp-header">
+        <div>
+          <div class="mp-name" id="mp-name">Plan Esencial</div>
+          <div class="mp-price" id="mp-price">Bs 250<span>pago único</span></div>
+        </div>
+        <button class="btn-qr" style="flex-shrink:0;width:auto;padding:9px 12px;font-size:0.78rem;" onclick="irAPagarPlan()">📲 Pagar con QR</button>
+      </div>
+      <ul class="feature-list" id="mp-list"></ul>
+      <div style="margin-top:18px;"><button class="btn btn-outline" style="width:100%;" onclick="cerrarPlanModal()">Cerrar</button></div>
+    </div>
+    <div id="view-pay" hidden>
+      <button class="back-link" onclick="volverAFeaturesPlan()">← Volver a ver qué incluye</button>
+      <div class="pay-title" id="pay-titulo">Pagá el Plan Esencial</div>
+      <p class="pay-sub">Escaneá, pagá, y mandanos el comprobante.</p>
+      <div class="qr-frame" onclick="abrirZoomQR()" title="Tocar para agrandar"><img id="qr-img" src="" alt="Codigo QR de pago"></div>
+      <a class="qr-descarga" id="qr-descarga-link" href="#" download="qr-pago.jpg">⬇️ Descargar QR</a>
+      <span class="monto-chip" id="qr-monto">Bs 250</span>
+      <ol class="steps">
+        <li><span class="step-num">1</span> Escaneá el código con la app de tu banco y pagá.</li>
+        <li>
+          <span class="step-num">2</span>
+          <div>
+            Apretá "Ya pagué, enviar comprobante" y mandanos la captura junto con:
+            <ul class="datos-list">
+              <li>Nombre completo</li>
+              <li>Ciudad</li>
+              <li>Email</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      <a class="btn btn-gold" style="display:block;text-align:center;width:100%;" href="#" id="qr-whatsapp-link" target="_blank" rel="noopener">✅ Ya pagué, enviar comprobante</a>
+      <a class="support-link" href="#" onclick="abrirSoporteWA();return false;">¿Dudas antes de pagar? Escríbenos</a>
+    </div>
+  </div>
+</div>
+
+<div class="zoom-bg" id="zoom-modal" onclick="cerrarZoomQR()">
+  <div class="zoom-frame"><img id="qr-img-zoom" src="" alt="Codigo QR de pago, ampliado"></div>
+  <div class="zoom-hint">Tocá en cualquier lado para cerrar</div>
 </div>
 
 <div class="mk-toast" id="mk-toast" hidden></div>
@@ -726,7 +817,7 @@ function buildTrack(id, desglose){
   el.innerHTML = cardsHtml + cardsHtml; // duplicado para que el loop no se corte
 }
 
-function planCard(nombre, precio, destacado, desglose, bullets, leadText, mensajeWA){
+function planCard(nombre, precio, destacado, desglose, bullets, leadText, mensajeWA, planId){
   var slug = nombre.toLowerCase().replace(/[^a-z]/g,'');
   var idAcc = 'acc-'+slug;
   var idTrack = 'track-'+slug;
@@ -738,7 +829,10 @@ function planCard(nombre, precio, destacado, desglose, bullets, leadText, mensaj
     + '<div class="plan-nombre">'+esc(nombre)+'</div>'
     + '<div class="plan-precio">Bs '+precio+'</div>'
     + '<div class="plan-badge">♾️ Pago único</div>'
-    + '<a class="btn btn-gold plan-btn" href="'+wa+'" target="_blank" rel="noopener">Elegir '+esc(nombre)+'</a>'
+    + '<div class="plan-actions">'
+    +   '<a class="btn btn-outline plan-btn" style="flex:1;text-align:center;" href="'+wa+'" target="_blank" rel="noopener">Elegir '+esc(nombre)+'</a>'
+    +   '<button class="btn-qr" onclick="pagarPlan(\''+planId+'\')">📲 Pagar con QR</button>'
+    + '</div>'
     + '<button class="plan-toggle" onclick="togglePlanAcc(\''+idAcc+'\')">Ver las '+total+' herramientas incluidas ▾</button>'
     + '<div class="plan-carrusel-wrap" id="'+idAcc+'"><div class="plan-carrusel-inner">'
     +   '<ul class="plan-list">'+bulletsHtml+'</ul>'
@@ -754,12 +848,59 @@ function renderPlanes(){
     '<div class="planes-title">¿Te gustó? Es solo 1 de las 25 herramientas entre el Plan Esencial y el Plan Profesional</div>'
     + '<div class="planes-sub">Pago único, sin mensualidades</div>'
     + '<div class="planes-grid">'
-    + planCard('Plan Profesional', '350', true, DESGLOSE.profesional, BULLETS_PROFESIONAL, 'Todo lo del plan Esencial, más:', msgProfesional)
-    + planCard('Plan Esencial', '250', false, DESGLOSE.esencial, BULLETS_ESENCIAL, '', msgEsencial)
+    + planCard('Plan Profesional', '350', true, DESGLOSE.profesional, BULLETS_PROFESIONAL, 'Todo lo del plan Esencial, más:', msgProfesional, 'Profesional')
+    + planCard('Plan Esencial', '250', false, DESGLOSE.esencial, BULLETS_ESENCIAL, '', msgEsencial, 'Esencial')
     + '</div>';
   buildTrack('track-planprofesional', DESGLOSE.profesional);
   buildTrack('track-planesencial', DESGLOSE.esencial);
 }
+
+// ══════════════════════════════════════════════
+// VER PLAN + PAGAR CON QR
+// ══════════════════════════════════════════════
+var _planActualPago = 'Esencial';
+
+function abrirPlanModal(plan){
+  _planActualPago = plan;
+  var precio = plan === 'Profesional' ? '350' : '250';
+  var bullets = plan === 'Profesional' ? BULLETS_PROFESIONAL : BULLETS_ESENCIAL;
+  var lead = plan === 'Profesional' ? 'Todo lo del plan Esencial, más:' : '';
+  $('mp-name').textContent = 'Plan ' + plan;
+  $('mp-price').innerHTML = 'Bs ' + precio + '<span>pago único</span>';
+  $('mp-list').innerHTML = (lead ? '<li class="lead">'+esc(lead)+'</li>' : '') + bullets.map(function(b){ return '<li>'+esc(b)+'</li>'; }).join('');
+  $('view-features').hidden = false;
+  $('view-pay').hidden = true;
+  $('plan-modal').classList.add('open');
+}
+function cerrarPlanModal(){ $('plan-modal').classList.remove('open'); }
+function pagarPlan(plan){
+  abrirPlanModal(plan);
+  irAPagarPlan();
+}
+function irAPagarPlan(){
+  var plan = _planActualPago;
+  var precio = plan === 'Profesional' ? 'Bs 350' : 'Bs 250';
+  var src = plan === 'Profesional' ? '/icons/qr-profesional.jpg' : '/icons/qr-esencial.jpg';
+  var msg = plan === 'Profesional'
+    ? 'Hola! Ya pagué el Plan Profesional (Bs 350) del kit del agente inmobiliario. Te mando el comprobante.'
+    : 'Hola! Ya pagué el Plan Esencial (Bs 250) del kit del agente inmobiliario. Te mando el comprobante.';
+  $('pay-titulo').textContent = 'Pagá el Plan ' + plan;
+  $('qr-monto').textContent = precio;
+  $('qr-img').src = src;
+  $('qr-img-zoom').src = src;
+  var link = $('qr-descarga-link');
+  link.href = src;
+  link.setAttribute('download', 'qr-plan-' + plan.toLowerCase() + '.jpg');
+  $('qr-whatsapp-link').href = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(msg);
+  $('view-features').hidden = true;
+  $('view-pay').hidden = false;
+}
+function volverAFeaturesPlan(){
+  $('view-features').hidden = false;
+  $('view-pay').hidden = true;
+}
+function abrirZoomQR(){ $('zoom-modal').classList.add('open'); }
+function cerrarZoomQR(){ $('zoom-modal').classList.remove('open'); }
 
 // ══════════════════════════════════════════════
 // RUTEO POR QUERY STRING (?ver=filtro|seguimiento|ficha)
@@ -814,11 +955,13 @@ function empezarHerramienta(){
   var m = _muestraActual;
   $('caratula-actual').hidden = true;
   var real = $('tool-real');
-  var waMsg = 'Hola! Quiero mi propio acceso al Kit del Agente Inmobiliario.';
-  var wa = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(waMsg);
   var nombreHtml = m.necesitaNombre
     ? '<div class="nombre-box"><label>Tu nombre (aparece en el resultado)</label><input type="text" id="mk-nombre-input" placeholder="Ej: Juan Pérez" oninput="actualizarNombre()"/>'
-      + '<p style="font-size:0.8rem;color:var(--gold);margin:10px 0 0;line-height:1.5;">¿Quieres agregar también tu foto, tu celular y tu correo? Eso ya es parte del Plan Esencial o Profesional. <a href="'+wa+'" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;">Escríbenos por WhatsApp</a></p>'
+      + '<p style="font-size:0.8rem;color:var(--text-muted);margin:12px 0 8px;line-height:1.5;">¿Quieres agregar también tu foto, tu celular y tu correo? Eso ya es parte de un plan pago. Elige uno para ver qué incluye y pagar:</p>'
+      + '<div class="plan-cta-row">'
+      +   '<button class="plan-cta" onclick="abrirPlanModal(\'Esencial\')"><div class="plan-cta-lbl">Ver y pagar</div><div class="plan-cta-name">Esencial <span class="plan-cta-price">· Bs 250</span></div></button>'
+      +   '<button class="plan-cta" onclick="abrirPlanModal(\'Profesional\')"><div class="plan-cta-lbl">Ver y pagar</div><div class="plan-cta-name">Profesional <span class="plan-cta-price">· Bs 350</span></div></button>'
+      + '</div>'
       + '</div>'
     : '';
   real.innerHTML = nombreHtml + m.render();

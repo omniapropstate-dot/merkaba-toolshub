@@ -78,11 +78,7 @@ function cargarFoto(input){
   const file = input.files[0];
   if(!file) return;
   if(AGENTE.esDemo){
-    var waMsg = 'Hola! Quiero mi propio acceso al Kit del Agente Inmobiliario.';
-    var wa = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(waMsg);
-    var msg = $('perfil-msg');
-    msg.style.color = 'var(--gold)';
-    msg.innerHTML = 'Para guardar una foto de perfil necesitas el Plan Esencial o el Plan Profesional. <a href="'+wa+'" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;">Escríbenos por WhatsApp</a>';
+    mostrarBloqueoPerfil('Para guardar una foto de perfil necesitas un plan pago. Elige uno para ver qué incluye y pagar:');
     input.value = '';
     return;
   }
@@ -106,10 +102,7 @@ function cargarFoto(input){
 async function guardarPerfil(){
   const msg = $('perfil-msg');
   if(AGENTE.esDemo){
-    var waMsg = 'Hola! Quiero mi propio acceso al Kit del Agente Inmobiliario.';
-    var wa = 'https://wa.me/'+SOPORTE_WHATSAPP+'?text='+encodeURIComponent(waMsg);
-    msg.style.color = 'var(--gold)';
-    msg.innerHTML = 'Para guardar cambios de perfil necesitas el Plan Esencial o el Plan Profesional. <a href="'+wa+'" target="_blank" rel="noopener" style="color:var(--gold);font-weight:700;">Escríbenos por WhatsApp</a>';
+    mostrarBloqueoPerfil('Para guardar cambios de perfil necesitas un plan pago. Elige uno para ver qué incluye y pagar:');
     return;
   }
   const nombre = $('perfil-nombre').value.trim();

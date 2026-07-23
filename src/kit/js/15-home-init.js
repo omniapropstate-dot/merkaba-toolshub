@@ -18,6 +18,15 @@ function initHome(){
     _demoModalMostrado = true;
     setTimeout(abrirModalDemo, 500);
   }
+  var pcs = $('home-plan-cta-section');
+  if(pcs){
+    pcs.innerHTML = !AGENTE.esDemo ? '' : (
+      '<div class="plan-cta-row" style="margin-bottom:20px;">'
+      + '<button class="plan-cta" onclick="abrirPlanModal(\'Esencial\')"><div class="plan-cta-lbl">Ver y pagar</div><div class="plan-cta-name">Plan Esencial <span class="plan-cta-price">· Bs 250</span></div></button>'
+      + '<button class="plan-cta" onclick="abrirPlanModal(\'Profesional\')"><div class="plan-cta-lbl">Ver y pagar</div><div class="plan-cta-name">Plan Profesional <span class="plan-cta-price">· Bs 350</span></div></button>'
+      + '</div>'
+    );
+  }
   var ciudad = AGENTE.ciudad || '';
   var pendientes = JSON.parse(localStorage.getItem('mk_pendientes') || '[]');
   var sinResolver = pendientes.filter(function(p){ return !p.hecho; });

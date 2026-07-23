@@ -76,11 +76,64 @@
     <p style="font-size:0.88rem;line-height:1.6;color:var(--text);margin-bottom:20px;">
       Solo con un acceso propio (Plan Esencial o Profesional) todo se guarda de verdad, ligado a tu cuenta, para siempre.
     </p>
-    <div style="display:flex;gap:10px;">
-      <a class="btn btn-gold" style="flex:1;text-align:center;text-decoration:none;" href="#" onclick="abrirSoporte();return false;">💬 Quiero mi propio acceso</a>
-      <button class="btn btn-outline" onclick="cerrarModalDemo()">Entendido</button>
+    <div class="plan-cta-row" style="margin-bottom:10px;">
+      <button class="plan-cta" onclick="cerrarModalDemo();abrirPlanModal('Esencial');">
+        <div class="plan-cta-lbl">Ver y pagar</div>
+        <div class="plan-cta-name">Esencial <span class="plan-cta-price">· Bs 250</span></div>
+      </button>
+      <button class="plan-cta" onclick="cerrarModalDemo();abrirPlanModal('Profesional');">
+        <div class="plan-cta-lbl">Ver y pagar</div>
+        <div class="plan-cta-name">Profesional <span class="plan-cta-price">· Bs 350</span></div>
+      </button>
+    </div>
+    <button class="btn btn-outline" style="width:100%;" onclick="cerrarModalDemo()">Entendido</button>
+  </div>
+</div>
+
+<!-- MODAL: VER PLAN + PAGAR CON QR -->
+<div class="modal-bg" id="plan-modal">
+  <div class="modal-box">
+    <div id="view-features">
+      <div class="mp-header">
+        <div>
+          <div class="mp-name" id="mp-name">Plan Esencial</div>
+          <div class="mp-price" id="mp-price">Bs 250<span>pago único</span></div>
+        </div>
+        <button class="btn-pay-header" onclick="irAPagarPlan()">📲 Pagar con QR</button>
+      </div>
+      <ul class="feature-list" id="mp-list"></ul>
+      <div style="margin-top:18px;"><button class="btn btn-outline" style="width:100%;" onclick="cerrarPlanModal()">Cerrar</button></div>
+    </div>
+    <div id="view-pay" hidden>
+      <button class="back-link" onclick="volverAFeaturesPlan()">← Volver a ver qué incluye</button>
+      <div class="pay-title" id="pay-titulo">Pagá el Plan Esencial</div>
+      <p class="pay-sub">Escaneá, pagá, y mandanos el comprobante.</p>
+      <div class="qr-frame" onclick="abrirZoomQR()" title="Tocar para agrandar"><img id="qr-img" src="" alt="Codigo QR de pago"></div>
+      <a class="qr-descarga" id="qr-descarga-link" href="#" download="qr-pago.jpg">⬇️ Descargar QR</a>
+      <span class="monto-chip" id="qr-monto">Bs 250</span>
+      <ol class="steps">
+        <li><span class="step-num">1</span> Escaneá el código con la app de tu banco y pagá.</li>
+        <li>
+          <span class="step-num">2</span>
+          <div>
+            Apretá "Ya pagué, enviar comprobante" y mandanos la captura junto con:
+            <ul class="datos-list">
+              <li>Nombre completo</li>
+              <li>Ciudad</li>
+              <li>Email</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      <a class="btn btn-gold" style="display:block;text-align:center;width:100%;text-decoration:none;" href="#" id="qr-whatsapp-link" target="_blank" rel="noopener">✅ Ya pagué, enviar comprobante</a>
+      <a class="support-link" href="#" onclick="abrirSoporte();return false;">¿Dudas antes de pagar? Escríbenos</a>
     </div>
   </div>
+</div>
+
+<div class="zoom-bg" id="zoom-modal" onclick="cerrarZoomQR()">
+  <div class="zoom-frame"><img id="qr-img-zoom" src="" alt="Codigo QR de pago, ampliado"></div>
+  <div class="zoom-hint">Tocá en cualquier lado para cerrar</div>
 </div>
 
 <div class="kit-body">
@@ -115,6 +168,8 @@
       </div>
       <div class="home-phrase" id="home-phrase"></div>
     </div>
+
+    <div id="home-plan-cta-section"></div>
 
     <div id="home-pend-section"></div>
 
